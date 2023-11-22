@@ -1,0 +1,105 @@
+@import '../../styles/vars.scss';
+
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
+
+html {
+   font-size: 16px;
+   color: black;
+   font-family: "Roboto Condensed", sans-serif;
+   height: auto;
+}
+
+body {
+   background: linear-gradient(180deg, #5bb4fd 10%, $blue  50%, #5bb4fd 90%);
+   padding: 0px 15px;
+   font-size: 16px;
+}
+
+.container {
+   max-width: $maxWidthCont;
+   margin: 0 auto;
+   padding-left: 15px;
+   padding-right: 15px;
+}
+
+.tab{
+   &__body {
+      padding: 15px;
+      border: 1px solid $gray;
+      border-radius: 0px 15px 15px 15px;
+      position: relative;
+      top: -1px;
+      background-color: $textColor2;
+      min-height: 90vh; 
+      align-content: flex-start;
+      margin-bottom: 31px;
+      max-width: 1900px;
+      margin: 0px auto 20px;
+
+      @media ( max-width:650px) {
+         border-radius: 15px;
+      }
+   }
+
+   &__btn {
+      border: 1px solid $gray;
+      padding: 5px 15px;
+      border-radius: 5px;
+      font-size: 16px;
+      background-color: $textColor2;
+      transition: 0.2s;
+      background-color: $lightyellow;
+
+      &:hover {
+         background-color: $blue;
+         background-color: $yellow;
+      }
+   }
+
+   &__btn--add {
+      position: absolute;
+      font-weight: 500;
+      right: 15px;
+      top: 15px;
+      z-index: 10;
+
+      &:hover {
+         background-color: $blue;
+      }
+   }
+
+   &__btn--red {
+      &:hover {
+         background-color: $red;
+      }
+   }
+
+   &__btn--close {
+      position: absolute;
+      font-weight: 500;
+      right: 15px;
+      top: 15px;
+      z-index: 20;
+   }
+
+   &__form {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      padding: 25px 15px;
+      border: 1px solid $gray;
+      border-radius: 10px;
+      background: $background;
+      align-items: flex-end;
+      z-index: 10;
+   }
+
+   &__form--edit {
+		position: absolute;
+		left: 50%;
+		top: 40%;
+		width: 95%;
+		transform: translateX(-50%);
+		box-shadow: -3px 3px 10px -5px $textColor;
+	}
+}

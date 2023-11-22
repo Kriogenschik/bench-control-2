@@ -1,0 +1,77 @@
+@import '../../styles/vars.scss';
+
+.staff-table {
+  width: 100%;
+  border: 1px solid $gray;
+  border-radius: 10px;
+  overflow: auto;
+  box-shadow: -3px 3px 10px -5px $textColor;
+  padding: 10px;
+  max-width: 1800px;
+  margin: 45px auto 20px;
+  font-size: 16px;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+  }
+
+  th,
+  td {
+    padding: 5px 8px;
+    &:not(:first-child, :last-child ) {
+      text-align: center;
+    }
+  }
+
+  thead th {
+    background-color: $blue;
+    padding: 15px 8px;
+
+    &:first-child {
+      border-radius: 10px 0px 0px 0px;
+      text-align: left;
+    }
+
+    &:last-child {
+      border-radius: 0px 10px 0px 0px;
+    }
+  }
+
+  tbody tr {
+    &:nth-child(even) {
+      background: $background;
+    }
+
+    &:hover {
+      background: rgb(231, 231, 231, 0.8);
+    }
+  }
+
+  tbody td {
+    position: relative;
+  }
+
+  .edit-cell {
+    width: 135px;
+
+    .tab__btn--remove {
+      margin-left: 10px;
+      height: 31px;
+      padding: 0px 8px;
+      display: inline-flex;
+      align-items: center;
+      position: absolute;
+
+      &:hover {
+        background-color: $red;
+      }
+
+      svg {
+        width: 15px;
+        height: 17px;
+      }
+    }
+  }
+}

@@ -1,0 +1,218 @@
+{
+  "heroes": [
+    {
+      "id": 1,
+      "name": "Первый герой",
+      "description": "Первый герой в рейтинге!",
+      "element": "fire"
+    },
+    {
+      "id": 2,
+      "name": "second герой",
+      "description": "Первый герой в рейтинге!",
+      "element": "water"
+    },
+    {
+      "id": 4,
+      "name": "fourth герой",
+      "description": "Первый герой в рейтинге!",
+      "element": "wind"
+    },
+    {
+      "id": "16b0a0f1-973b-40fe-a072-cbcf985f70e6",
+      "name": "QAs",
+      "description": "gggvx asda sf asf asfsa s",
+      "element": "earth"
+    },
+    {
+      "id": "df293b98-aadb-4f5f-99d7-d43122ae57cb",
+      "name": "Designer",
+      "description": "nnnnnn",
+      "element": "water"
+    },
+    {
+      "id": "fddb7668-dd33-4756-9182-ac20584af919",
+      "name": "QAs",
+      "description": "klkjklkllkkllk",
+      "element": "wind"
+    }
+  ],
+  "filters": [
+    {
+      "id": "all",
+      "name": "all",
+      "label": "All",
+      "className": "btn-outline-dark"
+    },
+    {
+      "id": "fire",
+      "name": "fire",
+      "label": "Fire",
+      "className": "btn-danger"
+    },
+    {
+      "id": "water",
+      "name": "water",
+      "label": "Water",
+      "className": "btn-primary"
+    },
+    {
+      "id": "wind",
+      "name": "wind",
+      "label": "Wind",
+      "className": "btn-success"
+    },
+    {
+      "id": "earth",
+      "name": "earth",
+      "label": "Earth",
+      "className": "btn-secondary"
+    }
+  ],
+  "employees": [
+    {
+      "id": 1,
+      "name": "Stepan Stepanko",
+      "pos": "DEV",
+      "stack": "NET",
+      "exp": "LM",
+      "speak": "BS",
+      "time": 40
+    },
+    {
+      "id": 2,
+      "name": "Mykola Mykolyik",
+      "pos": "DEV",
+      "stack": "XM",
+      "exp": "MM",
+      "speak": "SFS",
+      "time": 40
+    },
+    {
+      "id": 3,
+      "name": "Nadia Nadiyko",
+      "pos": "QA",
+      "stack": "M",
+      "exp": "H",
+      "speak": "CL",
+      "time": 30
+    },
+    {
+      "id": 4,
+      "name": "James Bond",
+      "pos": "MP",
+      "stack": "D",
+      "exp": "MM",
+      "speak": "BS",
+      "time": 40
+    },
+    {
+      "id": 5,
+      "name": "Ivanko Ivanenko",
+      "pos": "DEV",
+      "stack": "MP",
+      "exp": "LH",
+      "speak": "SFS",
+      "time": 40
+    },
+    {
+      "id": 6,
+      "name": "Bart Simpson",
+      "pos": "D",
+      "stack": "XM",
+      "exp": "LM",
+      "speak": "CL",
+      "time": 40
+    },
+    {
+      "id": 7,
+      "name": "Maria Marienko",
+      "pos": "BA",
+      "stack": "QA",
+      "exp": "H",
+      "speak": "BS",
+      "time": 40
+    },
+    {
+      "id": 8,
+      "name": "Yurko Yurchenko",
+      "pos": "QA",
+      "stack": "NET",
+      "exp": "LH",
+      "speak": "FS",
+      "time": 40
+    },
+    {
+      "id": 9,
+      "name": "Jack Sparow",
+      "pos": "S",
+      "stack": "BA",
+      "exp": "MM",
+      "speak": "CL",
+      "time": 35
+    },
+    {
+      "id": 10,
+      "name": "Stefania Stefanko",
+      "pos": "DEV",
+      "stack": "PM",
+      "exp": "LM",
+      "speak": "SFS",
+      "time": 40
+    },
+    {
+      "id": 11,
+      "name": "Mitchel Jordan",
+      "pos": "PM",
+      "stack": "PM",
+      "exp": "MM",
+      "speak": "FS",
+      "time": 40
+    },
+    {
+      "id": 12,
+      "name": "Homer Simpson",
+      "pos": "DEV",
+      "stack": "NET",
+      "exp": "MM",
+      "speak": "FS",
+      "time": 40
+    },
+    {
+      "id": 13,
+      "name": "Mark Markov",
+      "pos": "DEV",
+      "stack": "XM",
+      "exp": "LM",
+      "speak": "CL",
+      "time": 40
+    },
+    {
+      "id": 14,
+      "name": "Katerina Katerenko",
+      "pos": "QA",
+      "stack": "QA",
+      "exp": "LM",
+      "speak": "SFS",
+      "time": 40
+    },
+    {
+      "id": 15,
+      "name": "Valerij Valerenko",
+      "pos": "PM",
+      "stack": "PM",
+      "exp": "LM",
+      "speak": "CL",
+      "time": 40
+    },
+    {
+      "id": 16,
+      "name": "Boris Johnsonyk",
+      "pos": "BA",
+      "stack": "BA",
+      "exp": "MM",
+      "speak": "FS",
+      "time": 40
+    }
+  ]
+}

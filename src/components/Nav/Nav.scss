@@ -1,0 +1,60 @@
+@import '../../styles/vars.scss';
+
+.header {
+  &__menu {
+    display: flex;
+    max-width: 1900px;
+    margin: 15px auto 0px;
+
+    @media (max-width: 650px) {
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+  }
+
+  &__tab {
+    position: relative;
+    padding: 15px;
+    font-size: 18px;
+    background-color: $background;
+    border-radius: 10px 10px 0px 0px;
+    min-width: 150px;
+    display: inline-block;
+    color: $textColor;
+    font-weight: 300;
+    border-left: 1px solid $gray;
+    border-right: 1px solid $gray;
+    border-top: 1px solid $gray;
+    text-align: center;
+    transition: all 0.3s, border 0s;
+
+    @media (max-width: 650px) {
+      border-radius: 10px;
+      border: 1px solid $gray;
+      padding: 5px;
+      font-size: 14px;
+      min-width: 100px;
+    }
+
+    &:hover {
+      background-color: $lightyellow;
+    }
+  }
+
+  &__tab.active {
+    background-color: $textColor2;
+    font-weight: 500;
+    border-bottom: 1px solid $textColor2;
+    z-index: 10;
+    color: $textColor;
+
+    @media (max-width: 650px) {
+      border: 1px solid $gray;
+      padding: 10px;
+      font-size: 16px;
+      min-width: 120px;
+    }
+  }
+}
