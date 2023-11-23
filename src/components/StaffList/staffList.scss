@@ -36,6 +36,7 @@
 
     &:last-child {
       border-radius: 0px 10px 0px 0px;
+      color: transparent;
     }
   }
 
@@ -55,6 +56,27 @@
 
   .edit-cell {
     width: 135px;
+    text-align: center;
+
+    button{
+      width: 40px;
+      height: 30px;
+      background: none;
+      border-radius: 4px;
+      box-shadow: 0px 0px 2px $gray;
+      transition: 0.3s;
+      &:hover {
+        box-shadow: 0px 0px 10px $red;
+        background: $textColor2;
+      }
+
+      &:not(:last-child) {
+        margin-right: 15px;
+        &:hover {
+          box-shadow: 0px 0px 10px $blue2;
+        }
+      }
+    }
 
     .tab__btn--remove {
       margin-left: 10px;

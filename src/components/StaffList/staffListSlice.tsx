@@ -73,6 +73,7 @@ import { EmployeesProps } from "../../data/Employees";
 import {
   createAsyncThunk,
   createEntityAdapter,
+  createSelector,
   createSlice,
 } from "@reduxjs/toolkit";
 import type { EntityState, PayloadAction } from "@reduxjs/toolkit";
@@ -91,7 +92,7 @@ const initialState: StaffState = staffAdapter.getInitialState({
   staffLoadingStatus: "idle",
 });
 
-export const fetchStaff = createAsyncThunk("heroes/fetchEmployees", () => {
+export const fetchStaff = createAsyncThunk("data/fetchEmployees", () => {
   const { request } = useHttp();
   return request("http://localhost:3001/employees");
 });
@@ -100,9 +101,14 @@ const staffSlice = createSlice({
   name: "staff",
   initialState,
   reducers: {
-    // staffCreated: (state, action: PayloadAction<EmployeesProps>) => {
-    //   state.staff.push(action.payload);
-    // },
+    staffDeleted: (state, action) => {
+      // @ts-ignore
+      staffAdapter.removeOne(state, action.payload);
+    },
+    staffCreated: (state, action) => {
+      // @ts-ignore
+      staffAdapter.addOne(state, action.payload);
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(
@@ -127,8 +133,19 @@ const staffSlice = createSlice({
 
 export const { selectAll } = staffAdapter.getSelectors(
   // @ts-ignore
-  (state: StaffState) => state.staff
+  (state) => state.staff
 );
 
-// export const { staffCreated } = staffSlice.actions;
+export const allStaffSelector = createSelector(
+  (state: { staff: { staffLoadingStatus: string } }) =>
+    state.staff.staffLoadingStatus,
+  selectAll,
+  (state, staff) => {
+    if (state === "idle") {
+      return staff;
+    }
+  }
+);
+
+export const { staffDeleted, staffCreated } = staffSlice.actions;
 export default staffSlice.reducer;

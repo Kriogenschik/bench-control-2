@@ -1,0 +1,360 @@
+{
+  "employees": [
+    {
+      "id": 1,
+      "name": "Stepan Stepanko",
+      "pos": "DEV",
+      "stack": "NET",
+      "exp": "LM",
+      "speak": "BS",
+      "time": 40
+    },
+    {
+      "id": 2,
+      "name": "Mykola Mykolyik",
+      "pos": "DEV",
+      "stack": "XM",
+      "exp": "MM",
+      "speak": "SFS",
+      "time": 40
+    },
+    {
+      "id": 3,
+      "name": "Nadia Nadiyko",
+      "pos": "QA",
+      "stack": "M",
+      "exp": "H",
+      "speak": "CL",
+      "time": 30
+    },
+    {
+      "id": 4,
+      "name": "James Bond",
+      "pos": "MP",
+      "stack": "D",
+      "exp": "MM",
+      "speak": "BS",
+      "time": 40
+    },
+    {
+      "id": 5,
+      "name": "Ivanko Ivanenko",
+      "pos": "DEV",
+      "stack": "MP",
+      "exp": "LH",
+      "speak": "SFS",
+      "time": 40
+    },
+    {
+      "id": 6,
+      "name": "Bart Simpson",
+      "pos": "D",
+      "stack": "XM",
+      "exp": "LM",
+      "speak": "CL",
+      "time": 40
+    },
+    {
+      "id": 7,
+      "name": "Maria Marienko",
+      "pos": "BA",
+      "stack": "QA",
+      "exp": "H",
+      "speak": "BS",
+      "time": 40
+    },
+    {
+      "id": 8,
+      "name": "Yurko Yurchenko",
+      "pos": "QA",
+      "stack": "NET",
+      "exp": "LH",
+      "speak": "FS",
+      "time": 40
+    },
+    {
+      "id": 9,
+      "name": "Jack Sparow",
+      "pos": "S",
+      "stack": "BA",
+      "exp": "MM",
+      "speak": "CL",
+      "time": 35
+    },
+    {
+      "id": 10,
+      "name": "Stefania Stefanko",
+      "pos": "DEV",
+      "stack": "PM",
+      "exp": "LM",
+      "speak": "SFS",
+      "time": 40
+    },
+    {
+      "id": 11,
+      "name": "Mitchel Jordan",
+      "pos": "PM",
+      "stack": "PM",
+      "exp": "MM",
+      "speak": "FS",
+      "time": 40
+    },
+    {
+      "id": 12,
+      "name": "Homer Simpson",
+      "pos": "DEV",
+      "stack": "NET",
+      "exp": "MM",
+      "speak": "FS",
+      "time": 40
+    },
+    {
+      "id": 13,
+      "name": "Mark Markov",
+      "pos": "DEV",
+      "stack": "XM",
+      "exp": "LM",
+      "speak": "CL",
+      "time": 40
+    },
+    {
+      "id": 14,
+      "name": "Katerina Katerenko",
+      "pos": "QA",
+      "stack": "QA",
+      "exp": "LM",
+      "speak": "SFS",
+      "time": 40
+    },
+    {
+      "id": 15,
+      "name": "Valerij Valerenko",
+      "pos": "PM",
+      "stack": "PM",
+      "exp": "LM",
+      "speak": "CL",
+      "time": 40
+    },
+    {
+      "id": 16,
+      "name": "Boris Johnsonyk",
+      "pos": "BA",
+      "stack": "BA",
+      "exp": "MM",
+      "speak": "FS",
+      "time": 40
+    },
+    {
+      "id": 17,
+      "name": "Mike Mikiki",
+      "pos": "MP",
+      "stack": "NET",
+      "exp": "L",
+      "speak": "CL",
+      "time": 40
+    },
+    {
+      "id": 18,
+      "name": "Klark Kent",
+      "pos": "DEV",
+      "stack": "MP",
+      "exp": "ML",
+      "speak": "OR",
+      "time": 37
+    }
+  ],
+  "options": [
+    {
+      "id": 0,
+      "name": "Roles",
+      "arr": [
+        {
+          "id": 1,
+          "value": "DEV",
+          "label": "DEV",
+          "descr": "Dev"
+        },
+        {
+          "id": 2,
+          "value": "QA",
+          "label": "QA",
+          "descr": "QA"
+        },
+        {
+          "id": 3,
+          "value": "S",
+          "label": "S",
+          "descr": "Sales"
+        },
+        {
+          "id": 4,
+          "value": "MP",
+          "label": "MP",
+          "descr": "Markup"
+        },
+        {
+          "id": 5,
+          "value": "D",
+          "label": "D",
+          "descr": "Design"
+        },
+        {
+          "id": 6,
+          "value": "BA",
+          "label": "BA",
+          "descr": "BA"
+        },
+        {
+          "id": 7,
+          "value": "PM",
+          "label": "PM",
+          "descr": "PM"
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "Stacks",
+      "arr": [
+        {
+          "id": 1,
+          "value": "NET",
+          "label": "NET",
+          "name": ".Net"
+        },
+        {
+          "id": 2,
+          "value": "XM",
+          "label": "XM",
+          "name": "Xamarin/MAUI"
+        },
+        {
+          "id": 3,
+          "value": "M",
+          "label": "M",
+          "name": "MERN"
+        },
+        {
+          "id": 4,
+          "value": "MP",
+          "label": "MP",
+          "name": "Markup"
+        },
+        {
+          "id": 5,
+          "value": "D",
+          "label": "D",
+          "name": "Design"
+        },
+        {
+          "id": 6,
+          "value": "QA",
+          "label": "QA",
+          "name": "QA"
+        },
+        {
+          "id": 7,
+          "value": "BA",
+          "label": "BA",
+          "name": "BA"
+        },
+        {
+          "id": 8,
+          "value": "PM",
+          "label": "PM",
+          "name": "PM"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Exps",
+      "arr": [
+        {
+          "id": 1,
+          "value": "VL",
+          "label": "VL",
+          "name": "Very low"
+        },
+        {
+          "id": 2,
+          "value": "L",
+          "label": "L",
+          "name": "Low"
+        },
+        {
+          "id": 3,
+          "value": "ML",
+          "label": "ML",
+          "name": "More than low"
+        },
+        {
+          "id": 4,
+          "value": "LM",
+          "label": "LM",
+          "name": "Less than medium"
+        },
+        {
+          "id": 5,
+          "value": "M",
+          "label": "M",
+          "name": "Medium"
+        },
+        {
+          "id": 6,
+          "value": "MM",
+          "label": "MM",
+          "name": "More than medium"
+        },
+        {
+          "id": 7,
+          "value": "LH",
+          "label": "LH",
+          "name": "Less than high"
+        },
+        {
+          "id": 8,
+          "value": "H",
+          "label": "H",
+          "name": "High"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "SpeakLvl",
+      "arr": [
+        {
+          "id": 1,
+          "value": "OR",
+          "label": "OR",
+          "name": "Only reading"
+        },
+        {
+          "id": 2,
+          "value": "CL",
+          "label": "CL",
+          "name": "Can listen"
+        },
+        {
+          "id": 3,
+          "value": "BS",
+          "label": "BS",
+          "name": "A bit of speaking"
+        },
+        {
+          "id": 4,
+          "value": "SFS",
+          "label": "SFS",
+          "name": "Semi-free speaking"
+        },
+        {
+          "id": 5,
+          "value": "FS",
+          "label": "FS",
+          "name": "Free speaking"
+        }
+      ]
+    }
+  ]
+}
