@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import DropdownInput from "../DropdownInput/DropdownInput";
 import { EmployeesProps } from "../../data/Employees";
 
@@ -7,8 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHttp } from "../../hooks/http.hook";
 import { selectAll } from "../OptionsForm/optionsFormSlice";
 import store from "../../store";
-import { OptionFullProps, OptionProps } from "../OptionsForm/types";
+import { OptionFullProps } from "../OptionsForm/types";
 import { staffCreated, allStaffSelector } from "../StaffList/staffListSlice";
+import { setTime, validateTime } from "../../utils/SetTime";
+import { generateNewId } from "../../utils/GenerateNewId";
 
 interface AddStaffFormProps {
   closeForm: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
@@ -36,13 +38,6 @@ const AddStaffForm = ({
     time: false,
   });
 
-  const [isEmptyName, setIsEmptyname] = useState<boolean>(false);
-  const [isEmptyRole, setIsEmptyRole] = useState<boolean>(false);
-  const [isEmptyStack, setIsEmptyStack] = useState<boolean>(false);
-  const [isEmptyExp, setIsEmptyExp] = useState<boolean>(false);
-  const [isEmptySpeak, setIsEmptySpeak] = useState<boolean>(false);
-  const [isEmptyTime, setIsEmptyTime] = useState<boolean>(false);
-
   const dispatch = useDispatch();
   const { request } = useHttp();
 
@@ -69,12 +64,8 @@ const AddStaffForm = ({
       details["speaklvl"] &&
       details["time"]
     ) {
-      //new employee ID
-      let ids: Array<number> = [];
-      for (let staff of allStaff) {
-        ids.push(staff.id);
-      }
-      let newId = Math.max.apply(null, ids) + 1;
+
+      const newId = generateNewId(allStaff)
 
       const newStaff = {
         id: newId,
@@ -100,33 +91,8 @@ const AddStaffForm = ({
     }
   };
 
-  const validateTime = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (
-      e.keyCode === 46 ||
-      e.keyCode === 8 ||
-      e.keyCode === 9 ||
-      e.keyCode === 27 ||
-      // Разрешаем: home, end, влево, вправо
-      (e.keyCode >= 35 && e.keyCode <= 39)
-    ) {
-      return;
-    } else if (e.keyCode < 48 || e.keyCode > 57) {
-      e.preventDefault();
-    }
-  };
-
-  const setTime = (time: string | number) => {
-    if (+time > 40) {
-      return 40;
-    } else if (+time > 1) {
-      return (time = +time);
-    } else {
-      return +time;
-    }
-  };
-
   return (
-    <form className="tab__form form" onSubmit={(e) => e.preventDefault()}>
+    <form className="tab__form form tab__form--add" onSubmit={(e) => e.preventDefault()}>
       <div className="form__cell">
         <label htmlFor="name">Name:</label>
         <input
@@ -182,7 +148,7 @@ const AddStaffForm = ({
         />
       </div>
 
-      <div className="form__cell form__cell-btns">
+      <div className="form__cell form__cell--btns">
         <button className="tab__btn" onClick={(e) => saveEmployee(e)}>
           Save
         </button>

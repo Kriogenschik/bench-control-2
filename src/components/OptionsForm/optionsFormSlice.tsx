@@ -2,6 +2,7 @@ import {
   createSlice,
   createAsyncThunk,
   createEntityAdapter,
+  createSelector,
 } from "@reduxjs/toolkit";
 import { useHttp } from "../../hooks/http.hook";
 import { OptionsProps } from "../../data/DropdownOptions";
@@ -26,6 +27,10 @@ const optionsSlice = createSlice({
   name: "options",
   initialState,
   reducers: {
+    optionsEdited: (state, action) => {
+      // @ts-ignore
+      optionsAdapter.updateOne(state, {id: action.payload.optionsId, changes: {...action.payload.newOptionsList}});
+    }
     // optionsCreated: (state, action) => {
     //   optionsAdapter.addOne(state, action.payload);
     // },
@@ -53,11 +58,22 @@ const optionsSlice = createSlice({
 const { actions, reducer } = optionsSlice;
 
 export default reducer;
-// export const {
-//   optionsCreated,
-//   optionsDeleted,
-// } = actions;
+export const {
+  optionsEdited,
+} = actions;
+
 export const { selectAll } = optionsAdapter.getSelectors(
   // @ts-ignore
   (state) => state.options
+);
+
+export const allOptionsSelector = createSelector(
+  (state: { options: { optionsLoadingStatus: string } }) =>
+    state.options.optionsLoadingStatus,
+  selectAll,
+  (state, options) => {
+    if (state === "idle") {
+      return options;
+    }
+  }
 );

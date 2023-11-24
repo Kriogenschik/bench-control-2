@@ -1,7 +1,5 @@
-
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useCallback } from "react";
-import { fetchStaff, selectAll, staffDeleted, allStaffSelector } from "./staffListSlice";
+import { useSelector } from "react-redux";
+import { allStaffSelector } from "./staffListSlice";
 import Spinner from "../Spinner/Spinner";
 import { EmployeesProps } from "../../data/Employees";
 
@@ -9,26 +7,18 @@ import './staffList.scss'
 
 interface StaffListProps {
   onDelete: (id: number, name: string ) => void;
+  onEdit: (id: number) => void;
 }
 
-const StaffList = ({onDelete}: StaffListProps): JSX.Element => {
-  const dispatch = useDispatch();
-  
-  // @ts-ignore
-  const allStaff: Array<EmployeesProps> = useSelector(allStaffSelector);
+const StaffList = ({onDelete, onEdit}: StaffListProps): JSX.Element => {
+
+  const allStaff = useSelector(allStaffSelector) as Array<EmployeesProps>;
 
   const staffLoadingStatus = useSelector(
     // @ts-ignore
     (state) => state.staff.staffLoadingStatus
   );
 
-  // useEffect(() => {
-  //   // @ts-ignore
-  //   dispatch(fetchStaff());
-  //   // eslint-disable-next-line
-  // }, []);
-
-  
 
   if (staffLoadingStatus === "loading") {
     return <Spinner />;
@@ -72,7 +62,7 @@ const StaffList = ({onDelete}: StaffListProps): JSX.Element => {
                   <td>{item.speak}</td>
                   <td>{item.time}</td>
                   <td className="edit-cell">
-                  <button className="staff-table__btn fa-solid fa-user-pen fa-lg"></button>
+                  <button className="staff-table__btn fa-solid fa-user-pen fa-lg" onClick={() => onEdit(item.id)}></button>
                   <button className="staff-table__btn fa-solid fa-trash-can fa-lg" onClick={() => onDelete(item.id, item.name)}></button>
                   </td>
                 </tr>

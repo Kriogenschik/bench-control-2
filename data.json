@@ -6,7 +6,7 @@
       "pos": "DEV",
       "stack": "NET",
       "exp": "LM",
-      "speak": "BS",
+      "speak": "SFS",
       "time": 40
     },
     {
@@ -15,7 +15,7 @@
       "pos": "DEV",
       "stack": "XM",
       "exp": "MM",
-      "speak": "SFS",
+      "speak": "CL",
       "time": 40
     },
     {
@@ -25,7 +25,7 @@
       "stack": "M",
       "exp": "H",
       "speak": "CL",
-      "time": 30
+      "time": 35
     },
     {
       "id": 4,
@@ -34,7 +34,7 @@
       "stack": "D",
       "exp": "MM",
       "speak": "BS",
-      "time": 40
+      "time": 39
     },
     {
       "id": 5,
@@ -43,7 +43,7 @@
       "stack": "MP",
       "exp": "LH",
       "speak": "SFS",
-      "time": 40
+      "time": 38
     },
     {
       "id": 6,
@@ -52,12 +52,12 @@
       "stack": "XM",
       "exp": "LM",
       "speak": "CL",
-      "time": 40
+      "time": 38
     },
     {
       "id": 7,
       "name": "Maria Marienko",
-      "pos": "BA",
+      "pos": "QA",
       "stack": "QA",
       "exp": "H",
       "speak": "BS",
@@ -66,7 +66,7 @@
     {
       "id": 8,
       "name": "Yurko Yurchenko",
-      "pos": "QA",
+      "pos": "DEV",
       "stack": "NET",
       "exp": "LH",
       "speak": "FS",
@@ -145,22 +145,31 @@
       "time": 40
     },
     {
-      "id": 17,
-      "name": "Mike Mikiki",
-      "pos": "MP",
-      "stack": "NET",
-      "exp": "L",
-      "speak": "CL",
-      "time": 40
-    },
-    {
       "id": 18,
       "name": "Klark Kent",
       "pos": "DEV",
       "stack": "MP",
       "exp": "ML",
       "speak": "OR",
-      "time": 37
+      "time": 40
+    },
+    {
+      "id": 19,
+      "name": "Jamie Oliver",
+      "pos": "DEV",
+      "stack": "MP",
+      "exp": "L",
+      "speak": "FS",
+      "time": 40
+    },
+    {
+      "id": 20,
+      "name": "Bill Gates",
+      "pos": "DEV",
+      "stack": "XM",
+      "exp": "H",
+      "speak": "FS",
+      "time": 40
     }
   ],
   "options": [
@@ -220,49 +229,49 @@
           "id": 1,
           "value": "NET",
           "label": "NET",
-          "name": ".Net"
+          "descr": ".Net"
         },
         {
           "id": 2,
           "value": "XM",
           "label": "XM",
-          "name": "Xamarin/MAUI"
+          "descr": "Xamarin/MAUI"
         },
         {
           "id": 3,
           "value": "M",
           "label": "M",
-          "name": "MERN"
+          "descr": "MERN"
         },
         {
           "id": 4,
           "value": "MP",
           "label": "MP",
-          "name": "Markup"
+          "descr": "Markup"
         },
         {
           "id": 5,
           "value": "D",
           "label": "D",
-          "name": "Design"
+          "descr": "Design"
         },
         {
           "id": 6,
           "value": "QA",
           "label": "QA",
-          "name": "QA"
+          "descr": "QA"
         },
         {
           "id": 7,
           "value": "BA",
           "label": "BA",
-          "name": "BA"
+          "descr": "BA"
         },
         {
           "id": 8,
           "value": "PM",
           "label": "PM",
-          "name": "PM"
+          "descr": "PM"
         }
       ]
     },
@@ -274,49 +283,49 @@
           "id": 1,
           "value": "VL",
           "label": "VL",
-          "name": "Very low"
+          "descr": "Very low"
         },
         {
           "id": 2,
           "value": "L",
           "label": "L",
-          "name": "Low"
+          "descr": "Low"
         },
         {
           "id": 3,
           "value": "ML",
           "label": "ML",
-          "name": "More than low"
+          "descr": "More than low"
         },
         {
           "id": 4,
           "value": "LM",
           "label": "LM",
-          "name": "Less than medium"
+          "descr": "Less than medium"
         },
         {
           "id": 5,
           "value": "M",
           "label": "M",
-          "name": "Medium"
+          "descr": "Medium"
         },
         {
           "id": 6,
           "value": "MM",
           "label": "MM",
-          "name": "More than medium"
+          "descr": "More than medium"
         },
         {
           "id": 7,
           "value": "LH",
           "label": "LH",
-          "name": "Less than high"
+          "descr": "Less than high"
         },
         {
           "id": 8,
           "value": "H",
           "label": "H",
-          "name": "High"
+          "descr": "High"
         }
       ]
     },
@@ -328,31 +337,31 @@
           "id": 1,
           "value": "OR",
           "label": "OR",
-          "name": "Only reading"
+          "descr": "Only reading"
         },
         {
           "id": 2,
           "value": "CL",
           "label": "CL",
-          "name": "Can listen"
+          "descr": "Can listen"
         },
         {
           "id": 3,
           "value": "BS",
           "label": "BS",
-          "name": "A bit of speaking"
+          "descr": "A bit of speaking"
         },
         {
           "id": 4,
           "value": "SFS",
           "label": "SFS",
-          "name": "Semi-free speaking"
+          "descr": "Semi-free speaking"
         },
         {
           "id": 5,
           "value": "FS",
           "label": "FS",
-          "name": "Free speaking"
+          "descr": "Free speaking"
         }
       ]
     }

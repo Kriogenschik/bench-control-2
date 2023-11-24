@@ -150,57 +150,192 @@
       "id": 0,
       "name": "Roles",
       "arr": [
-        { "id": 1, "value": "DEV", "label": "DEV", "descr": "Dev" },
-        { "id": 2, "value": "QA", "label": "QA", "descr": "QA" },
-        { "id": 3, "value": "S", "label": "S", "descr": "Sales" },
-        { "id": 4, "value": "MP", "label": "MP", "descr": "Markup" },
-        { "id": 5, "value": "D", "label": "D", "descr": "Design" },
-        { "id": 6, "value": "BA", "label": "BA", "descr": "BA" },
-        { "id": 7, "value": "PM", "label": "PM", "descr": "PM" }
+        {
+          "id": 1,
+          "value": "DEV",
+          "label": "DEV",
+          "descr": "Dev"
+        },
+        {
+          "id": 2,
+          "value": "QA",
+          "label": "QA",
+          "descr": "QA"
+        },
+        {
+          "id": 3,
+          "value": "S",
+          "label": "S",
+          "descr": "Sales"
+        },
+        {
+          "id": 4,
+          "value": "MP",
+          "label": "MP",
+          "descr": "Markup"
+        },
+        {
+          "id": 5,
+          "value": "D",
+          "label": "D",
+          "descr": "Design"
+        },
+        {
+          "id": 6,
+          "value": "BA",
+          "label": "BA",
+          "descr": "BA"
+        },
+        {
+          "id": 7,
+          "value": "PM",
+          "label": "PM",
+          "descr": "PM"
+        }
       ]
     },
     {
       "id": 1,
       "name": "Stacks",
       "arr": [
-        { "id": 1, "value": "NET", "label": "NET", "name": ".Net" },
-        { "id": 2, "value": "XM", "label": "XM", "name": "Xamarin/MAUI" },
-        { "id": 3, "value": "M", "label": "M", "name": "MERN" },
-        { "id": 4, "value": "MP", "label": "MP", "name": "Markup" },
-        { "id": 5, "value": "D", "label": "D", "name": "Design" },
-        { "id": 6, "value": "QA", "label": "QA", "name": "QA" },
-        { "id": 7, "value": "BA", "label": "BA", "name": "BA" },
-        { "id": 8, "value": "PM", "label": "PM", "name": "PM" }
+        {
+          "id": 1,
+          "value": "NET",
+          "label": "NET",
+          "descr": ".Net"
+        },
+        {
+          "id": 2,
+          "value": "XM",
+          "label": "XM",
+          "descr": "Xamarin/MAUI"
+        },
+        {
+          "id": 3,
+          "value": "M",
+          "label": "M",
+          "descr": "MERN"
+        },
+        {
+          "id": 4,
+          "value": "MP",
+          "label": "MP",
+          "descr": "Markup"
+        },
+        {
+          "id": 5,
+          "value": "D",
+          "label": "D",
+          "descr": "Design"
+        },
+        {
+          "id": 6,
+          "value": "QA",
+          "label": "QA",
+          "descr": "QA"
+        },
+        {
+          "id": 7,
+          "value": "BA",
+          "label": "BA",
+          "descr": "BA"
+        },
+        {
+          "id": 8,
+          "value": "PM",
+          "label": "PM",
+          "descr": "PM"
+        }
       ]
     },
     {
       "id": 2,
       "name": "Exps",
       "arr": [
-        { "id": 1, "value": "VL", "label": "VL", "name": "Very low" },
-        { "id": 2, "value": "L", "label": "L", "name": "Low" },
-        { "id": 3, "value": "ML", "label": "ML", "name": "More than low" },
-        { "id": 4, "value": "LM", "label": "LM", "name": "Less than medium" },
-        { "id": 5, "value": "M", "label": "M", "name": "Medium" },
-        { "id": 6, "value": "MM", "label": "MM", "name": "More than medium" },
-        { "id": 7, "value": "LH", "label": "LH", "name": "Less than high" },
-        { "id": 8, "value": "H", "label": "H", "name": "High" }
+        {
+          "id": 1,
+          "value": "VL",
+          "label": "VL",
+          "descr": "Very low"
+        },
+        {
+          "id": 2,
+          "value": "L",
+          "label": "L",
+          "descr": "Low"
+        },
+        {
+          "id": 3,
+          "value": "ML",
+          "label": "ML",
+          "descr": "More than low"
+        },
+        {
+          "id": 4,
+          "value": "LM",
+          "label": "LM",
+          "descr": "Less than medium"
+        },
+        {
+          "id": 5,
+          "value": "M",
+          "label": "M",
+          "descr": "Medium"
+        },
+        {
+          "id": 6,
+          "value": "MM",
+          "label": "MM",
+          "descr": "More than medium"
+        },
+        {
+          "id": 7,
+          "value": "LH",
+          "label": "LH",
+          "descr": "Less than high"
+        },
+        {
+          "id": 8,
+          "value": "H",
+          "label": "H",
+          "descr": "High"
+        }
       ]
     },
     {
       "id": 3,
       "name": "SpeakLvl",
       "arr": [
-        { "id": 1, "value": "OR", "label": "OR", "name": "Only reading" },
-        { "id": 2, "value": "CL", "label": "CL", "name": "Can listen" },
-        { "id": 3, "value": "BS", "label": "BS", "name": "A bit of speaking" },
+        {
+          "id": 1,
+          "value": "OR",
+          "label": "OR",
+          "descr": "Only reading"
+        },
+        {
+          "id": 2,
+          "value": "CL",
+          "label": "CL",
+          "descr": "Can listen"
+        },
+        {
+          "id": 3,
+          "value": "BS",
+          "label": "BS",
+          "descr": "A bit of speaking"
+        },
         {
           "id": 4,
           "value": "SFS",
           "label": "SFS",
-          "name": "Semi-free speaking"
+          "descr": "Semi-free speaking"
         },
-        { "id": 5, "value": "FS", "label": "FS", "name": "Free speaking" }
+        {
+          "id": 5,
+          "value": "FS",
+          "label": "FS",
+          "descr": "Free speaking"
+        }
       ]
     }
   ]

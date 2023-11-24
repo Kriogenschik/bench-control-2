@@ -108,6 +108,10 @@ const staffSlice = createSlice({
     staffCreated: (state, action) => {
       // @ts-ignore
       staffAdapter.addOne(state, action.payload);
+    },
+    staffEdited: (state, action) => {
+      // @ts-ignore
+      staffAdapter.updateOne(state, {id: action.payload.id, changes: {...action.payload.editedStaff}});
     }
   },
   extraReducers: (builder) => {
@@ -136,6 +140,7 @@ export const { selectAll } = staffAdapter.getSelectors(
   (state) => state.staff
 );
 
+
 export const allStaffSelector = createSelector(
   (state: { staff: { staffLoadingStatus: string } }) =>
     state.staff.staffLoadingStatus,
@@ -147,5 +152,5 @@ export const allStaffSelector = createSelector(
   }
 );
 
-export const { staffDeleted, staffCreated } = staffSlice.actions;
+export const { staffDeleted, staffCreated, staffEdited } = staffSlice.actions;
 export default staffSlice.reducer;

@@ -7,6 +7,7 @@ import { staffDeleted } from "../StaffList/staffListSlice";
 import AddStafffForm from "../AddStaffForm/AddStaffForm";
 import { fetchOptions } from "../OptionsForm/optionsFormSlice";
 import { fetchStaff } from "../StaffList/staffListSlice";
+import EditStaffForm from "../EditStaffForm/EditStaffForm";
 
 const Staff = () => {
   interface deleteStaffDataProps {
@@ -20,6 +21,8 @@ const Staff = () => {
     name: "",
   });
   const [showAddForm, setShowAddForm] = useState<boolean>(false);
+  const [showEditForm, setShowEditForm] = useState<boolean>(false);
+  const [editStaffId, setEditStaffId] = useState<number>(0);
 
   const { request } = useHttp();
   const dispatch = useDispatch();
@@ -32,7 +35,17 @@ useEffect(() => {
     // eslint-disable-next-line
   }, []);
 
-  const OpenDeleteModal = (id: number, name: string) => {
+  const openEditForm = (id: number) => {
+    if(showEditForm) {
+      setShowEditForm((showEditForm) => !showEditForm);
+    }
+      setTimeout(() => {
+        setShowEditForm((showEditForm) => !showEditForm);
+        setEditStaffId(() => id);
+      }, 0)
+  }
+
+  const openDeleteModal = (id: number, name: string) => {
     if (id && name) {
       setDeleteStaffData({
         id: id,
@@ -65,9 +78,9 @@ useEffect(() => {
         Add
       </button>
       }
-      
       {showAddForm && <AddStafffForm closeForm={() => setShowAddForm(false)} />}
-      <StaffList onDelete={OpenDeleteModal} />
+      <StaffList onEdit={openEditForm} onDelete={openDeleteModal} />
+      {showEditForm && <EditStaffForm id={editStaffId} closeForm={() => setShowEditForm(false)}/>}
       {showDeleteModal && (
         <DeleteModal
           name={deleteStaffData.name}

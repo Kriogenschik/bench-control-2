@@ -1,0 +1,215 @@
+@import '../../styles/vars.scss';
+
+.form {
+  &__cell {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+  }
+
+  &__cell--btns {
+    flex-direction: row;
+  }
+
+  &__top {
+    flex: 1 0 100%;
+    background: $blue;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title {
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  &__btn--show,
+  &__btn--hide {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background: transparent;
+    display: flex;
+    justify-content: space-between;
+    font-weight: 500;
+    font-size: 16px;
+    padding: 15px;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 11px;
+      height: 2px;
+      background-color: $textColor;
+      transition: 0.2s;
+    }
+    &::before {
+      rotate: (-30deg);
+      left: calc(100% - 35px);
+    }
+
+    &::after {
+      right: 15px;
+      rotate: (30deg);
+    }
+  }
+
+  &__btn--show {
+    background: $blue2;
+    &::before {
+      rotate: (30deg);
+    }
+
+    &::after {
+      rotate: (-30deg);
+    }
+  }
+
+  &__body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: 0.5s;
+    padding: 25px 0px;
+  }
+
+  &__body.hide {
+    // opacity: 0;
+    visibility: hidden;
+    height: 0px;
+    padding: 0px;
+  }
+
+  &__grid {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(475px, 1fr));
+    column-gap: 15px;
+    row-gap: 15px;
+    justify-content: space-around;
+    padding: 0px 15px;
+  }
+
+  &__option {
+    flex: 1 0 auto;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    max-width: 100%;
+  }
+
+  &__inputs {
+    display: flex;
+    gap: 5px;
+    align-items: flex-end;
+    padding: 0px;
+
+    .tab__btn--remove {
+      height: 38px;
+      width: 38px;
+      padding: 0px 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 38px;
+
+      &:hover {
+        background-color: $red;
+      }
+
+      svg {
+        width: 15px;
+        height: 17px;
+      }
+    }
+  }
+
+  .tab__btn--save {
+    height: 38px;
+    width: 60px;
+    padding: 0px 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 60px;
+  }
+
+  &__inputs--add {
+    display: flex;
+    gap: 5px;
+    align-items: flex-end;
+    padding: 0px 15px;
+    max-width: 575px;
+
+    .tab__btn {
+      width: 113px;
+      margin-left: 10px;
+      height: 38px;
+      padding: 5px 0px;
+    }
+  }
+
+  &__inputs-column {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1 1 auto;
+    width: 150px;
+  }
+
+  &__input {
+    border: 1px solid $gray;
+    padding: 5px 10px;
+    border-radius: 5px;
+    width: auto;
+    height: 38px;
+    font-size: 16px;
+    transition: 0.2s;
+    flex: 1 1 auto;
+
+    &::placeholder {
+      color: $textColor;
+      opacity: 0.6;
+    }
+
+    &:hover,
+    &:focus {
+      border: 1px solid $textColor;
+    }
+  }
+  &__input:read-only {
+    background: $background;
+    cursor: auto;
+
+    &:hover,
+    &:focus {
+      border: 1px solid $gray;
+    }
+  }
+
+  &__input.error {
+    border: 1px solid $red;
+    box-shadow: 0px 0px 10px rgb(253, 144, 144), inset 0px 0px 5px rgb(253, 144, 144);
+  }
+}
+
+.tab__form.tab__form--options {
+  width: 100%;
+  padding: 0px;
+  overflow: hidden;
+  gap: 0px;
+  box-shadow: -3px 3px 10px -5px $textColor;
+  margin-bottom: 0px;
+  position: relative;
+}
+
+.tab__title {
+  font-size: 18px;
+  font-weight: 500;
+}

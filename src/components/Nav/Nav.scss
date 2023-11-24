@@ -4,7 +4,8 @@
   &__menu {
     display: flex;
     max-width: 1900px;
-    margin: 15px auto 0px;
+    margin: 0px auto 0px;
+    padding-top: 15px;
 
     @media (max-width: 650px) {
       flex-wrap: wrap;

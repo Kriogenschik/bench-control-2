@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/App/App';
-import { Provider } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux';
 
 import store from './store';
 
@@ -15,7 +15,6 @@ root.render(
     <Provider store={store}>
       <App />
     </Provider>
-    
   </React.StrictMode>
 );
 
