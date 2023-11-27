@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Dropdown from "react-dropdown";
-// import getAllOptions from "../../utils/GetAllOptions";
 import Tooltips from "../Tooltips/Tooltips";
 import { OptionProps } from "../OptionsForm/types";
 
@@ -25,15 +24,6 @@ const DropdownInput = ({
 }: DropdownProps): JSX.Element => {
   const [isTipOpen, setIsTipOpen] = useState<boolean>(false);
   const [btnPosition, setBtnPostion] = useState<number>(0);
-  // const optionsList = [
-  //   { id: 1, value: "DEV", label: "DEV", name: "Dev" },
-  //   { id: 2, value: "QA", label: "QA", name: "QA" },
-  //   { id: 3, value: "S", label: "S", name: "Sales" },
-  //   { id: 4, value: "MP", label: "MP", name: "Markup" },
-  //   { id: 5, value: "D", label: "D", name: "Design" },
-  //   { id: 6, value: "BA", label: "BA", name: "BA" },
-  //   { id: 7, value: "PM", label: "PM", name: "PM" },
-  // ];
 
   const closeTip = () => {
     setIsTipOpen(false);

@@ -1,0 +1,164 @@
+@import '../../styles/vars.scss';
+
+.project {
+  box-shadow: -3px 3px 10px -5px $textColor;
+  width: 100%;
+  padding: 25px 15px;
+  border: 1px solid $gray;
+  border-radius: 10px;
+  background: #9e9e9e7a;
+  transition: background 0.3s;
+  position: relative;
+  max-width: 1800px;
+  margin: 0px auto 0px;
+  font-size: 16px;
+
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid $gray;
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  &__error {
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    font-weight: 500;
+    font-size: 14px;
+    color: red;
+    text-shadow: 0px 0px 5px $textColor2;
+    max-width: 50%;
+    z-index: 5;
+    transition: 0.5s;
+    opacity: 1;
+    visibility: visible;
+    animation: errorBlink 2s infinite;
+  }
+
+  &__error.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  &__switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    input:checked ~ .switch__thumb::after {
+      transform: translateX(20px);
+      background-color: $blue;
+      box-shadow: inset 0px 0px 4px 0px $blue2;
+    }
+  }
+
+  .switch__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    border: 0;
+    padding: 0;
+  }
+
+  .switch__thumb {
+    position: relative;
+    width: 50px;
+    height: 30px;
+    border-radius: 20px;
+    background-color: $lightyellow;
+    display: inline-block;
+    border: 1px solid $gray;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      background-color: $yellow;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      background-color: $gray;
+      transition: 0.3s;
+      border: 1px solid $gray;
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid $gray;
+    margin-bottom: 15px;
+  }
+
+  &__lists {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 35px;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  &__list-item {
+    display: flex;
+    gap: 10px;
+  }
+
+  &__list-name {
+    width: 140px;
+  }
+
+  &__list-time {
+    width: 45px;
+  }
+
+  &__list-type {
+    width: 75px;
+  }
+
+  &__label {
+    font-weight: 600;
+  }
+
+  &__buttons {
+    flex: 1 0 auto;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    align-items: flex-end;
+  }
+}
+
+.project.active {
+  background: $background;
+}
+
+@keyframes errorBlink {
+  0% {
+    text-shadow: 0px 0px 5px $textColor2;
+  }
+  50% {
+    text-shadow: 0px 0px 5px $red;
+  }
+  100% {
+    text-shadow: 0px 0px 5px $textColor2;
+  }
+}

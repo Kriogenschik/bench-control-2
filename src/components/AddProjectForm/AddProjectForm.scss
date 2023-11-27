@@ -1,0 +1,78 @@
+@import '../../styles/vars.scss';
+
+.form-add-project {
+  .form {
+    &__row {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      flex-wrap: wrap;
+      width: 100%;
+      padding: 15px 0px;
+      justify-content: space-around;
+      font-size: 16px;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid $gray;
+      }
+    }
+
+    &__col {
+      display: flex;
+      gap: 20px;
+      padding: 15px 25px;
+      border: 1px solid $gray;
+      border-radius: 10px;
+
+      @media (max-width: 900px) {
+        flex: 1 0 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+
+    &__cell {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      flex: 1 0 auto;
+      max-width: 270px;
+    }
+
+    &__subtitle {
+      font-weight: 500;
+      margin-bottom: 15px;
+    }
+
+    &__cell.form__cell--list {
+      padding-left: 35px;
+      max-width: none;
+      flex: 0 0 auto;
+      min-width: 300px;
+    }
+
+    &__cell.form__cell--btn {
+      align-self: flex-end;
+      justify-content: flex-end;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-direction: row;
+      flex: 1 0 auto;
+
+      @media (max-width: 1314px) {
+        flex: 1 0 100%;
+        justify-content: center;
+      }
+
+      .tab__btn {
+        max-width: 250px;
+        margin: 30px 0px 0px;
+      }
+    }
+    &__input {
+      flex: 0 1 auto;
+    }
+  }
+}

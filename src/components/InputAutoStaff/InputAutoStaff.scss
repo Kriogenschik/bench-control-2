@@ -1,0 +1,124 @@
+@import '../../styles/vars.scss';
+
+.form {
+  &__input-auto-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    input {
+      border: 1px solid #9e9e9e;
+      padding: 5px 10px;
+      border-radius: 5px;
+      width: auto;
+      height: 38px;
+      font-size: 16px;
+      transition: 0.2s;
+      flex: 1 1 auto;
+    }
+  }
+  &__input-auto-suggestions {
+    position: absolute;
+    left: 0px;
+    width: 100%;
+    max-height: 200px;
+    overflow: auto;
+    top: 83px;
+    border: 1px solid #9e9e9e;
+    margin: 0px 5px 0px 0px;
+    padding: 0;
+    list-style-type: none;
+    background: #ddf0ff;
+    box-shadow: 0px 4px 5px rgba(107, 107, 107, 0.6);
+    z-index: 10;
+    border-radius: 6px;
+    scrollbar-width: thin;
+    scrollbar-color: $blue2 $background;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: $background;
+      border-radius: 20px;
+      margin: 16px 0px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $blue2;
+      border-radius: 20px;
+    }
+  }
+
+  &__input-auto-suggestions > div {
+    margin: 0;
+    font-size: 16px;
+    padding: 0;
+    border-bottom: 0px;
+    padding: 5px 20px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $blue2;
+    }
+  }
+}
+.sugesstion-auto {
+  display: block;
+  border-radius: 7px;
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+.form-control-auto {
+  background-color: #1e1f26 !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.form-control-auto input {
+  border: 0;
+  border-radius: 5px;
+  width: 100%;
+  padding: 15px 20px;
+  outline: none;
+}
+
+.form-control-auto label {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #949494;
+  padding: 10px 0px 10px 20px;
+}
+
+.suggestions {
+  position: absolute;
+  top: 50px;
+  left: 0px;
+  z-index: 999;
+  cursor: pointer;
+  width: 100%;
+  max-height: 200px;
+  overflow: auto;
+}
+
+.suggestions > div {
+  padding: 15px 25px;
+  border-bottom: 2px solid #2d2e36;
+  transition: all 0.1s ease;
+}
+
+.suggestions > div:hover {
+  background-color: #dbdbdb !important;
+  color: #000000;
+}
+
+.suggestions > div,
+.form-control-auto input {
+  font-size: 14px !important;
+  background-color: #1e1f26;
+  color: #ffffff;
+}

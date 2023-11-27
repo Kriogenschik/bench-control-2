@@ -1,26 +1,32 @@
 import React, { useState } from "react";
 import DropdownInput from "../DropdownInput/DropdownInput";
-import { EmployeesProps } from "../../data/Employees";
-
-import "./AddStaffForm.scss";
-import { useDispatch, useSelector } from "react-redux";
-import { useHttp } from "../../hooks/http.hook";
-import { selectAll } from "../OptionsForm/optionsFormSlice";
-import store from "../../store";
+import { allOptionsSelector } from "../OptionsForm/optionsFormSlice";
 import { OptionFullProps } from "../OptionsForm/types";
+import { EmployeesProps } from "../StaffList/types";
 import { staffCreated, allStaffSelector } from "../StaffList/staffListSlice";
 import { setTime, validateTime } from "../../utils/SetTime";
 import { generateNewId } from "../../utils/GenerateNewId";
+import { useDispatch, useSelector } from "react-redux";
+import { useHttp } from "../../hooks/http.hook";
+
+import "./AddStaffForm.scss";
+import { AppDispatch } from "../../store";
 
 interface AddStaffFormProps {
   closeForm: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
+interface StateProps {
+  [key: string]: any,
+}
+interface IsEmotyProps {
+  [key: string]: boolean,
+}
+
 const AddStaffForm = ({
-  // employeesList,
   closeForm,
-}: AddStaffFormProps): JSX.Element => {
-  const [details, setDetails] = useState({
+}: AddStaffFormProps) => {
+  const [details, setDetails] = useState<StateProps>({
     name: "",
     roles: "",
     stacks: "",
@@ -29,7 +35,7 @@ const AddStaffForm = ({
     time: 0,
   });
 
-  const [isEmpty, setIsEmpty] = useState({
+  const [isEmpty, setIsEmpty] = useState<IsEmotyProps>({
     name: false,
     roles: false,
     stacks: false,
@@ -38,12 +44,11 @@ const AddStaffForm = ({
     time: false,
   });
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { request } = useHttp();
 
-  const options = selectAll(store.getState()) as Array<OptionFullProps>;
-  // @ts-ignore
-  const allStaff: Array<EmployeesProps> = useSelector(allStaffSelector);
+  const options = useSelector(allOptionsSelector) as Array<OptionFullProps>;
+  const allStaff = useSelector(allStaffSelector) as Array<EmployeesProps>;
 
   const saveEmployee = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const newIsEmpty = {
@@ -77,15 +82,12 @@ const AddStaffForm = ({
         time: details["time"],
       };
 
-      // @ts-ignore
       request(
         "http://localhost:3001/employees",
-        "POST",
-        // @ts-ignore
+        "POST", 
         JSON.stringify(newStaff)
       )
-        // @ts-ignore
-        .then(dispatch(staffCreated(newStaff)))
+        .then(() => dispatch(staffCreated(newStaff)))
         .catch((err) => console.log(err));
       closeForm(e);
     }
@@ -108,20 +110,16 @@ const AddStaffForm = ({
       </div>
 
       {options.map((option) => {
-        const item = option.name.toLowerCase() as string;
-        //@ts-ignore
-        const value = details[item];
-        //@ts-ignore
-        let empty = isEmpty[item];
+        const item = option.name.toLowerCase();
         return (
           <div className="form__cell" key={option.id}>
             <DropdownInput
               optionsList={option.arr}
               label={option.name}
-              value={value}
+              value={details[item]}
               placeholder={"select " + option.name}
               dropdownClass={
-                empty ? "dropdown__button error" : "dropdown__button"
+                isEmpty[item] ? "dropdown__button error" : "dropdown__button"
               }
               handleChange={(e: { value: React.SetStateAction<string> }) =>
                 setDetails({ ...details, [item]: e.value })

@@ -1,13 +1,12 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import DeleteModal from "../DeleteModal/DeleteModal";
 import StaffList from "../StaffList/StaffList";
 import { useHttp } from "../../hooks/http.hook";
 import { useDispatch } from "react-redux";
 import { staffDeleted } from "../StaffList/staffListSlice";
-import AddStafffForm from "../AddStaffForm/AddStaffForm";
-import { fetchOptions } from "../OptionsForm/optionsFormSlice";
-import { fetchStaff } from "../StaffList/staffListSlice";
+import AddStaffForm from "../AddStaffForm/AddStaffForm";
 import EditStaffForm from "../EditStaffForm/EditStaffForm";
+import { AppDispatch } from "../../store";
 
 const Staff = () => {
   interface deleteStaffDataProps {
@@ -25,25 +24,17 @@ const Staff = () => {
   const [editStaffId, setEditStaffId] = useState<number>(0);
 
   const { request } = useHttp();
-  const dispatch = useDispatch();
-
-useEffect(() => {
-    // @ts-ignore
-    dispatch(fetchStaff());
-    // @ts-ignore
-    dispatch(fetchOptions());
-    // eslint-disable-next-line
-  }, []);
+  const dispatch = useDispatch<AppDispatch>();
 
   const openEditForm = (id: number) => {
-    if(showEditForm) {
+    if (showEditForm) {
       setShowEditForm((showEditForm) => !showEditForm);
     }
-      setTimeout(() => {
-        setShowEditForm((showEditForm) => !showEditForm);
-        setEditStaffId(() => id);
-      }, 0)
-  }
+    setTimeout(() => {
+      setShowEditForm((showEditForm) => !showEditForm);
+      setEditStaffId(() => id);
+    }, 0);
+  };
 
   const openDeleteModal = (id: number, name: string) => {
     if (id && name) {
@@ -59,8 +50,7 @@ useEffect(() => {
     (id: number) => {
       const url = `http://localhost:3001/employees/${id}`;
       request(url, "DELETE")
-        // @ts-ignore
-        .then(dispatch(staffDeleted(id)))
+        .then(() => dispatch(staffDeleted(id)))
         .catch((err: any) => console.log(err));
       setShowDeleteModal(() => false);
     },
@@ -70,17 +60,22 @@ useEffect(() => {
 
   return (
     <div className="tab__body">
-      {!showAddForm &&
+      {!showAddForm && (
         <button
-        className="tab__btn tab__btn--add"
-        onClick={() => setShowAddForm(true)}
-      >
-        Add
-      </button>
-      }
-      {showAddForm && <AddStafffForm closeForm={() => setShowAddForm(false)} />}
+          className="tab__btn tab__btn--add"
+          onClick={() => setShowAddForm(true)}
+        >
+          Add
+        </button>
+      )}
+      {showAddForm && <AddStaffForm closeForm={() => setShowAddForm(false)} />}
       <StaffList onEdit={openEditForm} onDelete={openDeleteModal} />
-      {showEditForm && <EditStaffForm id={editStaffId} closeForm={() => setShowEditForm(false)}/>}
+      {showEditForm && (
+        <EditStaffForm
+          id={editStaffId}
+          closeForm={() => setShowEditForm(false)}
+        />
+      )}
       {showDeleteModal && (
         <DeleteModal
           name={deleteStaffData.name}

@@ -1,16 +1,13 @@
 import { useState } from "react";
-import {
-  selectAll as allStaffs,
-  staffEdited,
-} from "../StaffList/staffListSlice";
-import { selectAll as allOptions } from "../OptionsForm/optionsFormSlice";
-import store from "../../store";
-import { useDispatch } from "react-redux";
-import { EmployeesProps } from "../../data/Employees";
+import { allStaffSelector, staffEdited } from "../StaffList/staffListSlice";
+import { allOptionsSelector } from "../OptionsForm/optionsFormSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { setTime, validateTime } from "../../utils/SetTime";
 import { OptionFullProps } from "../OptionsForm/types";
 import DropdownInput from "../DropdownInput/DropdownInput";
 import { useHttp } from "../../hooks/http.hook";
+import { EmployeesProps } from "../StaffList/types";
+import { AppDispatch } from "../../store";
 
 import "./EditStaffForm.scss";
 
@@ -19,20 +16,19 @@ interface EditFormProps {
   closeForm: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
-const EditStaffForm = ({
-  id,
-  closeForm,
-}: EditFormProps): JSX.Element => {
-console.log("render");
+interface StateProps {
+  [key: string]: any;
+}
 
-  const dispatch = useDispatch();
+const EditStaffForm = ({ id, closeForm }: EditFormProps) => {
+  const dispatch = useDispatch<AppDispatch>();
   const { request } = useHttp();
 
-  const staffs = allStaffs(store.getState());
-  // @ts-ignore
-  const staff = staffs.filter((item) => item.id === id)[0] as EmployeesProps;
+  const allStaff = useSelector(allStaffSelector) as Array<EmployeesProps>;
 
-  const [staffState, setStaffState] = useState({
+  const staff = allStaff.filter((item) => item.id === id)[0] as EmployeesProps;
+
+  const [staffState, setStaffState] = useState<StateProps>({
     name: staff.name,
     roles: staff.pos,
     stacks: staff.stack,
@@ -46,7 +42,7 @@ console.log("render");
     time: false,
   });
 
-  const options = allOptions(store.getState()) as Array<OptionFullProps>;
+  const options = useSelector(allOptionsSelector) as Array<OptionFullProps>;
 
   const saveEdit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const newIsEmpty = {
@@ -65,15 +61,12 @@ console.log("render");
         time: staffState["time"],
       };
 
-      // @ts-ignore
       request(
         `http://localhost:3001/employees/${id}`,
         "PATCH",
-        // @ts-ignore
         JSON.stringify(editedStaff)
       )
-        // @ts-ignore
-        .then(dispatch(staffEdited({ id, editedStaff })))
+        .then(() => dispatch(staffEdited({ id, editedStaff })))
         .catch((err: any) => console.log(err));
       closeForm(e);
     }
@@ -99,19 +92,17 @@ console.log("render");
       </div>
 
       {options.map((option) => {
-        const item = option.name.toLowerCase() as string;
-        //@ts-ignore
-        const value = staffState[item];
+        const item = option.name.toLowerCase();
         return (
           <div className="form__cell" key={option.id}>
             <DropdownInput
               optionsList={option.arr}
               label={option.name}
-              value={value}
+              value={staffState[item]}
               placeholder={"select " + option.name}
               dropdownClass="dropdown__button"
               handleChange={(e: { value: React.SetStateAction<string> }) =>
-                setStaffState({ ...staffState, [item]: e.value })
+                setStaffState({ ...staffState, item: e.value })
               }
             />
           </div>

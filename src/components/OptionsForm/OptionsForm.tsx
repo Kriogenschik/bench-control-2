@@ -5,6 +5,7 @@ import { OptionProps } from "./types";
 import OptionsInputs from "../OptionsInputs/OptionsInputs";
 import { optionsEdited } from "./optionsFormSlice";
 import { generateNewId } from "../../utils/GenerateNewId";
+import { AppDispatch } from "../../store";
 
 import "./OptionsForm.scss";
 
@@ -19,7 +20,7 @@ export default function OptionsForm({
   optionName,
   optionsArr,
 }: OptionsFormProps) {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { request } = useHttp();
 
   const [addOption, setAddOption] = useState({
@@ -41,21 +42,13 @@ export default function OptionsForm({
     const newOptionsList = {
       arr: [...newOptions],
     };
-    // @ts-ignore
     request(
       `http://localhost:3001/options/${optionsId}`,
       "PATCH",
-      // @ts-ignore
       JSON.stringify(newOptionsList)
     )
-      // @ts-ignore
-      .then(dispatch(optionsEdited({ optionsId, newOptionsList })))
+      .then(() => dispatch(optionsEdited({ optionsId, newOptionsList })))
       .catch((err: any) => console.log(err));
-
-    // allOptions[optionName] = newOption;
-    // setOptions(allOptions);
-
-    // setOptionsList(newOption);
   }
 
   function optionAdd() {
@@ -80,15 +73,13 @@ export default function OptionsForm({
       const newOptionsList = {
         arr: [...newOptions],
       };
-      // @ts-ignore
+
       request(
         `http://localhost:3001/options/${optionsId}`,
         "PATCH",
-        // @ts-ignore
         JSON.stringify(newOptionsList)
       )
-        // @ts-ignore
-        .then(dispatch(optionsEdited({ optionsId, newOptionsList })))
+        .then(() => dispatch(optionsEdited({ optionsId, newOptionsList })))
         .catch((err: any) => console.log(err));
 
         setAddOption({
@@ -96,70 +87,7 @@ export default function OptionsForm({
           name: "",
         });
     }
-
-    // addValue ? setIsAddValueEmpty(false) : setIsAddValueEmpty(true);
-    // addName ? setIsAddNameEmpty(false) : setIsAddNameEmpty(true);
-    // if (addName && addValue) {
-
-    //   let newOption = [
-    //     ...optionsList,
-    //     {
-    //       id: newId,
-    //       name: addName,
-    //       label: addValue,
-    //       value: addValue,
-    //     },
-    //   ];
-
-    //   allOptions[optionName] = newOption;
-    //   setOptions(allOptions);
-    //   setOptionsList(newOption);
-    //   setAddName("");
-    //   setAddValue("");
-    // }
   }
-
-  // function optionSave(e: any) {
-  //   let form = e.target.form;
-  //   //clear errors
-  //   e.target.form.name.forEach(
-  //     (input: { classList: { remove: (arg0: string) => void } }) => {
-  //       input.classList.remove("error");
-  //     }
-  //   );
-  //   e.target.form.value.forEach(
-  //     (input: { classList: { remove: (arg0: string) => void } }) => {
-  //       input.classList.remove("error");
-  //     }
-  //   );
-
-  //   let isError = false;
-
-  //   let newOptions: Array<OptionsProps> = [];
-  //   for (let i = 0; i < form.name.length; i++) {
-  //     if (form.name[i].value && form.value[i].value) {
-  //       let option: OptionsProps = {
-  //         id: i,
-  //         name: form.name[i].value,
-  //         value: form.value[i].value,
-  //         label: form.value[i].value,
-  //       };
-  //       newOptions.push(option);
-  //     } else if (form.name[i].value) {
-  //       form.value[i].classList.add("error");
-  //       isError = true;
-  //     } else {
-  //       form.name[i].classList.add("error");
-  //       isError = true;
-  //     }
-  //   }
-  //   if (!isError) {
-  //     allOptions[optionName] = newOptions;
-  //     setOptions(allOptions);
-  //   } else {
-  //     return null;
-  //   }
-  // }
 
   return (
     <form

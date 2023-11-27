@@ -3,22 +3,23 @@ import {
   createAsyncThunk,
   createEntityAdapter,
   createSelector,
+  EntityState,
 } from "@reduxjs/toolkit";
 import { useHttp } from "../../hooks/http.hook";
-import { OptionsProps } from "../../data/DropdownOptions";
+import { OptionFullProps } from "./types";
+import { RootState } from "../../store";
 
-
-interface OptionsState {
+interface OptionsState extends EntityState<OptionFullProps> {
   optionsLoadingStatus: string;
 }
 
-const optionsAdapter = createEntityAdapter();
+const optionsAdapter = createEntityAdapter<OptionFullProps>();
 
-const initialState:OptionsState = optionsAdapter.getInitialState({
+const initialState: OptionsState = optionsAdapter.getInitialState({
   optionsLoadingStatus: "idle",
 });
 
-export const fetchOptions = createAsyncThunk("data/fetchOptions", () => {
+export const fetchOptions = createAsyncThunk<Array<OptionFullProps>>("data/fetchOptions", () => {
   const { request } = useHttp();
   return request("http://localhost:3001/options");
 });
@@ -28,15 +29,8 @@ const optionsSlice = createSlice({
   initialState,
   reducers: {
     optionsEdited: (state, action) => {
-      // @ts-ignore
-      optionsAdapter.updateOne(state, {id: action.payload.optionsId, changes: {...action.payload.newOptionsList}});
+      optionsAdapter.updateOne(state, {id: action.payload.optionsId, changes: {...action.payload.newOptionsList}} );
     }
-    // optionsCreated: (state, action) => {
-    //   optionsAdapter.addOne(state, action.payload);
-    // },
-    // optionsDeleted: (state, action) => {
-    //   optionsAdapter.removeOne(state, action.payload);
-    // },
   },
   extraReducers: (builder) => {
     builder
@@ -45,7 +39,6 @@ const optionsSlice = createSlice({
       })
       .addCase(fetchOptions.fulfilled, (state, action) => {
         state.optionsLoadingStatus = "idle";
-        // @ts-ignore
         optionsAdapter.setAll(state, action.payload);
       })
       .addCase(fetchOptions.rejected, (state: { optionsLoadingStatus: string }) => {
@@ -63,8 +56,7 @@ export const {
 } = actions;
 
 export const { selectAll } = optionsAdapter.getSelectors(
-  // @ts-ignore
-  (state) => state.options
+  (state: RootState) => state.options
 );
 
 export const allOptionsSelector = createSelector(

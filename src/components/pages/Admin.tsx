@@ -1,26 +1,15 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import OptionsForm from "../OptionsForm/OptionsForm";
-import {
-  allOptionsSelector,
-  fetchOptions,
-} from "../OptionsForm/optionsFormSlice";
-import { useEffect } from "react";
+import { allOptionsSelector } from "../OptionsForm/optionsFormSlice";
 import Spinner from "../Spinner/Spinner";
 import { OptionFullProps } from "../OptionsForm/types";
+import { RootState } from "../../store";
 
 import "./Admin.scss";
 
 const Admin = () => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    // @ts-ignore
-    dispatch(fetchOptions());
-    // eslint-disable-next-line
-  }, []);
   const optionsLoadingStatus = useSelector(
-    // @ts-ignore
-    (state) => state.options.optionsLoadingStatus
+    (state: RootState) => state.options.optionsLoadingStatus
   );
 
   const allOptions = useSelector(allOptionsSelector) as Array<OptionFullProps>;

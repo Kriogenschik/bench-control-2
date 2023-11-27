@@ -1,0 +1,24 @@
+@import '../../styles/vars.scss';
+
+.tab {
+  &__projects {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 45px;
+    gap: 30px;
+  }
+
+  &__btn.tab__btn--remove {
+    height: 31px;
+
+    &:hover {
+      background: $red;
+    }
+    svg {
+      width: 15px;
+      height: 17px;
+    }
+  }
+}
+

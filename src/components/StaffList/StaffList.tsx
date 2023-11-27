@@ -1,9 +1,11 @@
 import { useSelector } from "react-redux";
 import { allStaffSelector } from "./staffListSlice";
 import Spinner from "../Spinner/Spinner";
-import { EmployeesProps } from "../../data/Employees";
+import { EmployeesProps } from "./types";
+import { RootState } from "../../store";
 
 import './staffList.scss'
+
 
 interface StaffListProps {
   onDelete: (id: number, name: string ) => void;
@@ -15,8 +17,7 @@ const StaffList = ({onDelete, onEdit}: StaffListProps): JSX.Element => {
   const allStaff = useSelector(allStaffSelector) as Array<EmployeesProps>;
 
   const staffLoadingStatus = useSelector(
-    // @ts-ignore
-    (state) => state.staff.staffLoadingStatus
+    (state : RootState) => state.staff.staffLoadingStatus
   );
 
 

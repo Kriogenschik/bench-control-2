@@ -3,6 +3,7 @@ import { OptionProps } from "../OptionsForm/types";
 import { useDispatch } from "react-redux";
 import { useHttp } from "../../hooks/http.hook";
 import { optionsEdited } from "../OptionsForm/optionsFormSlice";
+import { AppDispatch } from "../../store";
 
 interface InputsProps {
   id: number;
@@ -19,7 +20,7 @@ export default function InputsColumn({
   optionsList,
   optionsId,
 }: InputsProps) {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { request } = useHttp();
 
   const [details, setDeatails] = useState({
@@ -58,15 +59,12 @@ export default function InputsColumn({
         const newOptionsList = {
           arr: [...newOptions],
         };
-        // @ts-ignore
         request(
           `http://localhost:3001/options/${optionsId}`,
           "PATCH",
-          // @ts-ignore
           JSON.stringify(newOptionsList)
         )
-          // @ts-ignore
-          .then(dispatch(optionsEdited({ optionsId, newOptionsList })))
+          .then(() => dispatch(optionsEdited({ optionsId, newOptionsList })))
           .catch((err: any) => console.log(err));
       }
     } else {
