@@ -6,38 +6,34 @@ import { EmployeesProps } from "../StaffList/types";
 import ProjectCard from "../ProjectCard/ProjectCard";
 
 import "./ProjectsList.scss";
+import { allProjectsSelector } from "./projectsListSlice";
 
 interface ProjectsListProps {
   projectEdit: (id: number) => void;
-  projectDelete: (id: number) => void;
-  // staffList: Array<EmployeesProps>;
+  projectDelete: (id: number, name: string) => void;
   projects: Array<ProjectProps>;
-  // setCurrentProjects: (projects: Array<ProjectProps>) => void;
 }
 
 export default function ProjectsList({
   projectEdit,
   projectDelete,
-  // staffList,
   projects,
-  // setCurrentProjects,
 }: ProjectsListProps) {
 
   const staffList = useSelector(allStaffSelector) as Array<EmployeesProps>;
-
+  const projectsList = useSelector(allProjectsSelector) as Array<ProjectProps>;
   return (
     <div className="tab__projects">
-      {projects ? (
-        projects.map((project) => {
+      {projectsList ? (
+        projectsList.map((project) => {
           return (
             <div key={project.id}>
             <ProjectCard
               projectEdit={projectEdit}
               projectDelete={projectDelete}
               staffList={staffList}
-              projects={projects}
+              projects={projectsList}
               project={project}
-              // setcurrentProjects={setCurrentProjects}
             />
             </div>
           );

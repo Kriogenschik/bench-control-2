@@ -15,7 +15,6 @@ function App() {
 	const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-
     dispatch(fetchStaff());
     dispatch(fetchOptions());
     dispatch(fetchProjects());

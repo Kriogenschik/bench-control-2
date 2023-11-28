@@ -1,18 +1,22 @@
 import { ChangeEvent, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import ProjectStaffList from "../ProjectStaffList/ProjectStaffList";
 import InputAutoStaff from "../InputAutoStaff/InputAutoStaff";
 import { ProjectProps, ProjectStaffProps } from "../ProjectsList/types";
 import { EmployeesProps } from "../StaffList/types";
 import { allStaffSelector } from "../StaffList/staffListSlice";
-import { validateTime } from "../../utils/SetTime";
+import { setTime, validateTime } from "../../utils/SetTime";
 import getStaffProjectsTime from "../../utils/GetStaffProjectsTime";
+import { generateNewId } from "../../utils/GenerateNewId";
+import { useHttp } from "../../hooks/http.hook";
+import { AppDispatch } from "../../store";
+import { projectCreated } from "../ProjectsList/projectsListSlice";
 
 import "./AddProjectForm.scss";
 
 interface AddProjectFormProps {
-  closeForm: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  closeForm: () => void;
   projectsList: Array<ProjectProps>;
 }
 
@@ -20,53 +24,48 @@ export default function AddProjectForm({
   closeForm,
   projectsList,
 }: AddProjectFormProps): JSX.Element {
-
   interface StateProps {
-    [key: string]: any,
+    [key: string]: any;
+  }
+
+  interface IsEmptyProps {
+    [key: string]: boolean;
   }
 
   const [details, setDetails] = useState<StateProps>({
     projectName: "",
     leadName: "",
-    leadTime: 40,
+    leadTime: 0,
     leadMaxTime: 40,
-    baName: '',
-    baTime: 40,
+    baName: "",
+    baTime: 0,
     baMaxTime: 40,
-    pmName: '',
-    pmTime: 40,
+    pmName: "",
+    pmTime: 0,
     pmMaxTime: 40,
-    start: '',
-    end: '',
-    devName: '',
-    devTime: 40,
+    start: "",
+    end: "",
+    devName: "",
+    devTime: 0,
     devMaxTime: 40,
-    qaName: '',
-    qaTime: 40,
+    qaName: "",
+    qaTime: 0,
     qaMaxTime: 40,
-  })
-  const [leadTime, setLeadTime] = useState<number>(40);
-  const [maxLeadTime, setMaxLeadTime] = useState<number>(40);
-  const [baTime, setBATime] = useState<number>(40);
-  const [maxBATime, setMaxBATime] = useState<number>(40);
-  const [pmTime, setPMTime] = useState<number>(40);
-  const [maxPMTime, setMaxPMTime] = useState<number>(40);
-  const [devTime, setDevTime] = useState<number>(40);
-  const [maxDevTime, setMaxDevTime] = useState<number>(40);
-  const [qaTime, setQATime] = useState<number>(40);
-  const [maxQATime, setMaxQATime] = useState<number>(40);
+  });
+
+  const [isEmpty, setIsEmpty] = useState<IsEmptyProps>({
+    name: false,
+    lead: false,
+    ba: false,
+    pm: false,
+    dev: false,
+    qa: false,
+    start: false,
+    end: false,
+  });
 
   const [devList, setDevList] = useState<Array<ProjectStaffProps>>([]);
   const [qaList, setQAList] = useState<Array<ProjectStaffProps>>([]);
-
-  const [isNameEmpty, setIsNameEmpty] = useState<boolean>(false);
-  const [isLeadEmpty, setIsLeadEmpty] = useState<boolean>(false);
-  const [isBAEmpty, setIsBAEmpty] = useState<boolean>(false);
-  const [isPMEmpty, setIsPMEmpty] = useState<boolean>(false);
-  const [isDevsEmpty, setIsDevsEmpty] = useState<boolean>(false);
-  const [isQAsEmpty, setIsQAsEmpty] = useState<boolean>(false);
-  const [isStartEmpty, setIsStartEmpty] = useState<boolean>(false);
-  const [isEndEmpty, setIsEndEmpty] = useState<boolean>(false);
 
   const [clearDev, setClearDev] = useState<boolean>(false);
   const [clearQA, setClearQA] = useState<boolean>(false);
@@ -81,149 +80,138 @@ export default function AddProjectForm({
     (project) => project.isActive === true
   );
 
-  const setTime = (
+  const dispatch = useDispatch<AppDispatch>();
+  const { request } = useHttp();
+
+  const setStaffTime = (
     e: ChangeEvent<HTMLInputElement>,
     maxTime: number,
-    setTimeFunc: (arg0: number) => void
+    role: string
   ) => {
-    if (+e.target.value > maxTime) {
-      setTimeFunc(maxTime);
-    } else if (e.target.value.length > 1) {
-      setTimeFunc(+e.target.value.replace(/^0/, ""));
-    } else {
-      setTimeFunc(+e.target.value);
+    let time = setTime(+e.target.value, maxTime);
+    setDetails({ ...details, [role + "Time"]: time });
+  };
+
+  const addStaff = (
+    role: string,
+    list: Array<ProjectStaffProps>,
+    setList: (arr: Array<ProjectStaffProps>) => void
+  ) => {
+    if (details[role + "Name"] && details[role + "Time"]) {
+      setIsEmpty({
+        ...isEmpty,
+        start: !details["start"],
+        end: !details["end"],
+      });
+    }
+
+    if (
+      details["start"] &&
+      details["end"] &&
+      details[role + "Name"] &&
+      details[role + "Time"]
+    ) {
+      const newStaffList = [
+        ...list,
+        {
+          id: staffList.filter((s) => s.name === details[role + "Name"])[0]!.id,
+          name: details[role + "Name"],
+          time: details[role + "Time"],
+          start: details["start"],
+          end: details["end"],
+          billingType: "B",
+        },
+      ];
+      setList(newStaffList);
+      setDetails({ ...details, [role + "Name"]: "", [role + "Time"]: 0 });
+      setClearDev(() => true);
     }
   };
 
-  const addDev = () => {
-    // start ? setIsStartEmpty(false) : setIsStartEmpty(true);
-    // end ? setIsEndEmpty(false) : setIsEndEmpty(true);
-    // if (start && end && devName && devTime) {
-    //   const newDevList = [
-    //     ...devList,
-    //     {
-    //       id: staff.filter((s) => s.name === devName)[0]!.id,
-    //       name: devName,
-    //       time: devTime,
-    //       start: start,
-    //       end: end,
-    //       billingType: "B",
-    //     },
-    //   ];
-    //   setDevList(newDevList);
-    //   setDevName("");
-    //   setClearDev(() => true);
-    // }
-  };
-
-  const addQA = () => {
-    // start ? setIsStartEmpty(false) : setIsStartEmpty(true);
-    // end ? setIsEndEmpty(false) : setIsEndEmpty(true);
-    // if (start && end && qaName && qaTime) {
-    //   const newQAList = [
-    //     ...qaList,
-    //     {
-    //       id: staff.filter((s) => s.name === qaName)[0]!.id,
-    //       name: qaName,
-    //       time: qaTime,
-    //       start: start,
-    //       end: end,
-    //       billingType: "B",
-    //     },
-    //   ];
-    //   setQAList(newQAList);
-    //   setQAName("");
-    //   setClearQA(() => true);
-    // }
-  };
-
-  const saveProject = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const saveProject = () => {
     console.log("save");
-    console.log(details);
-    
-    
-    // projectName ? setIsNameEmpty(false) : setIsNameEmpty(true);
-    // leadName ? setIsLeadEmpty(false) : setIsLeadEmpty(true);
-    // baName ? setIsBAEmpty(false) : setIsBAEmpty(true);
-    // pmName ? setIsPMEmpty(false) : setIsPMEmpty(true);
-    // start ? setIsStartEmpty(false) : setIsStartEmpty(true);
-    // end ? setIsEndEmpty(false) : setIsEndEmpty(true);
-    // devList.length ? setIsDevsEmpty(false) : setIsDevsEmpty(true);
-    // qaList.length ? setIsQAsEmpty(false) : setIsQAsEmpty(true);
-    // if (
-    //   projectName &&
-    //   leadName &&
-    //   baName &&
-    //   pmName &&
-    //   start &&
-    //   end &&
-    //   devList.length &&
-    //   qaList.length
-    // ) {
-    //   //new project ID
-    //   let ids: Array<number> = [];
-    //   for (let project of projectsList) {
-    //     ids.push(project.id);
-    //   }
-    //   let newId = Math.max.apply(null, ids) + 1;
-    //   // staff IDs:
-    //   const leadID: number =
-    //     staff.filter((employ) => employ.name === leadName)[0]?.id || 0;
-    //   const baID: number =
-    //     staff.filter((employ) => employ.name === baName)[0]?.id || 0;
-    //   const pmID: number =
-    //     staff.filter((employ) => employ.name === pmName)[0]?.id || 0;
+    setIsEmpty({
+      name: !details["projectName"],
+      lead: !details["leadName"],
+      ba: !details["baName"],
+      pm: !details["pmName"],
+      dev: !devList.length,
+      qa: !qaList.length,
+      start: !details["start"],
+      end: !details["end"],
+    });
 
-    //   const newProjectsList: Array<ProjectProps> = [
-    //     ...projectsList,
-    //     {
-    //       id: newId,
-    //       name: projectName,
-    //       lead: {
-    //         id: leadID,
-    //         name: leadName,
-    //         time: leadTime,
-    //         start: start,
-    //         end: end,
-    //         billingType: "B",
-    //       },
-    //       ba: {
-    //         id: baID,
-    //         name: baName,
-    //         time: baTime,
-    //         start: start,
-    //         end: end,
-    //         billingType: "B",
-    //       },
-    //       pm: {
-    //         id: pmID,
-    //         name: pmName,
-    //         time: pmTime,
-    //         start: start,
-    //         end: end,
-    //         billingType: "B",
-    //       },
-    //       start: start,
-    //       end: end,
-    //       devs: devList,
-    //       qas: qaList,
-    //       isActive: true,
-    //     },
-    //   ];
-    //   setProjects(newProjectsList);
-    //   setCurrentProjects(newProjectsList);
-    //   closeForm(e);
-    // }
+    if (
+      details["projectName"] &&
+      details["leadName"] &&
+      details["baName"] &&
+      details["pmName"] &&
+      details["start"] &&
+      details["end"] &&
+      devList.length &&
+      qaList.length
+    ) {
+      const newProject: ProjectProps = {
+        id: generateNewId(projectsList),
+        name: details["projectName"],
+        lead: {
+          id: staffList.filter(
+            (employ) => employ.name === details["leadName"]
+          )[0].id,
+          name: details["leadName"],
+          time: details["leadTime"],
+          start: details["start"],
+          end: details["end"],
+          billingType: "B",
+        },
+        ba: {
+          id: staffList.filter((employ) => employ.name === details["baName"])[0]
+            .id,
+          name: details["baName"],
+          time: details["baTime"],
+          start: details["start"],
+          end: details["end"],
+          billingType: "B",
+        },
+        pm: {
+          id: staffList.filter((employ) => employ.name === details["pmName"])[0]
+            .id,
+          name: details["pmName"],
+          time: details["pmTime"],
+          start: details["start"],
+          end: details["end"],
+          billingType: "B",
+        },
+        start: details["start"],
+        end: details["end"],
+        devs: devList,
+        qas: qaList,
+        isActive: true,
+      };
+
+      request(
+        "http://localhost:3001/projects",
+        "POST",
+        JSON.stringify(newProject)
+      )
+        .then(() => dispatch(projectCreated(newProject)))
+        .catch((err) => console.log(err));
+      closeForm();
+    }
   };
 
   const setStaff = (e: string, role: string) => {
     const staff = staffList.filter((employ) => employ.name === e)[0];
-    const freeTime = staff.time - getStaffProjectsTime(staff.id, activeProjects, "B");
+    const freeTime =
+      staff.time - getStaffProjectsTime(staff.id, activeProjects, "B");
 
-    setDetails({ ...details, [role + "Name"]: e, [role + "Time"]: freeTime, [role + "MaxTime"]: freeTime,})
-    console.log(freeTime);
-  }
-  
+    setDetails({
+      ...details,
+      [role + "Name"]: e,
+      [role + "Time"]: freeTime,
+      [role + "MaxTime"]: freeTime,
+    });
+  };
 
   return (
     <form
@@ -236,9 +224,9 @@ export default function AddProjectForm({
           <input
             placeholder="Project Name"
             name="project-name"
-            className={isNameEmpty ? "form__input error" : "form__input"}
+            className={isEmpty["name"] ? "form__input error" : "form__input"}
             type="text"
-            value={details['projectName']}
+            value={details["projectName"]}
             onChange={(e) => {
               setDetails({ ...details, projectName: e.target.value });
             }}
@@ -246,7 +234,7 @@ export default function AddProjectForm({
         </div>
         <div className="form__cell">
           <InputAutoStaff
-            classname={isLeadEmpty ? "form__input error" : "form__input"}
+            classname={isEmpty["lead"] ? "form__input error" : "form__input"}
             label="Leader:"
             pholder="Lead Name"
             data={staffList}
@@ -259,9 +247,9 @@ export default function AddProjectForm({
             placeholder="Time"
             className="form__input"
             type="text"
-            value={details['leadTime']}
+            value={details["leadTime"]}
             onChange={(e) => {
-              setTime(e, maxLeadTime, setLeadTime);
+              setStaffTime(e, details["leadMaxTime"], "lead");
             }}
             onKeyDown={(e) => {
               validateTime(e);
@@ -270,7 +258,7 @@ export default function AddProjectForm({
         </div>
         <div className="form__cell">
           <InputAutoStaff
-            classname={isBAEmpty ? "form__input error" : "form__input"}
+            classname={isEmpty["ba"] ? "form__input error" : "form__input"}
             label="BA:"
             pholder="BA Name"
             data={bas}
@@ -283,9 +271,9 @@ export default function AddProjectForm({
             placeholder="Time"
             className="form__input"
             type="text"
-            value={details['baTime']}
+            value={details["baTime"]}
             onChange={(e) => {
-              setTime(e, maxBATime, setBATime);
+              setStaffTime(e, details["baMaxTime"], "ba");
             }}
             onKeyDown={(e) => {
               validateTime(e);
@@ -294,7 +282,7 @@ export default function AddProjectForm({
         </div>
         <div className="form__cell">
           <InputAutoStaff
-            classname={isPMEmpty ? "form__input error" : "form__input"}
+            classname={isEmpty["pm"] ? "form__input error" : "form__input"}
             label="PM:"
             pholder="PM Name"
             data={pms}
@@ -307,9 +295,9 @@ export default function AddProjectForm({
             placeholder="Time"
             className="form__input"
             type="text"
-            value={details['pmTime']}
+            value={details["pmTime"]}
             onChange={(e) => {
-              setTime(e, maxPMTime, setPMTime);
+              setStaffTime(e, details["pmMaxTime"], "pm");
             }}
             onKeyDown={(e) => {
               validateTime(e);
@@ -320,9 +308,9 @@ export default function AddProjectForm({
           <label htmlFor="start">Start At:</label>
           <input
             name="start"
-            className={isStartEmpty ? "form__input error" : "form__input"}
+            className={isEmpty["start"] ? "form__input error" : "form__input"}
             type="date"
-            value={details['start']}
+            value={details["start"]}
             onChange={(e) => {
               setDetails({ ...details, start: e.target.value });
             }}
@@ -330,9 +318,9 @@ export default function AddProjectForm({
           <label htmlFor="start">End At:</label>
           <input
             name="end"
-            className={isEndEmpty ? "form__input error" : "form__input"}
+            className={isEmpty["end"] ? "form__input error" : "form__input"}
             type="date"
-            value={details['end']}
+            value={details["end"]}
             onChange={(e) => {
               setDetails({ ...details, end: e.target.value });
             }}
@@ -348,7 +336,7 @@ export default function AddProjectForm({
           <div className="form__cell form__cell--add">
             <p className="form__subtitle">Add Dev:</p>
             <InputAutoStaff
-              classname={isDevsEmpty ? "form__input error" : "form__input"}
+              classname={isEmpty["dev"] ? "form__input error" : "form__input"}
               label="Name:"
               pholder={"Dev Name"}
               data={devs}
@@ -364,15 +352,18 @@ export default function AddProjectForm({
               placeholder="Time"
               className="form__input"
               type="text"
-              value={details['devTime']}
+              value={details["devTime"]}
               onChange={(e) => {
-                setTime(e, maxDevTime, setDevTime);
+                setStaffTime(e, details["devMaxTime"], "dev");
               }}
               onKeyDown={(e) => {
                 validateTime(e);
               }}
             />
-            <button className="tab__btn" onClick={addDev}>
+            <button
+              className="tab__btn"
+              onClick={() => addStaff("dev", devList, setDevList)}
+            >
               Add
             </button>
           </div>
@@ -385,7 +376,7 @@ export default function AddProjectForm({
           <div className="form__cell">
             <p className="form__subtitle">Add QA:</p>
             <InputAutoStaff
-              classname={isQAsEmpty ? "form__input error" : "form__input"}
+              classname={isEmpty["qa"] ? "form__input error" : "form__input"}
               label="Name:"
               pholder={"QA Name"}
               data={qas}
@@ -402,15 +393,18 @@ export default function AddProjectForm({
               placeholder="Time"
               className="form__input"
               type="text"
-              value={details['qaTime']}
+              value={details["qaTime"]}
               onChange={(e) => {
-                setTime(e, maxQATime, setQATime);
+                setStaffTime(e, details["qaMaxTime"], "qa");
               }}
               onKeyDown={(e) => {
                 validateTime(e);
               }}
             />
-            <button className="tab__btn" onClick={addQA}>
+            <button
+              className="tab__btn"
+              onClick={() => addStaff("qa", qaList, setQAList)}
+            >
               Add
             </button>
           </div>

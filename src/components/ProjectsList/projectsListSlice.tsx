@@ -29,10 +29,15 @@ const projectsSlice = createSlice({
   name: "projects",
   initialState,
   reducers: {
-    // optionsEdited: (state, action) => {
-    //   // @ts-ignore
-    //   optionsAdapter.updateOne(state, {id: action.payload.optionsId, changes: {...action.payload.newOptionsList}});
-    // }
+    projectCreated: (state, action) => {
+      projectsAdapter.addOne(state, action.payload);
+    },
+    projectDeleted: (state , action: PayloadAction<number>) => {
+      projectsAdapter.removeOne(state, action.payload);
+    },
+    projectEdited: (state, action) => {
+      projectsAdapter.updateOne(state, {id: action.payload.id, changes: {...action.payload.editedProject}});
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -68,3 +73,4 @@ export const allProjectsSelector = createSelector(
     }
   }
 );
+export const { projectCreated, projectDeleted, projectEdited } = projectsSlice.actions;

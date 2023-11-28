@@ -7,7 +7,7 @@ import "./ProjectCard.scss";
 
 interface ProjectCardProps {
   projectEdit: (id: number) => void;
-  projectDelete: (id: number) => void;
+  projectDelete: (id: number, name: string) => void;
   staffList: Array<EmployeesProps>;
   projects: Array<ProjectProps>;
   project: ProjectProps;
@@ -203,7 +203,7 @@ export default function ProjectCard({
           >Edit</button>
           <button
             className="tab__btn tab__btn--remove fa-solid fa-trash-can fa-lg"
-            onClick={() => projectDelete(project.id)}
+            onClick={() => projectDelete(project.id, project.name)}
           ></button>
         </div>
       </div>

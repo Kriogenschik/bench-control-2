@@ -1,36 +1,81 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ProjectsList from "../ProjectsList/ProjectsList";
 import { ProjectProps } from "../ProjectsList/types";
 import Spinner from "../Spinner/Spinner";
-import { allProjectsSelector } from "../ProjectsList/projectsListSlice";
+import { allProjectsSelector, projectDeleted } from "../ProjectsList/projectsListSlice";
 import AddProjectForm from "../AddProjectForm/AddProjectForm";
-import { useState } from "react";
-import { RootState } from "../../store";
+import { useCallback, useState } from "react";
+import { AppDispatch, RootState } from "../../store";
+import DeleteModal from "../DeleteModal/DeleteModal";
+import { useHttp } from "../../hooks/http.hook";
+import EditProjectForm from "../EditProjectForm/EditProjectForm";
 
 const Projects = () => {
+  interface deleteProjectDataProps {
+    id: number;
+    name: string;
+  }
+
   const [showAddForm, setShowAddForm] = useState<boolean>(false);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [deleteProjectData, setDeleteProjectData] = useState<deleteProjectDataProps>({
+    id: 0,
+    name: "",
+  });
+  const [showEditForm, setShowEditForm] = useState<boolean>(false);
+  const [editProjectId, setEditProjectId] = useState<number>(0);
+  
+  const { request } = useHttp();
+  const dispatch = useDispatch<AppDispatch>();
 
   const projectsList = useSelector(allProjectsSelector) as Array<ProjectProps>;
 
-  const editFormToggle = () => {
-    console.log("edit");
-  }
+  const editFormToggle = (id: number) => {
+    if (showEditForm) {
+      setShowEditForm((showEditForm) => !showEditForm);
+    }
+    setTimeout(() => {
+      setShowEditForm((showEditForm) => !showEditForm);
+      setEditProjectId(() => id);
+    }, 0);
+  };
 
-  const projectDeleteConfirm = () => {
-    console.log("delete");
-  }
+  const onDelete = useCallback(
+    (id: number) => {
+      request(`http://localhost:3001/projects/${id}`, "DELETE")
+        .then(() => dispatch(projectDeleted(id)))
+        .catch((err: any) => console.log(err));
+      setShowDeleteModal(() => false);
+    },
+    // eslint-disable-next-line
+    [request]
+  );
+
+  const openDeleteModal = (id: number, name: string) => {
+      setDeleteProjectData({
+        id: id,
+        name: name,
+      });
+      setShowDeleteModal(() => true);
+  };
 
   const projectsLoadingStatus = useSelector(
     (state: RootState) => state.projects.projectsLoadingStatus
   );
 
-
   if (projectsLoadingStatus === "loading") {
-    return <Spinner />;
+    return (
+      <div className="tab__body">
+        <Spinner />
+      </div>
+    );
   } else if (projectsLoadingStatus === "error") {
-    return <h5 className="message">Loading Error...</h5>;
+    return (
+      <div className="tab__body">
+        <h5 className="message">Loading Error...</h5>
+      </div>
+    );
   }
-  
 
   return (
     <div className="tab__body">
@@ -42,15 +87,34 @@ const Projects = () => {
           Add
         </button>
       )}
-      {showAddForm && <AddProjectForm projectsList={projectsList} closeForm={() => setShowAddForm(false)} />}
+      {showAddForm && (
+        <AddProjectForm
+          projectsList={projectsList}
+          closeForm={() => setShowAddForm(false)}
+        />
+      )}
 
       <ProjectsList
         projects={projectsList}
         projectEdit={editFormToggle}
-        projectDelete={projectDeleteConfirm}
+        projectDelete={openDeleteModal}
         // staffList={staff}
         // setCurrentProjects={setCurrentProjects}
       />
+      {showEditForm && (
+        <EditProjectForm
+          id={editProjectId}
+          projectsList={projectsList}
+          closeForm={() => setShowEditForm(false)}
+        />
+      )}
+      {showDeleteModal && (
+        <DeleteModal
+          name={deleteProjectData.name}
+          cancel={() => setShowDeleteModal(false)}
+          remove={() => onDelete(deleteProjectData.id)}
+        />
+      )}
     </div>
   );
 };

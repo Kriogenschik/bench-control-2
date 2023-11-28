@@ -1,0 +1,477 @@
+import { useState, ChangeEvent } from "react";
+import InputCheckBox from "../InputCheckbox/InputCheckbox";
+import ProjectStaffEditList from "../ProjectStaffEditList/ProjectStaffEditList";
+import { EmployeesProps } from "../StaffList/types";
+import { ProjectProps, ProjectStaffProps } from "../ProjectsList/types";
+import getStaffProjectsTime from "../../utils/GetStaffProjectsTime";
+import InputAutoStaff from "../InputAutoStaff/InputAutoStaff";
+import { setTime, validateTime } from "../../utils/SetTime";
+import { useDispatch, useSelector } from "react-redux";
+import { allStaffSelector } from "../StaffList/staffListSlice";
+import { useHttp } from "../../hooks/http.hook";
+import { AppDispatch } from "../../store";
+import { projectEdited } from "../ProjectsList/projectsListSlice";
+
+import "./EditProjectForm.scss";
+
+interface EditProjectFormProps {
+  id: number;
+  closeForm: () => void;
+  projectsList: Array<ProjectProps>;
+}
+
+interface StateProps {
+  [key: string]: any;
+}
+
+interface IsEmptyProps {
+  [key: string]: boolean;
+}
+
+export default function EditProjectForm({
+  id,
+  closeForm,
+  projectsList,
+}: EditProjectFormProps): JSX.Element {
+
+  const dispatch = useDispatch<AppDispatch>();
+  const { request } = useHttp();
+  
+  const activeProjects = projectsList.filter(
+    (project) => project.id !== id && project.isActive === true
+  );
+  const project: ProjectProps | undefined = projectsList.filter(
+    (project) => project.id === id
+  )[0];
+
+  const staffs = useSelector(allStaffSelector) as Array<EmployeesProps>;
+
+  const setStaffFreeTime = (
+    name: string,
+    currentTime: number,
+    setError: (error: boolean) => void
+  ) => {
+    const employ = staffs.filter((s) => s.name === name)[0];
+
+    const freeTime =
+      employ.time - getStaffProjectsTime(employ.id, activeProjects);
+    if (freeTime < currentTime) setError(true);
+    return freeTime;
+  };
+
+  const [isLeadTimeError, setIsLeadTimeError] = useState<boolean>(false);
+  const [isBATimeError, setIsBATimeError] = useState<boolean>(false);
+  const [isPMTimeError, setIsPMTimeError] = useState<boolean>(false);
+  const [isStartEmpty, setIsStartEmpty] = useState<boolean>(false);
+  const [isEndEmpty, setIsEndEmpty] = useState<boolean>(false);
+
+  const [details, setDetails] = useState<StateProps>({
+    leadName: project.lead.name,
+    leadTime: project.lead.time,
+    leadMaxTime: setStaffFreeTime(
+      project.lead.name,
+      project.lead.time,
+      setIsLeadTimeError
+    ),
+    leadTypeB: project.lead.billingType === "B" ? true : false,
+    baName: project.ba.name,
+    baTime: project.ba.time,
+    baMaxTime: setStaffFreeTime(
+      project.ba.name,
+      project.ba.time,
+      setIsBATimeError
+    ),
+    baTypeB: project.ba.billingType === "B" ? true : false,
+    pmName: project.pm.name,
+    pmTime: project.pm.time,
+    pmMaxTime: setStaffFreeTime(
+      project.pm.name,
+      project.pm.time,
+      setIsPMTimeError
+    ),
+    pmTypeB: project.pm.billingType === "B" ? true : false,
+    start: project.start,
+    end: project.end,
+    devName: "",
+    devTime: 40,
+    devMaxTime: 40,
+    qaName: "",
+    qaTime: 40,
+    qaMaxTime: 40,
+  });
+
+  const [isEmpty, setIsEmpty] = useState<IsEmptyProps>({
+    lead: false,
+    ba: false,
+    pm: false,
+    start: false,
+    end: false,
+  });
+
+  const [devList, setDevList] = useState<Array<ProjectStaffProps>>(
+    project.devs
+  );
+  const [qaList, setQAList] = useState<Array<ProjectStaffProps>>(project.qas);
+
+  const [clearDev, setClearDev] = useState<boolean>(false);
+  const [clearQA, setClearQA] = useState<boolean>(false);
+
+  const devs = staffs.filter((employ) => employ.pos.toLowerCase() === "dev");
+  const qas = staffs.filter((employ) => employ.pos.toLowerCase() === "qa");
+  const bas = staffs.filter((employ) => employ.pos.toLowerCase() === "ba");
+  const pms = staffs.filter((employ) => employ.pos.toLowerCase() === "pm");
+
+  const setNewTime = (
+    e: ChangeEvent<HTMLInputElement>,
+    maxTime: number,
+    role: string,
+    setError?: (err: boolean) => void
+  ) => {
+    if (setError) {
+      setError(false);
+    }
+    const time = setTime(e.target.value, maxTime);
+    setDetails({ ...details, [role + "Time"]: time });
+  };
+
+  const setStaff = (e: string, role: string) => {
+    const staff = staffs.filter((employ) => employ.name === e)[0];
+    const freeTime =
+      staff.time - getStaffProjectsTime(staff.id, activeProjects, "B");
+
+    setDetails({
+      ...details,
+      [role + "Name"]: e,
+      [role + "Time"]: freeTime,
+      [role + "MaxTime"]: freeTime,
+    });
+  };
+
+  const addStaff = (
+    role: string,
+    list: Array<ProjectStaffProps>,
+    setList: (arr: Array<ProjectStaffProps>) => void
+  ) => {
+    if (details[role + "Name"] && details[role + "Time"]) {
+      setIsEmpty({
+        ...isEmpty,
+        start: !details["start"],
+        end: !details["end"],
+      });
+    }
+
+    if (
+      details["start"] &&
+      details["end"] &&
+      details[role + "Name"] &&
+      details[role + "Time"]
+    ) {
+      const newStaffList = [
+        ...list,
+        {
+          id: staffs.filter((s) => s.name === details[role + "Name"])[0]!.id,
+          name: details[role + "Name"],
+          time: details[role + "Time"],
+          start: details["start"],
+          end: details["end"],
+          billingType: "B",
+        },
+      ];
+      setList(newStaffList);
+      setDetails({ ...details, [role + "Name"]: "", [role + "Time"]: 0 });
+      setClearDev(() => true);
+    }
+  };
+
+  const saveProject = () => {
+    const form = document.querySelector(".form-edit");
+    const errors = form ? form.querySelectorAll(".error") : [];
+    if (!errors.length) {
+      const editedProject: ProjectProps = {
+        id: id,
+        name: project.name,
+        lead: {
+          id: staffs.filter((s) => s.name === details["leadName"])[0].id,
+          name: details["leadName"],
+          time: details["leadTime"],
+          start: details["start"],
+          end: details["end"],
+          billingType: details["leadTypeB"] ? "B" : "UB",
+        },
+        ba: {
+          id: staffs.filter((s) => s.name === details["baName"])[0].id,
+          name: details["baName"],
+          time: details["baTime"],
+          start: details["start"],
+          end: details["end"],
+          billingType: details["baTypeB"] ? "B" : "UB",
+        },
+        pm: {
+          id: staffs.filter((s) => s.name === details["pmName"])[0].id,
+          name: details["pmName"],
+          time: details["pmTime"],
+          start: details["start"],
+          end: details["end"],
+          billingType: details["pmTypeB"] ? "B" : "UB",
+        },
+        start: details["start"],
+        end: details["end"],
+        devs: devList,
+        qas: qaList,
+        isActive: project.isActive,
+      };
+      request(
+        `http://localhost:3001/projects/${id}`,
+        "PATCH",
+        JSON.stringify(editedProject)
+      )
+        .then(() => dispatch(projectEdited({ id, editedProject })))
+        .catch((err: any) => console.log(err));
+      closeForm();
+      console.log(editedProject);
+      
+    }
+  };
+
+  return (
+    <form
+      className="tab__form form form-edit"
+      onSubmit={(e) => e.preventDefault()}
+    >
+      <h2 className="form__title">{project ? project.name : ""}</h2>
+      <div className="form__row">
+        <div className="form__cell">
+          <InputAutoStaff
+            classname="form__input"
+            label="Leader:"
+            pholder="Lead Name"
+            data={staffs}
+            onSelected={(e: string) => setStaff(e, "lead")}
+            defaultValue={details["leadName"]}
+            projects={activeProjects}
+          />
+          <label htmlFor="lead-time">Hour Per Week:</label>
+          <input
+            name="lead-time"
+            placeholder="Time"
+            className={!isLeadTimeError ? "form__input" : "form__input error"}
+            type="text"
+            value={details["leadTime"]}
+            onChange={(e) => {
+              setNewTime(e, details["leadMaxTime"], "lead", setIsLeadTimeError);
+            }}
+            onKeyDown={(e) => {
+              validateTime(e);
+            }}
+          />
+          <InputCheckBox
+            classname="project-edit__switch project-edit__switch--top"
+            checked={details["leadTypeB"]}
+            handleChange={() =>
+              setDetails({ ...details, leadTypeB: !details["leadTypeB"] })
+            }
+            label="Billable:"
+          />
+        </div>
+        <div className="form__cell">
+          <InputAutoStaff
+            classname="form__input"
+            label="BA:"
+            pholder="BA Name"
+            data={bas}
+            onSelected={(e: string) => setStaff(e, "ba")}
+            defaultValue={details["baName"]}
+            projects={activeProjects}
+          />
+          <label htmlFor="ba-time">Hour Per Week:</label>
+          <input
+            name="ba-time"
+            placeholder="Time"
+            className={!isBATimeError ? "form__input" : "form__input error"}
+            type="text"
+            value={details["baTime"]}
+            onChange={(e) => {
+              setNewTime(e, details["baMaxTime"], "ba", setIsBATimeError);
+            }}
+            onKeyDown={(e) => {
+              validateTime(e);
+            }}
+          />
+          <InputCheckBox
+            classname="project-edit__switch project-edit__switch--top"
+            checked={details["baTypeB"]}
+            handleChange={() =>
+              setDetails({ ...details, baTypeB: !details["baTypeB"] })
+            }
+            label="Billable:"
+          />
+        </div>
+        <div className="form__cell">
+          <InputAutoStaff
+            classname="form__input"
+            label="PM:"
+            pholder="PM Name"
+            data={pms}
+            onSelected={(e: string) => setStaff(e, "pm")}
+            defaultValue={details["pmName"]}
+            projects={activeProjects}
+          />
+          <label htmlFor="pm-time">Hour Per Week:</label>
+          <input
+            name="pm-time"
+            placeholder="Time"
+            className={!isPMTimeError ? "form__input" : "form__input error"}
+            type="text"
+            value={details["pmTime"]}
+            onChange={(e) => {
+              setNewTime(e, details["pmMaxTime"], "pm", setIsPMTimeError);
+            }}
+            onKeyDown={(e) => {
+              validateTime(e);
+            }}
+          />
+          <InputCheckBox
+            classname="project-edit__switch project-edit__switch--top"
+            checked={details["pmTypeB"]}
+            handleChange={() =>
+              setDetails({ ...details, pmTypeB: !details["pmTypeB"] })
+            }
+            label="Billable:"
+          />
+        </div>
+        <div className="form__cell">
+          <label htmlFor="start">Start At:</label>
+          <input
+            name="start"
+            className={
+              isStartEmpty
+                ? "form__input form__input--date error"
+                : "form__input form__input--date"
+            }
+            type="date"
+            value={details["start"]}
+            onChange={(e) => {
+              setDetails({ ...details, start: e.target.value });
+            }}
+          />
+          <label htmlFor="start">End At:</label>
+          <input
+            name="end"
+            className={
+              isEndEmpty
+                ? "form__input form__input--date error"
+                : "form__input form__input--date"
+            }
+            type="date"
+            value={details["end"]}
+            onChange={(e) => {
+              setDetails({ ...details, end: e.target.value });
+            }}
+          />
+        </div>
+      </div>
+      <div className="form__row form__row-edit">
+        <div className="form__cell form__cell--edit-list">
+          <p className="form__subtitle">Project Devs List:</p>
+          <ProjectStaffEditList
+            allStaffList={staffs}
+            staffList={devList}
+            projectID={id}
+            setStaffList={setDevList}
+            projectsList={activeProjects}
+          />
+          <p className="form__subtitle">Add Dev:</p>
+          <div className="form__inputs--edit">
+            <InputAutoStaff
+              classname="form__input form__edit-input--name"
+              label="Name:"
+              pholder={"Dev Name"}
+              data={devs}
+              onSelected={(e: string) => setStaff(e, "dev")}
+              currentData={devList}
+              clear={clearDev}
+              setClear={setClearDev}
+              projects={activeProjects}
+            />
+            <div className="form__edit-input--time">
+              <label htmlFor="dev-time">h/Week:</label>
+              <input
+                name="dev-time"
+                placeholder="Time"
+                className="form__input"
+                type="text"
+                value={details["devTime"]}
+                onChange={(e) => {
+                  setNewTime(e, details["devMaxTime"], "dev");
+                }}
+                onKeyDown={(e) => {
+                  validateTime(e);
+                }}
+              />
+            </div>
+            <button
+              className="tab__btn"
+              onClick={() => addStaff("dev", devList, setDevList)}
+            >
+              Add
+            </button>
+          </div>
+        </div>
+        <div className="form__cell form__cell--edit-list">
+          <p className="form__subtitle">Project QAs List:</p>
+          <ProjectStaffEditList
+            allStaffList={staffs}
+            staffList={qaList}
+            projectID={id}
+            setStaffList={setQAList}
+            projectsList={activeProjects}
+          />
+          <p className="form__subtitle">Add QA:</p>
+          <div className="form__inputs--edit">
+            <InputAutoStaff
+              classname="form__input form__edit-input--name"
+              label="Name:"
+              pholder={"QA Name"}
+              data={qas}
+              onSelected={(e: string) => setStaff(e, "qa")}
+              currentData={qaList}
+              clear={clearQA}
+              setClear={setClearQA}
+              projects={activeProjects}
+            />
+            <div className="form__edit-input--time">
+              <label htmlFor="qa-time">h/Week:</label>
+              <input
+                name="qa-time"
+                placeholder="Time"
+                className="form__input"
+                type="text"
+                value={details["qaTime"]}
+                onChange={(e) => {
+                  setNewTime(e, details["qaMaxTime"], "qa");
+                }}
+                onKeyDown={(e) => {
+                  validateTime(e);
+                }}
+              />
+            </div>
+            <button
+              className="tab__btn"
+              onClick={() => addStaff("qa", qaList, setQAList)}
+            >
+              Add
+            </button>
+          </div>
+        </div>
+        <div className="form__cell form__cell--btn">
+          <button className="tab__btn" onClick={saveProject}>
+            Save
+          </button>
+          <button className="tab__btn tab__btn--red" onClick={closeForm}>
+            Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+  );
+}

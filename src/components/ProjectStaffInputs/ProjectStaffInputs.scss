@@ -1,0 +1,32 @@
+@import '../../styles/vars.scss';
+
+.form {
+	&__list-name{ 
+		width: 200px;
+	}
+
+	&__input.form__list-time{ 
+		width: 60px;
+		flex: 0 0 60px;
+		min-width: 60px;
+	}
+
+	&__list-switch{ 
+		width: 100px;
+	}
+
+	&__list-row {
+		width: 100%;
+		gap: 20px;
+	}
+
+	&__list-btn-cell {
+		flex: 1 0 auto;
+	}
+
+	&__list-btn {
+		width: 20px;
+		display: block;
+		margin-left: auto;
+	}
+}

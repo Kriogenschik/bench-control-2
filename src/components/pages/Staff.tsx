@@ -37,12 +37,10 @@ const Staff = () => {
   };
 
   const openDeleteModal = (id: number, name: string) => {
-    if (id && name) {
       setDeleteStaffData({
         id: id,
         name: name,
       });
-    }
     setShowDeleteModal(() => true);
   };
 

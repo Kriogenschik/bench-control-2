@@ -52,7 +52,7 @@
       "stack": "XM",
       "exp": "LM",
       "speak": "CL",
-      "time": 38
+      "time": 40
     },
     {
       "id": 7,
@@ -440,26 +440,26 @@
       "lead": {
         "id": 6,
         "name": "Bart Simpson",
-        "time": 15,
-        "start": "2023-09-12",
-        "end": "2023-11-30",
-        "billingType": "B"
+        "time": 25,
+        "start": "2023-07-26",
+        "end": "2023-11-20",
+        "billingType": "UB"
       },
       "ba": {
         "id": 7,
         "name": "Maria Marienko",
         "time": 20,
-        "start": "2023-09-12",
-        "end": "2023-11-30",
+        "start": "2023-07-26",
+        "end": "2023-11-20",
         "billingType": "B"
       },
       "pm": {
         "id": 11,
         "name": "Mitchel Jordan",
         "time": 20,
-        "start": "2023-09-12",
-        "end": "2023-11-30",
-        "billingType": "B"
+        "start": "2023-07-26",
+        "end": "2023-11-20",
+        "billingType": "UB"
       },
       "start": "2023-07-26",
       "end": "2023-11-20",
@@ -485,7 +485,7 @@
         {
           "id": 14,
           "name": "Katerina Katerenko",
-          "time": 40,
+          "time": 25,
           "start": "2023-09-12",
           "end": "2023-11-30",
           "billingType": "B"

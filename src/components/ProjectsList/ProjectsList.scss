@@ -1,14 +1,12 @@
 @import '../../styles/vars.scss';
 
-.tab {
-  &__projects {
-    width: 100%;
+.tab__projects{
+  width: 100%;
     display: flex;
     flex-direction: column;
     margin-top: 45px;
     gap: 30px;
-  }
-
+.tab {
   &__btn.tab__btn--remove {
     height: 31px;
 
@@ -21,4 +19,6 @@
     }
   }
 }
+}
+
 

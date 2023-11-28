@@ -1,6 +1,6 @@
-export const setTime = (time: string | number) => {
-  if (+time > 40) {
-    return 40;
+export const setTime = (time: string | number, maxTime?: number) => {
+  if (+time > (maxTime || 40)) {
+    return (maxTime || 40);
   } else if (+time > 1) {
     return (time = +time);
   } else {
