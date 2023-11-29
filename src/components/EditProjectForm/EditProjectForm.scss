@@ -59,6 +59,12 @@
 
 		&__cell--btn {
 			justify-content: flex-end;
+      flex-direction: row;
+      align-items: end;
+
+      @media (max-width: 1229px) {
+        justify-content: center;
+      }
 
       @media (max-width: 969px) {
         max-width: 100%;

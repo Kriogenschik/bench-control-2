@@ -1,6 +1,8 @@
 export const setTime = (time: string | number, maxTime?: number) => {
-  if (+time > (maxTime || 40)) {
-    return (maxTime || 40);
+  if (maxTime === 0) {
+    return 0;
+  } else if (+time > (maxTime || 40)) {
+    return maxTime || 40;
   } else if (+time > 1) {
     return (time = +time);
   } else {
@@ -22,4 +24,3 @@ export const validateTime = (e: React.KeyboardEvent<HTMLInputElement>) => {
     e.preventDefault();
   }
 };
-

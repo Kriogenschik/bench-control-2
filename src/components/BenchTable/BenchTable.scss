@@ -1,0 +1,125 @@
+@import '../../styles/vars.scss';
+
+.bench-table {
+  font-size: 16px;
+  width: 100%;
+  border: 1px solid $gray;
+  border-radius: 10px;
+  overflow: auto;
+  box-shadow: -3px 3px 10px -5px $textColor;
+  padding: 10px;
+  max-width: 1800px;
+  margin: 10px auto 0;
+  font-size: 16px;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+  }
+
+  th,
+  td {
+    padding: 5px 8px;
+    &:not(:first-child, :last-child ) {
+      text-align: center;
+    }
+  }
+
+  thead th {
+    background-color: $blue;
+    padding: 15px 8px;
+
+    &:first-child {
+      border-radius: 10px 0px 0px 0px;
+      text-align: left;
+      width: 180px;
+    }
+
+    &:last-child {
+      border-radius: 0px 10px 0px 0px;
+    }
+  }
+
+  tbody tr {
+    &:nth-child(even) {
+      background: $background;
+    }
+
+    &:hover {
+      background: rgb(231, 231, 231, 0.8);
+    }
+  }
+
+  tbody td {
+    position: relative;
+  }
+
+  &__placeholder {
+    font-size: 16px;
+    text-align: center;
+    padding: 15px;
+  }
+
+  &__row {
+    td {
+      padding: 10px 5px;
+    }
+  }
+
+  &__cell {
+    text-align: center;
+  }
+
+  &__cell.grey {
+    background: rgba(168, 168, 168, 0.8);
+    background: linear-gradient(rgb(203, 203, 203, 80%), rgb(178, 178, 178, 80%));
+  }
+
+  &__cell.red {
+    background: rgba(255, 76, 76, 0.8);
+    background: linear-gradient(rgb(255 120 120 / 80%), rgb(255 85 85 / 80%));
+  }
+
+  &__cell.yellow {
+    background: rgba(255, 255, 135, 0.8);
+    background: linear-gradient(rgba(255, 255, 135, 0.8), rgba(238, 238, 80, 0.8));
+  }
+
+  &__cell.green {
+    background: rgba(13, 175, 13, 0.8);
+    background: linear-gradient(rgb(85 247 85 / 80%), rgb(68 216 68 / 80%));
+  }
+
+  &:not(:first-child) {
+    thead th { 
+      &:first-child {
+        border-radius: 0px;
+        text-align: left;
+      }
+  
+      &:last-child {
+        border-radius: 0px;
+      }
+    }
+  }
+}
+
+.tab__table {
+  .bench-table__row {
+    td {
+      padding: 10px 5px;
+      &:not(:first-child) {
+        text-align: center;
+      }
+    }
+  }
+
+  thead {
+    th {
+      &:not(:first-child) {
+        text-align: center;
+      }
+    }
+  }
+}

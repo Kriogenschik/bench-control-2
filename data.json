@@ -52,7 +52,7 @@
       "stack": "XM",
       "exp": "LM",
       "speak": "CL",
-      "time": 40
+      "time": 20
     },
     {
       "id": 7,
@@ -70,7 +70,7 @@
       "stack": "NET",
       "exp": "LH",
       "speak": "FS",
-      "time": 40
+      "time": 35
     },
     {
       "id": 9,
@@ -375,7 +375,7 @@
         "name": "Mark Markov",
         "time": 20,
         "start": "2023-09-12",
-        "end": "2023-11-30",
+        "end": "2023-12-25",
         "billingType": "B"
       },
       "ba": {
@@ -383,7 +383,7 @@
         "name": "Maria Marienko",
         "time": 17,
         "start": "2023-09-12",
-        "end": "2023-11-30",
+        "end": "2023-12-25",
         "billingType": "UB"
       },
       "pm": {
@@ -391,11 +391,11 @@
         "name": "Valerij Valerenko",
         "time": 15,
         "start": "2023-09-12",
-        "end": "2023-11-30",
+        "end": "2023-12-25",
         "billingType": "B"
       },
       "start": "2023-09-12",
-      "end": "2023-11-30",
+      "end": "2023-12-25",
       "devs": [
         {
           "id": 2,
@@ -408,7 +408,7 @@
         {
           "id": 5,
           "name": "Ivanko Ivanenko",
-          "time": 40,
+          "time": 38,
           "start": "2023-09-12",
           "end": "2023-11-30",
           "billingType": "B"
@@ -440,17 +440,17 @@
       "lead": {
         "id": 6,
         "name": "Bart Simpson",
-        "time": 25,
+        "time": 20,
         "start": "2023-07-26",
-        "end": "2023-11-20",
-        "billingType": "UB"
+        "end": "2024-02-17",
+        "billingType": "B"
       },
       "ba": {
         "id": 7,
         "name": "Maria Marienko",
         "time": 20,
         "start": "2023-07-26",
-        "end": "2023-11-20",
+        "end": "2024-02-17",
         "billingType": "B"
       },
       "pm": {
@@ -458,11 +458,11 @@
         "name": "Mitchel Jordan",
         "time": 20,
         "start": "2023-07-26",
-        "end": "2023-11-20",
-        "billingType": "UB"
+        "end": "2024-02-17",
+        "billingType": "B"
       },
       "start": "2023-07-26",
-      "end": "2023-11-20",
+      "end": "2024-02-17",
       "devs": [
         {
           "id": 13,
@@ -499,8 +499,8 @@
       "lead": {
         "id": 5,
         "name": "Ivanko Ivanenko",
-        "time": 20,
-        "start": "2023-09-12",
+        "time": 40,
+        "start": "2023-07-26",
         "end": "2023-11-01",
         "billingType": "B"
       },
@@ -508,7 +508,7 @@
         "id": 16,
         "name": "Boris Johnsonyk",
         "time": 10,
-        "start": "2023-09-12",
+        "start": "2023-07-26",
         "end": "2023-11-01",
         "billingType": "B"
       },
@@ -516,7 +516,7 @@
         "id": 11,
         "name": "Mitchel Jordan",
         "time": 15,
-        "start": "2023-09-12",
+        "start": "2023-07-26",
         "end": "2023-11-01",
         "billingType": "B"
       },
@@ -552,7 +552,7 @@
         {
           "id": 3,
           "name": "Nadia Nadiyko",
-          "time": 40,
+          "time": 5,
           "start": "2023-09-12",
           "end": "2023-11-01",
           "billingType": "B"

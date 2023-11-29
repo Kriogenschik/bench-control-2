@@ -2,8 +2,13 @@ import { useState } from "react";
 import InputCheckBox from "../InputCheckbox/InputCheckbox";
 import { ProjectProps } from "../ProjectsList/types";
 import { EmployeesProps } from "../StaffList/types";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store";
+import { useHttp } from "../../hooks/http.hook";
 
 import "./ProjectCard.scss";
+import { projectEdited } from "../ProjectsList/projectsListSlice";
+import getStaffProjectsTime from "../../utils/GetStaffProjectsTime";
 
 interface ProjectCardProps {
   projectEdit: (id: number) => void;
@@ -11,7 +16,6 @@ interface ProjectCardProps {
   staffList: Array<EmployeesProps>;
   projects: Array<ProjectProps>;
   project: ProjectProps;
-  // setcurrentProjects: (projectsList: Array<ProjectProps>) => void;
 }
 
 export default function ProjectCard({
@@ -20,96 +24,95 @@ export default function ProjectCard({
   staffList,
   projects,
   project,
-  // setcurrentProjects,
 }: ProjectCardProps) {
   const [isActiveError, setIsActiveError] = useState<boolean>(false);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const { request } = useHttp();
 
   const showError = () => {
     setIsActiveError(true);
     setTimeout(() => setIsActiveError(false), 4500);
   };
 
-  const changeActive = (project: ProjectProps, id: number, active: boolean) => {
+  const checkActive = () => {
     setIsActiveError(false);
-    // if (active) {
-    //   const editedProjects = projects.map((project) => {
-    //     if (project.id == id) {
-    //       return {
-    //         ...project,
-    //         isActive: !active,
-    //       };
-    //     } else return project;
-    //   });
-    //   setProjects(editedProjects);
-    //   setcurrentProjects(editedProjects);
-    //   return;
-    // }
 
-    // const actualProjects = projects.filter(
-    //   (proj) => proj.id == id || proj.isActive == true
-    // );
-    // const maxLeadTime =
-    //   staffList.filter((employ) => employ.id == project.lead.id)[0]?.time || 40;
-    // const leadTime =
-    //   maxLeadTime - getStaffProjectsTime(project.lead.id, actualProjects);
+    if (project.isActive) {
+      changeActive();
+    } else {
+      const activeProjects = projects.filter(
+        (proj) => proj.id === project.id || proj.isActive === true
+      );
+      const maxLeadTime =
+        staffList.filter((employ) => employ.id === project.lead.id)[0].time -
+        getStaffProjectsTime(project.lead.id, activeProjects);
 
-    // const maxBATime =
-    //   staffList.filter((employ) => employ.id == project.ba.id)[0]?.time || 40;
-    // const baTime =
-    //   maxBATime - getStaffProjectsTime(project.ba.id, actualProjects);
+      const maxBATime =
+        staffList.filter((employ) => employ.id === project.ba.id)[0].time -
+        getStaffProjectsTime(project.ba.id, activeProjects);
 
-    // const maxPMTime =
-    //   staffList.filter((employ) => employ.id == project.pm.id)[0]?.time || 40;
-    // const pmTime =
-    //   maxPMTime - getStaffProjectsTime(project.pm.id, actualProjects);
+      const maxPMTime =
+        staffList.filter((employ) => employ.id === project.pm.id)[0].time -
+        getStaffProjectsTime(project.pm.id, activeProjects);
 
-    // let minDevTime = 0;
-    // project.devs.map((dev) => {
-    //   const maxDevTime =
-    //     staffList.filter((employ) => employ.id == dev.id)[0]?.time || 40;
-    //   const devTime = maxDevTime - getStaffProjectsTime(dev.id, actualProjects);
-    //   if (minDevTime > devTime) {
-    //     minDevTime = devTime;
-    //   }
-    // });
+      let minDevTime = 0;
+      project.devs.forEach((dev) => {
+        const maxDevTime =
+          staffList.filter((employ) => employ.id === dev.id)[0].time -
+          getStaffProjectsTime(dev.id, activeProjects);
+        if (minDevTime > maxDevTime) {
+          minDevTime = maxDevTime;
+        }
+      });
 
-    // let minQATime = 0;
-    // project.qas.map((qa) => {
-    //   const maxQATime =
-    //     staffList.filter((employ) => employ.id == qa.id)[0]?.time || 40;
-    //   const qaTime = maxQATime - getStaffProjectsTime(qa.id, actualProjects);
-    //   if (minQATime > qaTime) {
-    //     minQATime = qaTime;
-    //   }
-    // });
+      let minQATime = 0;
+      project.qas.forEach((qa) => {
+        const maxQATime =
+          staffList.filter((employ) => employ.id === qa.id)[0].time -
+          getStaffProjectsTime(qa.id, activeProjects);
+        if (minQATime > maxQATime) {
+          minQATime = maxQATime;
+        }
+      });
 
-    // if (
-    //   leadTime >= 0 &&
-    //   baTime >= 0 &&
-    //   pmTime >= 0 &&
-    //   minDevTime >= 0 &&
-    //   minQATime >= 0
-    // ) {
-    //   const editedProjects = projects.map((project) => {
-    //     if (project.id == id) {
-    //       return {
-    //         ...project,
-    //         isActive: !active,
-    //       };
-    //     } else return project;
-    //   });
-    //   setProjects(editedProjects);
-    //   setcurrentProjects(editedProjects);
-    // } else showError();
+      if (
+        maxLeadTime >= 0 &&
+        maxBATime >= 0 &&
+        maxPMTime >= 0 &&
+        minDevTime >= 0 &&
+        minQATime >= 0
+      ) {
+        changeActive();
+      } else showError();
+    }
+  };
+
+  const changeActive = () => {
+    const id = project.id;
+
+    const editedProject = {
+      ...project,
+      isActive: !project.isActive,
+    };
+    request(
+      `http://localhost:3001/projects/${id}`,
+      "PATCH",
+      JSON.stringify(editedProject)
+    )
+      .then(() => dispatch(projectEdited({ id, editedProject })))
+      .catch((err: any) => console.log(err));
   };
 
   const timeFormat = (time: string): string => {
     if (time !== "none") {
-      const endTime = new Date(time);      
+      const endTime = new Date(time);
       return `${
         endTime.getDate() > 9 ? endTime.getDate() : "0" + endTime.getDate()
       }.${
-        (+endTime.getMonth() + 1) > 9 ? (+endTime.getMonth() + 1) : "0" + (+endTime.getMonth() + 1)
+        +endTime.getMonth() + 1 > 9
+          ? +endTime.getMonth() + 1
+          : "0" + (+endTime.getMonth() + 1)
       }.${endTime.getFullYear()}`;
     }
     return "none";
@@ -134,9 +137,7 @@ export default function ProjectCard({
         <InputCheckBox
           classname="project__switch"
           checked={project.isActive}
-          handleChange={() =>
-            changeActive(project, project.id, project.isActive)
-          }
+          handleChange={() => checkActive()}
           label="Active:"
         />
       </div>
@@ -146,29 +147,31 @@ export default function ProjectCard({
           {project.devs.length}
         </p>
         <p className="project__info">
-          <span className="project__label">QA Count:</span> 
+          <span className="project__label">QA Count:</span>
           {project.qas.length}
         </p>
         <p className="project__info">
-          <span className="project__label">Lead: </span> 
-          {project.lead.name} -{" "}
-          {project.lead.time}h Billable: { project.lead.billingType}
+          <span className="project__label">Lead: </span>
+          {project.lead.name} - {project.lead.time}h Billable:{" "}
+          {project.lead.billingType}
         </p>
         <p className="project__info">
-          <span className="project__label">BA: </span> 
-          {project.ba.name} -{" "}
-          {project.ba.time}h Billable: {project.ba.billingType}
+          <span className="project__label">BA: </span>
+          {project.ba.name} - {project.ba.time}h Billable:{" "}
+          {project.ba.billingType}
         </p>
         <p className="project__info">
-          <span className="project__label">PM: </span> 
-          {project.pm.name} -{" "}
-          {project.pm.time}h Billable: {project.pm.billingType}
+          <span className="project__label">PM: </span>
+          {project.pm.name} - {project.pm.time}h Billable:{" "}
+          {project.pm.billingType}
         </p>
         <p className="project__info">
-          <span className="project__label">StartAt: </span>{timeFormat(project.start)}
+          <span className="project__label">StartAt: </span>
+          {timeFormat(project.start)}
         </p>
         <p className="project__info">
-          <span className="project__label">EndAt: </span>{timeFormat(project.end)}
+          <span className="project__label">EndAt: </span>
+          {timeFormat(project.end)}
         </p>
       </div>
       <div className="project__lists">
@@ -179,7 +182,9 @@ export default function ProjectCard({
                 <span className="project__label">Dev:</span>
                 <p className="project__list-name">{dev.name}</p>
                 <p className="project__list-time">{dev.time}h</p>
-                <p className="project__list-type">Billable: {dev.billingType}</p>
+                <p className="project__list-type">
+                  Billable: {dev.billingType}
+                </p>
               </div>
             );
           })}
@@ -197,10 +202,9 @@ export default function ProjectCard({
           })}
         </div>
         <div className="project__buttons">
-          <button
-            className="tab__btn"
-            onClick={() => projectEdit(project.id)}
-          >Edit</button>
+          <button className="tab__btn" onClick={() => projectEdit(project.id)}>
+            Edit
+          </button>
           <button
             className="tab__btn tab__btn--remove fa-solid fa-trash-can fa-lg"
             onClick={() => projectDelete(project.id, project.name)}

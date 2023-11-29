@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import InputCheckBox from "../InputCheckbox/InputCheckbox";
 import getStaffProjectsTime from "../../utils/GetStaffProjectsTime";
 import { ProjectProps, ProjectStaffProps } from "../ProjectsList/types";
@@ -24,26 +24,35 @@ export default function ProjectStaffInputs({
   changeStaffTime,
   projectsList,
 }: ProjectStaffInputsProps) {
-  const [newTime, setNewTime] = useState<number>(staff.time);
+  const [staffTime, setStaffTime] = useState<number>(staff.time);
   
   const [staffTypeB, setStaffTypeB] = useState<boolean>(
     staff.billingType === "B" ? true : false
   );
   
-  const staffMaxTime = allStaffList.filter((employ) => employ.id === staff.id)[0]?.time || 40;
+  const staffMaxTime = allStaffList.filter((employ) => employ.id === staff.id)[0].time;
   const freeTime = staffMaxTime - getStaffProjectsTime(staff.id, projectsList);
   const [isTimeEnough, setIsTimeEnough] = useState<boolean>(true);
 
   useEffect(() => {
-    changeStaffTime(staff.id, newTime);
-    if (newTime > freeTime) {
+    changeStaffTime(staff.id, staffTime);
+    if (staffTime > freeTime) {
         setIsTimeEnough(false);
     }
-  }, [newTime]);
+    // eslint-disable-next-line
+  }, [staffTime]);
 
   const changeType = (id: number, staffTypeB: boolean) => {
     changeStaffType(id, staffTypeB);
     setStaffTypeB(!staffTypeB);
+  };
+
+  const setNewTime = (
+    e: ChangeEvent<HTMLInputElement>,
+    maxTime: number,
+  ) => {
+      setIsTimeEnough(true);
+      setStaffTime(setTime(e.target.value, maxTime))
   };
 
   return (
@@ -54,10 +63,8 @@ export default function ProjectStaffInputs({
         placeholder="Time"
         className={isTimeEnough ? "form__input form__list-time" : "form__input form__list-time error"}
         type="text"
-        value={newTime}
-        onChange={(e) => { setNewTime(setTime(e.target.value, freeTime))
-          ;
-        }}
+        value={staffTime}
+        onChange={(e) => { setNewTime(e, freeTime) }}
         onKeyDown={(e) => {
           validateTime(e);
         }}

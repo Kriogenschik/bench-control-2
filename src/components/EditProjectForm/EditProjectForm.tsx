@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import InputCheckBox from "../InputCheckbox/InputCheckbox";
 import ProjectStaffEditList from "../ProjectStaffEditList/ProjectStaffEditList";
 import { EmployeesProps } from "../StaffList/types";
@@ -33,10 +33,9 @@ export default function EditProjectForm({
   closeForm,
   projectsList,
 }: EditProjectFormProps): JSX.Element {
-
   const dispatch = useDispatch<AppDispatch>();
   const { request } = useHttp();
-  
+
   const activeProjects = projectsList.filter(
     (project) => project.id !== id && project.isActive === true
   );
@@ -46,49 +45,39 @@ export default function EditProjectForm({
 
   const staffs = useSelector(allStaffSelector) as Array<EmployeesProps>;
 
+  const [isTimeEnough, setIsTimeEnough] = useState<IsEmptyProps>({
+    lead: false,
+    ba: false,
+    pm: false,
+  });
+
   const setStaffFreeTime = (
     name: string,
     currentTime: number,
-    setError: (error: boolean) => void
+    role: string
   ) => {
     const employ = staffs.filter((s) => s.name === name)[0];
 
     const freeTime =
       employ.time - getStaffProjectsTime(employ.id, activeProjects);
-    if (freeTime < currentTime) setError(true);
+    if (freeTime < currentTime) {
+      setTimeout(() => setIsTimeEnough({ ...isTimeEnough, [role]: true }))
+    }
     return freeTime;
   };
-
-  const [isLeadTimeError, setIsLeadTimeError] = useState<boolean>(false);
-  const [isBATimeError, setIsBATimeError] = useState<boolean>(false);
-  const [isPMTimeError, setIsPMTimeError] = useState<boolean>(false);
-  const [isStartEmpty, setIsStartEmpty] = useState<boolean>(false);
-  const [isEndEmpty, setIsEndEmpty] = useState<boolean>(false);
 
   const [details, setDetails] = useState<StateProps>({
     leadName: project.lead.name,
     leadTime: project.lead.time,
-    leadMaxTime: setStaffFreeTime(
-      project.lead.name,
-      project.lead.time,
-      setIsLeadTimeError
-    ),
+    leadMaxTime: 40,
     leadTypeB: project.lead.billingType === "B" ? true : false,
     baName: project.ba.name,
     baTime: project.ba.time,
-    baMaxTime: setStaffFreeTime(
-      project.ba.name,
-      project.ba.time,
-      setIsBATimeError
-    ),
+    baMaxTime: 40,
     baTypeB: project.ba.billingType === "B" ? true : false,
     pmName: project.pm.name,
     pmTime: project.pm.time,
-    pmMaxTime: setStaffFreeTime(
-      project.pm.name,
-      project.pm.time,
-      setIsPMTimeError
-    ),
+    pmMaxTime: 40,
     pmTypeB: project.pm.billingType === "B" ? true : false,
     start: project.start,
     end: project.end,
@@ -100,13 +89,19 @@ export default function EditProjectForm({
     qaMaxTime: 40,
   });
 
-  const [isEmpty, setIsEmpty] = useState<IsEmptyProps>({
-    lead: false,
-    ba: false,
-    pm: false,
-    start: false,
-    end: false,
-  });
+  useEffect(() => {
+    setDetails({
+      ...details,
+      leadMaxTime: setStaffFreeTime(
+        project.lead.name,
+        project.lead.time,
+        "lead"
+      ),
+      baMaxTime: setStaffFreeTime(project.ba.name, project.ba.time, "ba"),
+      pmMaxTime: setStaffFreeTime(project.pm.name, project.pm.time, "pm"),
+    });
+    // eslint-disable-next-line
+  }, []);
 
   const [devList, setDevList] = useState<Array<ProjectStaffProps>>(
     project.devs
@@ -125,10 +120,10 @@ export default function EditProjectForm({
     e: ChangeEvent<HTMLInputElement>,
     maxTime: number,
     role: string,
-    setError?: (err: boolean) => void
+    throwError?: string
   ) => {
-    if (setError) {
-      setError(false);
+    if (throwError) {
+      setIsTimeEnough({ ...isTimeEnough, [role]: false });
     }
     const time = setTime(e.target.value, maxTime);
     setDetails({ ...details, [role + "Time"]: time });
@@ -153,8 +148,8 @@ export default function EditProjectForm({
     setList: (arr: Array<ProjectStaffProps>) => void
   ) => {
     if (details[role + "Name"] && details[role + "Time"]) {
-      setIsEmpty({
-        ...isEmpty,
+      setIsTimeEnough({
+        ...isTimeEnough,
         start: !details["start"],
         end: !details["end"],
       });
@@ -228,8 +223,6 @@ export default function EditProjectForm({
         .then(() => dispatch(projectEdited({ id, editedProject })))
         .catch((err: any) => console.log(err));
       closeForm();
-      console.log(editedProject);
-      
     }
   };
 
@@ -254,11 +247,13 @@ export default function EditProjectForm({
           <input
             name="lead-time"
             placeholder="Time"
-            className={!isLeadTimeError ? "form__input" : "form__input error"}
+            className={
+              isTimeEnough["lead"] ? "form__input error" : "form__input"
+            }
             type="text"
             value={details["leadTime"]}
             onChange={(e) => {
-              setNewTime(e, details["leadMaxTime"], "lead", setIsLeadTimeError);
+              setNewTime(e, details["leadMaxTime"], "lead", "throwError");
             }}
             onKeyDown={(e) => {
               validateTime(e);
@@ -287,11 +282,11 @@ export default function EditProjectForm({
           <input
             name="ba-time"
             placeholder="Time"
-            className={!isBATimeError ? "form__input" : "form__input error"}
+            className={isTimeEnough["ba"] ? "form__input error" : "form__input"}
             type="text"
             value={details["baTime"]}
             onChange={(e) => {
-              setNewTime(e, details["baMaxTime"], "ba", setIsBATimeError);
+              setNewTime(e, details["baMaxTime"], "ba", "throwError");
             }}
             onKeyDown={(e) => {
               validateTime(e);
@@ -320,11 +315,11 @@ export default function EditProjectForm({
           <input
             name="pm-time"
             placeholder="Time"
-            className={!isPMTimeError ? "form__input" : "form__input error"}
+            className={isTimeEnough["pm"] ? "form__input error" : "form__input"}
             type="text"
             value={details["pmTime"]}
             onChange={(e) => {
-              setNewTime(e, details["pmMaxTime"], "pm", setIsPMTimeError);
+              setNewTime(e, details["pmMaxTime"], "pm", "throwError");
             }}
             onKeyDown={(e) => {
               validateTime(e);
@@ -343,11 +338,7 @@ export default function EditProjectForm({
           <label htmlFor="start">Start At:</label>
           <input
             name="start"
-            className={
-              isStartEmpty
-                ? "form__input form__input--date error"
-                : "form__input form__input--date"
-            }
+            className="form__input form__input--date"
             type="date"
             value={details["start"]}
             onChange={(e) => {
@@ -357,11 +348,7 @@ export default function EditProjectForm({
           <label htmlFor="start">End At:</label>
           <input
             name="end"
-            className={
-              isEndEmpty
-                ? "form__input form__input--date error"
-                : "form__input form__input--date"
-            }
+            className="form__input form__input--date"
             type="date"
             value={details["end"]}
             onChange={(e) => {
