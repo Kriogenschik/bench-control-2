@@ -3,16 +3,29 @@ import BenchTable from "../BenchTable/BenchTable";
 import { StaffBenchListProps } from "../BenchTable/types";
 import { useEffect, useState } from "react";
 import useCreateBenchList from "../../hooks/useCreateBenchList";
-import { useSelector } from "react-redux";
-import { allProjectsSelector } from "../ProjectsList/projectsListSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { allProjectsSelector, fetchProjects } from "../ProjectsList/projectsListSlice";
 import { ProjectProps } from "../ProjectsList/types";
-import { allStaffSelector } from "../StaffList/staffListSlice";
+import { allStaffSelector, fetchStaff } from "../StaffList/staffListSlice";
 import { EmployeesProps } from "../StaffList/types";
 import Tooltips from "../Tooltips/Tooltips";
+import { AppDispatch } from "../../store";
+import { fetchOptions } from "../OptionsForm/optionsFormSlice";
+import Spinner from "../Spinner/Spinner";
 
 import "./Bench.scss";
 
 const Bench = () => {
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(fetchStaff());
+    dispatch(fetchProjects());
+    dispatch(fetchOptions());
+    // eslint-disable-next-line
+  }, []);
+
   const [colorZone, setColorZone] = useState("all");
   const [nameSearch, setNameSearch] = useState("");
   const [btnPosition, setBtnPostion] = useState<number>(0);
@@ -50,12 +63,15 @@ const Bench = () => {
   const projectsList = useSelector(allProjectsSelector) as Array<ProjectProps>;
 
   const [isListLoading, setIsListLoading] = useState(false);
-  const  staffColor: Array<StaffBenchListProps> = useCreateBenchList(staffs, projectsList);
+  const staffColor: Array<StaffBenchListProps> = useCreateBenchList(
+    staffs,
+    projectsList
+  );
   const [staffList, setStaffList] =
     useState<Array<StaffBenchListProps>>(staffColor);
 
-    const [staffColorFiltered, setStaffColorFiltered] = useState< Array<StaffBenchListProps>>(staffColor);
-
+  const [staffColorFiltered, setStaffColorFiltered] =
+    useState<Array<StaffBenchListProps>>(staffColor);
 
   useEffect(() => {
     const filteredStaffList: Array<StaffBenchListProps> = [];
@@ -72,16 +88,22 @@ const Bench = () => {
   useEffect(() => {
     if (colorZone === "all") setStaffColorFiltered(() => staffColor);
     else {
-      setStaffColorFiltered(() => staffColor.filter((staff) => staff.color === colorZone))
-    }// eslint-disable-next-line
+      setStaffColorFiltered(() =>
+        staffColor.filter((staff) => staff.color === colorZone)
+      );
+    } // eslint-disable-next-line
   }, [colorZone]);
 
   if (!isListLoading && staffList.length) {
     setIsListLoading(true);
   } else if (staffColor.length && !staffList.length && !isListLoading) {
     setStaffList(staffColor);
-      setStaffColorFiltered(staffColor);
-      }
+    setStaffColorFiltered(staffColor);
+  } else if (!isListLoading){ 
+    return (<div className="tab__body">
+    <Spinner />
+  </div>)
+  }
 
   const openTooltip = (e: any) => {
     e.preventDefault();
@@ -111,7 +133,7 @@ const Bench = () => {
                 <span>green</span> - more than month
               </p>
               <p>
-                <span>grey</span> - no active prject
+                <span>grey</span> - no active project
               </p>
             </>
           }
@@ -129,6 +151,8 @@ const Bench = () => {
             style={{ color: "#619bff" }}
           ></span>
           <input
+            id="search"
+            name="search"
             type="text"
             className="form__input"
             placeholder="Name"

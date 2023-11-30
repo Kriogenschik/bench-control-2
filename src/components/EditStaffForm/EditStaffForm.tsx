@@ -82,6 +82,7 @@ const EditStaffForm = ({ id, closeForm }: EditFormProps) => {
         <input
           className={isEmpty["name"] ? "form__input error" : "form__input"}
           placeholder="Name"
+          id="name"
           name="name"
           type="text"
           value={staffState["name"]}
@@ -102,7 +103,7 @@ const EditStaffForm = ({ id, closeForm }: EditFormProps) => {
               placeholder={"select " + option.name}
               dropdownClass="dropdown__button"
               handleChange={(e: { value: React.SetStateAction<string> }) =>
-                setStaffState({ ...staffState, item: e.value })
+                setStaffState({ ...staffState, [item]: e.value })
               }
             />
           </div>
@@ -113,6 +114,7 @@ const EditStaffForm = ({ id, closeForm }: EditFormProps) => {
         <label htmlFor="time">Weekly Allowed Time:</label>
         <input
           name="time"
+          id="time"
           className={isEmpty["time"] ? "form__input error" : "form__input"}
           type="text"
           value={staffState["time"]}

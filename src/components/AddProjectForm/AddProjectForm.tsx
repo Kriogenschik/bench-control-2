@@ -222,6 +222,7 @@ export default function AddProjectForm({
         <div className="form__cell">
           <label htmlFor="project-name">Project Name:</label>
           <input
+            id="project-name"
             placeholder="Project Name"
             name="project-name"
             className={isEmpty["name"] ? "form__input error" : "form__input"}
@@ -243,6 +244,7 @@ export default function AddProjectForm({
           />
           <label htmlFor="lead-time">Hour Per Week:</label>
           <input
+            id="lead-time"
             name="lead-time"
             placeholder="Time"
             className="form__input"
@@ -267,6 +269,7 @@ export default function AddProjectForm({
           />
           <label htmlFor="ba-time">Hour Per Week:</label>
           <input
+            id="ba-time"
             name="ba-time"
             placeholder="Time"
             className="form__input"
@@ -291,6 +294,7 @@ export default function AddProjectForm({
           />
           <label htmlFor="pm-time">Hour Per Week:</label>
           <input
+            id="pm-time"
             name="pm-time"
             placeholder="Time"
             className="form__input"
@@ -307,6 +311,7 @@ export default function AddProjectForm({
         <div className="form__cell">
           <label htmlFor="start">Start At:</label>
           <input
+            id="start"
             name="start"
             className={isEmpty["start"] ? "form__input error" : "form__input"}
             type="date"
@@ -317,6 +322,7 @@ export default function AddProjectForm({
           />
           <label htmlFor="start">End At:</label>
           <input
+            id="end"
             name="end"
             className={isEmpty["end"] ? "form__input error" : "form__input"}
             type="date"
@@ -348,6 +354,7 @@ export default function AddProjectForm({
             />
             <label htmlFor="dev-time">Hour Per Week:</label>
             <input
+              id="dev-time"
               name="dev-time"
               placeholder="Time"
               className="form__input"
@@ -389,6 +396,7 @@ export default function AddProjectForm({
 
             <label htmlFor="qa-time">Hour Per Week:</label>
             <input
+              id="qa-time"
               name="qa-time"
               placeholder="Time"
               className="form__input"

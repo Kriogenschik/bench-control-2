@@ -74,8 +74,9 @@ export default function InputsColumn({
   return (
     <>
       <div className="form__inputs-column">
-        <label htmlFor="value">Value:</label>
+        <label htmlFor={id + "value"}>Value:</label>
         <input
+          id={id + "value"}
           name="value"
           className={isEmpty["value"] ? "form__input error" : "form__input"}
           type="text"
@@ -85,8 +86,9 @@ export default function InputsColumn({
         />
       </div>
       <div className="form__inputs-column">
-        <label htmlFor="name">Description:</label>
+        <label htmlFor={id + "name"}>Description:</label>
         <input
+          id={id + "name"}
           name="name"
           className={isEmpty["name"] ? "form__input error" : "form__input"}
           type="text"

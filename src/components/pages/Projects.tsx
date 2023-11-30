@@ -2,19 +2,30 @@ import { useDispatch, useSelector } from "react-redux";
 import ProjectsList from "../ProjectsList/ProjectsList";
 import { ProjectProps } from "../ProjectsList/types";
 import Spinner from "../Spinner/Spinner";
-import { allProjectsSelector, projectDeleted } from "../ProjectsList/projectsListSlice";
+import { allProjectsSelector, fetchProjects, projectDeleted } from "../ProjectsList/projectsListSlice";
 import AddProjectForm from "../AddProjectForm/AddProjectForm";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AppDispatch, RootState } from "../../store";
 import DeleteModal from "../DeleteModal/DeleteModal";
 import { useHttp } from "../../hooks/http.hook";
 import EditProjectForm from "../EditProjectForm/EditProjectForm";
+import { fetchStaff } from "../StaffList/staffListSlice";
+import { fetchOptions } from "../OptionsForm/optionsFormSlice";
 
 const Projects = () => {
   interface deleteProjectDataProps {
     id: number;
     name: string;
   }
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(fetchStaff());
+    dispatch(fetchOptions());
+    dispatch(fetchProjects());
+    // eslint-disable-next-line
+  }, []);
 
   const [showAddForm, setShowAddForm] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
@@ -26,7 +37,6 @@ const Projects = () => {
   const [editProjectId, setEditProjectId] = useState<number>(0);
   
   const { request } = useHttp();
-  const dispatch = useDispatch<AppDispatch>();
 
   const projectsList = useSelector(allProjectsSelector) as Array<ProjectProps>;
 

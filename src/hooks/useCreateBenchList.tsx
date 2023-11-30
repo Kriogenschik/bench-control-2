@@ -1,14 +1,9 @@
-import { useSelector } from "react-redux";
 import { StaffBenchListProps } from "../components/BenchTable/types";
 import { ProjectProps } from "../components/ProjectsList/types";
 import { EmployeesProps } from "../components/StaffList/types";
 import getStaffProjectsTime from "../utils/GetStaffProjectsTime";
-import { allStaffSelector } from "../components/StaffList/staffListSlice";
-import { allProjectsSelector } from "../components/ProjectsList/projectsListSlice";
 
 const useCreateBenchList = (staffs: Array<EmployeesProps>, projectsList: Array<ProjectProps>): Array<StaffBenchListProps> => {
-  // const staffs = useSelector(allStaffSelector) as Array<EmployeesProps>;
-  // const projectsList = useSelector(allProjectsSelector) as Array<ProjectProps>;
 
   let staffBenchList: Array<StaffBenchListProps> = [];
   if (staffs && projectsList) {

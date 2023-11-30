@@ -245,6 +245,7 @@ export default function EditProjectForm({
           />
           <label htmlFor="lead-time">Hour Per Week:</label>
           <input
+            id="lead-time"
             name="lead-time"
             placeholder="Time"
             className={
@@ -280,6 +281,7 @@ export default function EditProjectForm({
           />
           <label htmlFor="ba-time">Hour Per Week:</label>
           <input
+            id="ba-time"
             name="ba-time"
             placeholder="Time"
             className={isTimeEnough["ba"] ? "form__input error" : "form__input"}
@@ -313,6 +315,7 @@ export default function EditProjectForm({
           />
           <label htmlFor="pm-time">Hour Per Week:</label>
           <input
+            id="pm-time"
             name="pm-time"
             placeholder="Time"
             className={isTimeEnough["pm"] ? "form__input error" : "form__input"}
@@ -337,6 +340,7 @@ export default function EditProjectForm({
         <div className="form__cell">
           <label htmlFor="start">Start At:</label>
           <input
+            id="start"
             name="start"
             className="form__input form__input--date"
             type="date"
@@ -347,6 +351,7 @@ export default function EditProjectForm({
           />
           <label htmlFor="start">End At:</label>
           <input
+            id="end"
             name="end"
             className="form__input form__input--date"
             type="date"
@@ -383,6 +388,7 @@ export default function EditProjectForm({
             <div className="form__edit-input--time">
               <label htmlFor="dev-time">h/Week:</label>
               <input
+                id="dev-time"
                 name="dev-time"
                 placeholder="Time"
                 className="form__input"
@@ -429,6 +435,7 @@ export default function EditProjectForm({
             <div className="form__edit-input--time">
               <label htmlFor="qa-time">h/Week:</label>
               <input
+                id="qa-time"
                 name="qa-time"
                 placeholder="Time"
                 className="form__input"

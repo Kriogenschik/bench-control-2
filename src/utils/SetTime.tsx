@@ -17,7 +17,9 @@ export const validateTime = (e: React.KeyboardEvent<HTMLInputElement>) => {
     e.keyCode === 9 ||
     e.keyCode === 27 ||
     // Разрешаем: home, end, влево, вправо
-    (e.keyCode >= 35 && e.keyCode <= 39)
+    (e.keyCode >= 35 && e.keyCode <= 39) ||
+    // numPad
+    (e.keyCode >= 96 && e.keyCode <= 105)
   ) {
     return;
   } else if (e.keyCode < 48 || e.keyCode > 57) {

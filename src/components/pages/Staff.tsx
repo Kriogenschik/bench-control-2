@@ -1,18 +1,27 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import DeleteModal from "../DeleteModal/DeleteModal";
 import StaffList from "../StaffList/StaffList";
 import { useHttp } from "../../hooks/http.hook";
 import { useDispatch } from "react-redux";
-import { staffDeleted } from "../StaffList/staffListSlice";
+import { fetchStaff, staffDeleted } from "../StaffList/staffListSlice";
 import AddStaffForm from "../AddStaffForm/AddStaffForm";
 import EditStaffForm from "../EditStaffForm/EditStaffForm";
 import { AppDispatch } from "../../store";
+import { fetchOptions } from "../OptionsForm/optionsFormSlice";
 
 const Staff = () => {
   interface deleteStaffDataProps {
     id: number;
     name: string;
   }
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(fetchStaff());
+    dispatch(fetchOptions());
+    // eslint-disable-next-line
+  }, []);
 
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [deleteStaffData, setDeleteStaffData] = useState<deleteStaffDataProps>({
@@ -24,7 +33,6 @@ const Staff = () => {
   const [editStaffId, setEditStaffId] = useState<number>(0);
 
   const { request } = useHttp();
-  const dispatch = useDispatch<AppDispatch>();
 
   const openEditForm = (id: number) => {
     if (showEditForm) {

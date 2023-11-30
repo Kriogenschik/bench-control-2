@@ -52,7 +52,7 @@
       "stack": "XM",
       "exp": "LM",
       "speak": "CL",
-      "time": 20
+      "time": 25
     },
     {
       "id": 7,
@@ -147,7 +147,7 @@
     {
       "id": 18,
       "name": "Klark Kent",
-      "pos": "DEV",
+      "pos": "D",
       "stack": "MP",
       "exp": "ML",
       "speak": "OR",
@@ -499,9 +499,9 @@
       "lead": {
         "id": 5,
         "name": "Ivanko Ivanenko",
-        "time": 40,
+        "time": 38,
         "start": "2023-07-26",
-        "end": "2023-11-01",
+        "end": "2023-12-07",
         "billingType": "B"
       },
       "ba": {
@@ -509,7 +509,7 @@
         "name": "Boris Johnsonyk",
         "time": 10,
         "start": "2023-07-26",
-        "end": "2023-11-01",
+        "end": "2023-12-07",
         "billingType": "B"
       },
       "pm": {
@@ -517,11 +517,11 @@
         "name": "Mitchel Jordan",
         "time": 15,
         "start": "2023-07-26",
-        "end": "2023-11-01",
+        "end": "2023-12-07",
         "billingType": "B"
       },
       "start": "2023-07-26",
-      "end": "2023-11-01",
+      "end": "2023-12-07",
       "devs": [
         {
           "id": 1,
@@ -560,7 +560,7 @@
         {
           "id": 8,
           "name": "Yurko Yurchenko",
-          "time": 40,
+          "time": 35,
           "start": "2023-09-12",
           "end": "2023-11-01",
           "billingType": "B"

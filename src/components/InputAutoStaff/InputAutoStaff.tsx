@@ -82,15 +82,6 @@ export default function InputAutoStaff({
     onSelected(value);
     setSelectedVal(value);
     setIsHideSuggs(false);
-
-    // if (projects?.length && setFreeTime && setMaxFreeTime) {
-    //   const employ = newData.filter((employ) => employ.name === value)[0];
-    //   const id = employ ? employ.id : 0;
-    //   const time = employ ? employ.time : 0;
-    //   const freeTime = time - getStaffProjectsTime(id, projects, "B");
-    //   setFreeTime(freeTime);
-    //   setMaxFreeTime(freeTime);
-    // }
   };
 
   return (

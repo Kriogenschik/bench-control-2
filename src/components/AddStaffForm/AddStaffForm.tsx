@@ -100,6 +100,7 @@ const AddStaffForm = ({
         <input
           placeholder="Name"
           name="name"
+          id="name"
           className={isEmpty["name"] ? "form__input error" : "form__input"}
           type="text"
           value={details.name}
@@ -133,6 +134,7 @@ const AddStaffForm = ({
         <label htmlFor="time">Weekly Allowed Time:</label>
         <input
           name="time"
+          id="time"
           placeholder="Time"
           className={isEmpty["time"] ? "form__input error" : "form__input"}
           type="text"

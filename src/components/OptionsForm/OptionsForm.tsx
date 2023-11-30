@@ -127,6 +127,7 @@ export default function OptionsForm({
             <label htmlFor="new-value">Value:</label>
             <input
               name="new-value"
+              id="new-value"
               placeholder="Value"
               className={
                 isAddOptionEmpty["value"] ? "form__input error" : "form__input"
@@ -142,6 +143,7 @@ export default function OptionsForm({
             <label htmlFor="new-name">Name:</label>
             <input
               name="new-name"
+              id="new-name"
               placeholder="Name"
               className={
                 isAddOptionEmpty["name"] ? "form__input error" : "form__input"
