@@ -36,14 +36,13 @@ export default function OptionsForm({
   const [isOptionShown, setIsOptionShown] = useState<boolean>(true);
 
   function optionRemove(id: number) {
-    console.log("delete");
-
     const newOptions = optionsArr.filter((option) => option.id !== id);
     const newOptionsList = {
       arr: [...newOptions],
     };
     request(
-      `http://localhost:3001/options/${optionsId}`,
+      // `http://localhost:3001/options/${optionsId}`,
+      process.env.REACT_APP_PORT + `options/${optionsId}`,
       "PATCH",
       JSON.stringify(newOptionsList)
     )
@@ -75,7 +74,8 @@ export default function OptionsForm({
       };
 
       request(
-        `http://localhost:3001/options/${optionsId}`,
+        // `http://localhost:3001/options/${optionsId}`,
+        process.env.REACT_APP_PORT + `options/${optionsId}`,
         "PATCH",
         JSON.stringify(newOptionsList)
       )

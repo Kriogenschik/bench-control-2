@@ -54,8 +54,9 @@ const Staff = () => {
 
   const onDelete = useCallback(
     (id: number) => {
-      const url = `http://localhost:3001/employees/${id}`;
-      request(url, "DELETE")
+      // const url = `http://localhost:3001/employees/${id}`;
+      
+      request(process.env.REACT_APP_PORT + `staffs/${id}`, "DELETE")
         .then(() => dispatch(staffDeleted(id)))
         .catch((err: any) => console.log(err));
       setShowDeleteModal(() => false);

@@ -83,7 +83,8 @@ const AddStaffForm = ({
       };
 
       request(
-        "http://localhost:3001/employees",
+        // "http://localhost:3001/employees",
+        process.env.REACT_APP_PORT + "staffs",
         "POST", 
         JSON.stringify(newStaff)
       )

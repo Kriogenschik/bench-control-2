@@ -22,7 +22,8 @@ const initialState: ProjectsState = projectsAdapter.getInitialState({
 
 export const fetchProjects = createAsyncThunk<Array<ProjectProps>>("data/fetchProjects", () => {
   const { request } = useHttp();
-  return request("http://localhost:3001/projects");
+  return request("http://localhost:5000/projects");
+  // return request("http://localhost:3001/projects");
 });
 
 const projectsSlice = createSlice({

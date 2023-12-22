@@ -21,7 +21,8 @@ const initialState: OptionsState = optionsAdapter.getInitialState({
 
 export const fetchOptions = createAsyncThunk<Array<OptionFullProps>>("data/fetchOptions", () => {
   const { request } = useHttp();
-  return request("http://localhost:3001/options");
+  return request("http://localhost:5000/options");
+  // return request("http://localhost:3001/options");
 });
 
 const optionsSlice = createSlice({

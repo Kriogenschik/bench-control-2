@@ -2,7 +2,11 @@ import { useDispatch, useSelector } from "react-redux";
 import ProjectsList from "../ProjectsList/ProjectsList";
 import { ProjectProps } from "../ProjectsList/types";
 import Spinner from "../Spinner/Spinner";
-import { allProjectsSelector, fetchProjects, projectDeleted } from "../ProjectsList/projectsListSlice";
+import {
+  allProjectsSelector,
+  fetchProjects,
+  projectDeleted,
+} from "../ProjectsList/projectsListSlice";
 import AddProjectForm from "../AddProjectForm/AddProjectForm";
 import { useCallback, useEffect, useState } from "react";
 import { AppDispatch, RootState } from "../../store";
@@ -29,13 +33,14 @@ const Projects = () => {
 
   const [showAddForm, setShowAddForm] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
-  const [deleteProjectData, setDeleteProjectData] = useState<deleteProjectDataProps>({
-    id: 0,
-    name: "",
-  });
+  const [deleteProjectData, setDeleteProjectData] =
+    useState<deleteProjectDataProps>({
+      id: 0,
+      name: "",
+    });
   const [showEditForm, setShowEditForm] = useState<boolean>(false);
   const [editProjectId, setEditProjectId] = useState<number>(0);
-  
+
   const { request } = useHttp();
 
   const projectsList = useSelector(allProjectsSelector) as Array<ProjectProps>;
@@ -52,7 +57,11 @@ const Projects = () => {
 
   const onDelete = useCallback(
     (id: number) => {
-      request(`http://localhost:3001/projects/${id}`, "DELETE")
+      request(
+        // `http://localhost:3001/projects/${id}`,
+        process.env.REACT_APP_PORT + `projects/${id}`,
+        "DELETE"
+      )
         .then(() => dispatch(projectDeleted(id)))
         .catch((err: any) => console.log(err));
       setShowDeleteModal(() => false);
@@ -62,11 +71,11 @@ const Projects = () => {
   );
 
   const openDeleteModal = (id: number, name: string) => {
-      setDeleteProjectData({
-        id: id,
-        name: name,
-      });
-      setShowDeleteModal(() => true);
+    setDeleteProjectData({
+      id: id,
+      name: name,
+    });
+    setShowDeleteModal(() => true);
   };
 
   const projectsLoadingStatus = useSelector(
