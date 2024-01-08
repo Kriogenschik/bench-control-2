@@ -70,10 +70,10 @@ const AddStaffForm = ({
       details["time"]
     ) {
 
-      const newId = generateNewId(allStaff)
+      // const newId = generateNewId(allStaff);
 
       const newStaff = {
-        id: newId,
+        // id: newId,
         name: details["name"],
         pos: details["roles"],
         stack: details["stacks"],
@@ -88,7 +88,8 @@ const AddStaffForm = ({
         "POST", 
         JSON.stringify(newStaff)
       )
-        .then(() => dispatch(staffCreated(newStaff)))
+        // .then(() => dispatch(staffCreated(newStaff)))
+        .then((res) => dispatch(staffCreated(res)))
         .catch((err) => console.log(err));
       closeForm(e);
     }

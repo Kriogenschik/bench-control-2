@@ -51,7 +51,6 @@ export default function OptionsForm({
   }
 
   function optionAdd() {
-    console.log("Add");
     const newIsEmpty = {
       name: !addOption["name"],
       value: !addOption["value"],

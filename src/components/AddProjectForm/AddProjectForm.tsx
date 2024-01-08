@@ -8,7 +8,6 @@ import { EmployeesProps } from "../StaffList/types";
 import { allStaffSelector } from "../StaffList/staffListSlice";
 import { setTime, validateTime } from "../../utils/SetTime";
 import getStaffProjectsTime from "../../utils/GetStaffProjectsTime";
-import { generateNewId } from "../../utils/GenerateNewId";
 import { useHttp } from "../../hooks/http.hook";
 import { AppDispatch } from "../../store";
 import { projectCreated } from "../ProjectsList/projectsListSlice";
@@ -129,7 +128,6 @@ export default function AddProjectForm({
   };
 
   const saveProject = () => {
-    console.log("save");
     setIsEmpty({
       name: !details["projectName"],
       lead: !details["leadName"],
@@ -151,8 +149,8 @@ export default function AddProjectForm({
       devList.length &&
       qaList.length
     ) {
-      const newProject: ProjectProps = {
-        id: generateNewId(projectsList),
+      const newProject = {
+        // id: generateNewId(projectsList),
         name: details["projectName"],
         lead: {
           id: staffList.filter(
@@ -195,7 +193,7 @@ export default function AddProjectForm({
         "POST",
         JSON.stringify(newProject)
       )
-        .then(() => dispatch(projectCreated(newProject)))
+        .then((res) => dispatch(projectCreated(res)))
         .catch((err) => console.log(err));
       closeForm();
     }
@@ -204,7 +202,7 @@ export default function AddProjectForm({
   const setStaff = (e: string, role: string) => {
     const staff = staffList.filter((employ) => employ.name === e)[0];
     const freeTime =
-      staff.time - getStaffProjectsTime(staff.id, activeProjects, "B");
+      staff.time - getStaffProjectsTime(staff.id, activeProjects);
 
     setDetails({
       ...details,
