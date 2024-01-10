@@ -4,22 +4,19 @@ import Spinner from "../Spinner/Spinner";
 import { EmployeesProps } from "./types";
 import { RootState } from "../../store";
 
-import './staffList.scss'
-
+import "./staffList.scss";
 
 interface StaffListProps {
-  onDelete: (id: number, name: string ) => void;
+  onDelete: (id: number, name: string) => void;
   onEdit: (id: number) => void;
 }
 
-const StaffList = ({onDelete, onEdit}: StaffListProps): JSX.Element => {
-
+const StaffList = ({ onDelete, onEdit }: StaffListProps): JSX.Element => {
   const allStaff = useSelector(allStaffSelector) as Array<EmployeesProps>;
 
   const staffLoadingStatus = useSelector(
-    (state : RootState) => state.staff.staffLoadingStatus
+    (state: RootState) => state.staff.staffLoadingStatus
   );
-
 
   if (staffLoadingStatus === "loading") {
     return <Spinner />;
@@ -34,7 +31,7 @@ const StaffList = ({onDelete, onEdit}: StaffListProps): JSX.Element => {
     "Experience",
     "Speak Lvl",
     "Weekly Allowed Time",
-    "controls"
+    "controls",
   ];
 
   const renderStaffTable = (arr: Array<EmployeesProps>) => {
@@ -61,10 +58,16 @@ const StaffList = ({onDelete, onEdit}: StaffListProps): JSX.Element => {
                   <td>{item.stack}</td>
                   <td>{item.exp}</td>
                   <td>{item.speak}</td>
-                  <td>{item.time}</td>
+                  <td className="time-cell">{item.time}</td>
                   <td className="edit-cell">
-                  <button className="staff-table__btn fa-solid fa-user-pen fa-lg" onClick={() => onEdit(item.id)}></button>
-                  <button className="staff-table__btn fa-solid fa-trash-can fa-lg" onClick={() => onDelete(item.id, item.name)}></button>
+                    <button
+                      className="staff-table__btn fa-solid fa-user-pen fa-lg"
+                      onClick={() => onEdit(item.id)}
+                    ></button>
+                    <button
+                      className="staff-table__btn fa-solid fa-trash-can fa-lg"
+                      onClick={() => onDelete(item.id, item.name)}
+                    ></button>
                   </td>
                 </tr>
               );
@@ -77,9 +80,7 @@ const StaffList = ({onDelete, onEdit}: StaffListProps): JSX.Element => {
 
   const elements = renderStaffTable(allStaff);
 
-  return <div>
-    {elements}
-  </div>
+  return <div>{elements}</div>;
 };
 
 export default StaffList;

@@ -11,6 +11,10 @@
   margin: 45px auto 20px;
   font-size: 16px;
 
+  @media (max-width: 980px) {
+    font-size: 14px;
+  }
+
   table {
     width: 100%;
     border-collapse: collapse;
@@ -52,6 +56,14 @@
 
   tbody td {
     position: relative;
+    width: 13%;
+    &:first-child {
+      width: 22%;
+    }
+
+    @media (max-width: 980px) {
+      width: 9vw;
+    }
   }
 
   .edit-cell {
@@ -72,6 +84,9 @@
 
       &:not(:last-child) {
         margin-right: 15px;
+        @media (max-width: 980px) {
+          margin-right: 5px;
+        }
         &:hover {
           box-shadow: 0px 0px 10px $blue2;
         }

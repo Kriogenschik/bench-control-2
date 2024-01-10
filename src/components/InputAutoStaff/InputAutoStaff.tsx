@@ -64,7 +64,7 @@ export default function InputAutoStaff({
     newData.forEach((employ) => {
       if (
         projects?.length &&
-        employ.time - getStaffProjectsTime(employ.id, projects, "B") < 1
+        employ.time - getStaffProjectsTime(employ.id, projects) < 1
       ) {
         return;
       } else if (

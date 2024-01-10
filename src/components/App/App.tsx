@@ -4,11 +4,13 @@ import { Bench, Projects, Staff, Admin, Page404  } from "../pages";
 import { Nav } from "../Nav/Nav";
 
 import './App.scss';
+import Auth from "../Auth/Auth";
 
 function App() {
   return (
     <Router>
 		<div>
+			<Auth/>
 			<Nav />
 			<Routes>
 				<Route path="/" element={<Bench />} />
