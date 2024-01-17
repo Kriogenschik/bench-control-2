@@ -5,6 +5,8 @@ import { EmployeesProps } from "./types";
 import { RootState } from "../../store";
 
 import "./staffList.scss";
+import { useEffect, useState } from "react";
+import { staffSort } from "../../utils/StaffSort";
 
 interface StaffListProps {
   onDelete: (id: number, name: string) => void;
@@ -13,6 +15,39 @@ interface StaffListProps {
 
 const StaffList = ({ onDelete, onEdit }: StaffListProps): JSX.Element => {
   const allStaff = useSelector(allStaffSelector) as Array<EmployeesProps>;
+
+  const isAdmin = sessionStorage.getItem("isAdmin");
+
+  const [sortedStaff, setSortedStaff] = useState<Array<EmployeesProps>>([]);
+  const [sortTo, setSortTo] = useState<string>("");
+  const [isSortRise, setIsSortRise] = useState<boolean>(false);
+
+  const handleSort = (sortBy: string) => {
+    if (sortTo === sortBy && !isSortRise) {
+      setIsSortRise(true);
+      staffSort(allStaff, sortBy, true);
+    } else if (sortTo === sortBy && isSortRise) {
+      setIsSortRise(false);
+      staffSort(allStaff, sortBy, false);
+    } else {
+      setIsSortRise(false);
+      setSortTo(sortBy);
+      staffSort(allStaff, sortBy, false);
+    }
+  };
+  
+  useEffect(() => {
+    setSortedStaff(allStaff);
+    if (allStaff && allStaff.length) {
+      staffSort(allStaff, sortTo, isSortRise);
+    }
+  }, [allStaff]);
+
+  // useEffect(() => {
+  //   handleSort(sortTo);
+  //   console.log("autosort");
+    
+  // }, []);
 
   const staffLoadingStatus = useSelector(
     (state: RootState) => state.staff.staffLoadingStatus
@@ -31,11 +66,25 @@ const StaffList = ({ onDelete, onEdit }: StaffListProps): JSX.Element => {
     "Experience",
     "Speak Lvl",
     "Weekly Allowed Time",
-    "controls",
+    isAdmin ? "" : null,
   ];
 
+  // const handleSort = (sortBy: string) => {
+  //   if (sortTo === sortBy && !isSortRise) {
+  //     setIsSortRise(true);
+  //     staffSort(allStaff, sortBy, true);
+  //   } else if (sortTo === sortBy && isSortRise) {
+  //     setIsSortRise(false);
+  //     staffSort(allStaff, sortBy, false);
+  //   } else {
+  //     setIsSortRise(false);
+  //     setSortTo(sortBy);
+  //     staffSort(allStaff, sortBy, false);
+  //   }
+  // };
+
   const renderStaffTable = (arr: Array<EmployeesProps>) => {
-    if (arr.length === 0) {
+    if (arr && arr.length === 0) {
       return <h5 className="message">List is empty...</h5>;
     }
 
@@ -45,40 +94,63 @@ const StaffList = ({ onDelete, onEdit }: StaffListProps): JSX.Element => {
           <thead>
             <tr>
               {head.map((item) => {
-                return <th key={item}>{item}</th>;
+                let headClass = "";
+                if (item !== "" && item === sortTo) {
+                  if (isSortRise) {
+                    headClass = "staff-table__head-btn up";
+                  } else {
+                    headClass = "staff-table__head-btn down";
+                  }
+                } else if (item !== "") {
+                  headClass = "staff-table__head-btn";
+                }
+                if (item !== null) {
+                  return (
+                    <th
+                      key={item}
+                      className={headClass}
+                      onClick={() => handleSort(item)}
+                    >
+                      {item}
+                    </th>
+                  );
+                }
               })}
             </tr>
           </thead>
           <tbody>
-            {arr.map((item) => {
-              return (
-                <tr key={item.id} className="staff-table__row">
-                  <td>{item.name}</td>
-                  <td>{item.pos}</td>
-                  <td>{item.stack}</td>
-                  <td>{item.exp}</td>
-                  <td>{item.speak}</td>
-                  <td className="time-cell">{item.time}</td>
-                  <td className="edit-cell">
-                    <button
-                      className="staff-table__btn fa-solid fa-user-pen fa-lg"
-                      onClick={() => onEdit(item.id)}
-                    ></button>
-                    <button
-                      className="staff-table__btn fa-solid fa-trash-can fa-lg"
-                      onClick={() => onDelete(item.id, item.name)}
-                    ></button>
-                  </td>
-                </tr>
-              );
-            })}
+            {arr &&
+              arr.map((item) => {
+                return (
+                  <tr key={item.id} className="staff-table__row">
+                    <td>{item.name}</td>
+                    <td>{item.pos}</td>
+                    <td>{item.stack}</td>
+                    <td>{item.exp}</td>
+                    <td>{item.speak}</td>
+                    <td>{item.time}</td>
+                    {isAdmin && (
+                      <td className="edit-cell">
+                        <button
+                          className="staff-table__btn fa-solid fa-user-pen fa-lg"
+                          onClick={() => onEdit(item.id)}
+                        ></button>
+                        <button
+                          className="staff-table__btn fa-solid fa-trash-can fa-lg"
+                          onClick={() => onDelete(item.id, item.name)}
+                        ></button>
+                      </td>
+                    )}
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
       </>
     );
   };
 
-  const elements = renderStaffTable(allStaff);
+  const elements = renderStaffTable(sortedStaff);
 
   return <div>{elements}</div>;
 };

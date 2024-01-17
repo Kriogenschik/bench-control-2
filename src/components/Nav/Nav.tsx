@@ -6,6 +6,8 @@ const setActive = ({ isActive }: any) =>
   isActive ? "active header__tab" : "header__tab";
 
 export function Nav() {
+  const isAdmin = sessionStorage.getItem("isAdmin");
+
   return (
     <div className="header__menu">
       <NavLink to="/" className={setActive}>
@@ -17,9 +19,9 @@ export function Nav() {
       <NavLink to="/staff" className={setActive}>
         Employees
       </NavLink>
-      <NavLink to="/options" className={setActive}>
+      {isAdmin && <NavLink to="/options" className={setActive}>
         Admin
-      </NavLink>
+      </NavLink>}
     </div>
   );
 }

@@ -27,6 +27,8 @@ export default function ProjectCard({
 }: ProjectCardProps) {
   const [isActiveError, setIsActiveError] = useState<boolean>(false);
 
+  const isAdmin = sessionStorage.getItem("isAdmin");
+
   const dispatch = useDispatch<AppDispatch>();
   const { request } = useHttp();
 
@@ -44,17 +46,23 @@ export default function ProjectCard({
       const activeProjects = projects.filter(
         (proj) => proj.id === project.id || proj.isActive === true
       );
-      const maxLeadTime =
-        staffList.filter((employ) => employ.id === project.lead.id)[0].time -
-        getStaffProjectsTime(project.lead.id, activeProjects);
+      const lead = staffList.filter((employ) => employ.id === project.lead.id)[0];
+      let maxLeadTime = -1;
+      if(lead) {
+        maxLeadTime = lead.time - getStaffProjectsTime(project.lead.id, activeProjects);
+      }
 
-      const maxBATime =
-        staffList.filter((employ) => employ.id === project.ba.id)[0].time -
-        getStaffProjectsTime(project.ba.id, activeProjects);
+      const ba = staffList.filter((employ) => employ.id === project.ba.id)[0];
+      let maxBATime = -1;
+      if(ba) {
+        maxBATime = ba.time - getStaffProjectsTime(project.ba.id, activeProjects);
+      }
 
-      const maxPMTime =
-        staffList.filter((employ) => employ.id === project.pm.id)[0].time -
-        getStaffProjectsTime(project.pm.id, activeProjects);
+      const pm = staffList.filter((employ) => employ.id === project.pm.id)[0];
+      let maxPMTime = -1;
+      if(pm) {
+        maxPMTime = pm.time - getStaffProjectsTime(project.pm.id, activeProjects);
+      }
 
       let minDevTime = 0;
       project.devs.forEach((dev) => {
@@ -132,15 +140,15 @@ export default function ProjectCard({
         <p
           className={isActiveError ? "project__error" : "project__error hidden"}
         >
-          Employees don't have enough free time. Please Edit the project to make
+          Employees don't have enough free time or was deleted. Please Edit the project to make
           it Active.
         </p>
-        <InputCheckBox
+        {isAdmin && <InputCheckBox
           classname="project__switch"
           checked={project.isActive}
           handleChange={() => checkActive()}
           label="Active:"
-        />
+        />}
       </div>
       <div className="project__body">
         <p className="project__info">
@@ -202,7 +210,7 @@ export default function ProjectCard({
             );
           })}
         </div>
-        <div className="project__buttons">
+        {isAdmin && <div className="project__buttons">
           <button className="tab__btn" onClick={() => projectEdit(project.id)}>
             Edit
           </button>
@@ -210,7 +218,7 @@ export default function ProjectCard({
             className="tab__btn tab__btn--remove fa-solid fa-trash-can fa-lg"
             onClick={() => projectDelete(project.id, project.name)}
           ></button>
-        </div>
+        </div>}
       </div>
     </div>
   );

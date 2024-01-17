@@ -5,7 +5,6 @@ import { OptionFullProps } from "../OptionsForm/types";
 import { EmployeesProps } from "../StaffList/types";
 import { staffCreated, allStaffSelector } from "../StaffList/staffListSlice";
 import { setTime, validateTime } from "../../utils/SetTime";
-import { generateNewId } from "../../utils/GenerateNewId";
 import { useDispatch, useSelector } from "react-redux";
 import { useHttp } from "../../hooks/http.hook";
 
@@ -19,7 +18,7 @@ interface AddStaffFormProps {
 interface StateProps {
   [key: string]: any,
 }
-interface IsEmotyProps {
+interface IsEmptyProps {
   [key: string]: boolean,
 }
 
@@ -35,7 +34,7 @@ const AddStaffForm = ({
     time: 0,
   });
 
-  const [isEmpty, setIsEmpty] = useState<IsEmotyProps>({
+  const [isEmpty, setIsEmpty] = useState<IsEmptyProps>({
     name: false,
     roles: false,
     stacks: false,

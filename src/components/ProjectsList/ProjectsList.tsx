@@ -11,13 +11,11 @@ import { allProjectsSelector } from "./projectsListSlice";
 interface ProjectsListProps {
   projectEdit: (id: number) => void;
   projectDelete: (id: number, name: string) => void;
-  projects: Array<ProjectProps>;
 }
 
 export default function ProjectsList({
   projectEdit,
   projectDelete,
-  projects,
 }: ProjectsListProps) {
 
   const staffList = useSelector(allStaffSelector) as Array<EmployeesProps>;

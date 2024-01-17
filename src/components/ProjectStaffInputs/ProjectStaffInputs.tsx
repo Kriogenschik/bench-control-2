@@ -29,9 +29,17 @@ export default function ProjectStaffInputs({
   const [staffTypeB, setStaffTypeB] = useState<boolean>(
     staff.billingType === "B" ? true : false
   );
-  
-  const staffMaxTime = allStaffList.filter((employ) => employ.id === staff.id)[0].time;
-  const freeTime = staffMaxTime - getStaffProjectsTime(staff.id, projectsList);
+  const [isStaffDeleted, setIsStaffDeleted] = useState<boolean>(false);
+
+  const currentStaff = allStaffList.filter((employ) => employ.id === staff.id)[0];
+  let staffMaxTime = 0;
+  let freeTime = 0;
+  if (currentStaff) {
+    setTimeout(() => setIsStaffDeleted(true));
+    staffMaxTime = allStaffList.filter((employ) => employ.id === staff.id)[0].time;
+    freeTime = staffMaxTime - getStaffProjectsTime(staff.id, projectsList);
+  }
+
   const [isTimeEnough, setIsTimeEnough] = useState<boolean>(true);
 
   useEffect(() => {
@@ -40,7 +48,7 @@ export default function ProjectStaffInputs({
         setIsTimeEnough(false);
     }
     // eslint-disable-next-line
-  }, [staffTime]);
+  }, [staffTime, isStaffDeleted]);
 
   const changeType = (id: number, staffTypeB: boolean) => {
     changeStaffType(id, staffTypeB);
@@ -57,7 +65,7 @@ export default function ProjectStaffInputs({
 
   return (
     <>
-      <span className="form__list-name">{staff.name}</span>
+      <span className={!isStaffDeleted ? "form__list-name error" : "form__list-name"}>{staff.name}</span>
       <input
         name="staff-time"
         placeholder="Time"

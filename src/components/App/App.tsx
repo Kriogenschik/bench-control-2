@@ -7,6 +7,8 @@ import './App.scss';
 import Auth from "../Auth/Auth";
 
 function App() {
+	const isAdmin = sessionStorage.getItem("isAdmin");
+	
   return (
     <Router>
 		<div>
@@ -16,7 +18,7 @@ function App() {
 				<Route path="/" element={<Bench />} />
 				<Route path="/projects" element={<Projects />} />
 				<Route path="/staff" element={<Staff />} />
-				<Route path="/options" element={<Admin />} />
+				{isAdmin && <Route path="/options" element={<Admin />} />}
 				<Route path="*" element={<Page404 />} />
 			</Routes>
 		</div>

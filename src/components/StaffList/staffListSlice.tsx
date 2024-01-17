@@ -38,7 +38,7 @@ const staffSlice = createSlice({
     },
     staffEdited: (state, action) => {
       staffAdapter.updateOne(state, {id: action.payload.id, changes: {...action.payload.editedStaff}});
-    }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
@@ -49,7 +49,6 @@ const staffSlice = createSlice({
     );
     builder.addCase(fetchStaff.fulfilled, (state: StaffState, action: PayloadAction<Array<EmployeesProps>>) => {
       state.staffLoadingStatus = "idle";
-
       staffAdapter.setAll(state, action.payload);
     });
     builder.addCase(

@@ -21,6 +21,14 @@ export default function Auth() {
       setTimeout(() => document.addEventListener("click", clickOut));
     }
   };
+
+  const handleAdminToggle = () => {
+    const isAdmin = sessionStorage.getItem("isAdmin");
+    if (!isAdmin) {
+      sessionStorage.setItem("isAdmin", "true");
+    } else sessionStorage.removeItem("isAdmin");
+  }
+  
   return (
     <div className="auth">
       <div className="auth__wrapper">
@@ -40,6 +48,9 @@ export default function Auth() {
           {isSigned && <li className="auth__nav-item">
             <button className="auth__nav-btn" onClick={() => setIsSigned(false)}>Sign Out</button>
           </li>}
+          <li className="auth__nav-item">
+            <button className="auth__nav-btn" onClick={() => handleAdminToggle()}>Admin toggle</button>
+          </li>
         </ul>
       </div>
     </div>

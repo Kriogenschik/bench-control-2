@@ -24,7 +24,7 @@
   th,
   td {
     padding: 5px 8px;
-    &:not(:first-child, :last-child ) {
+    &:not(:first-child ) {
       text-align: center;
     }
   }
@@ -40,7 +40,48 @@
 
     &:last-child {
       border-radius: 0px 10px 0px 0px;
-      color: transparent;
+      // color: transparent;
+    }
+  }
+
+  &__head-btn {
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      background: $blue2;
+    }
+  }
+
+  &__head-btn.down,
+  &__head-btn.up {
+    position: relative;
+    user-select: none; 
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      right: 50%;
+      transform: translateX(10px);
+      width: 0;
+      height: 0;
+      transition: 0.3s;
+    }
+  }
+
+  &__head-btn.down {
+    &::after {
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 7px solid $textColor;
+    }
+  }
+
+  &__head-btn.up {
+    &::after {
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 7px solid $textColor;
     }
   }
 

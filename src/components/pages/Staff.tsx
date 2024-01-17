@@ -16,6 +16,7 @@ const Staff = () => {
   }
 
   const dispatch = useDispatch<AppDispatch>();
+  const isAdmin = sessionStorage.getItem("isAdmin");
 
   useEffect(() => {
     dispatch(fetchStaff());
@@ -67,7 +68,7 @@ const Staff = () => {
 
   return (
     <div className="tab__body">
-      {!showAddForm && (
+      {!showAddForm && isAdmin && (
         <button
           className="tab__btn tab__btn--add"
           onClick={() => setShowAddForm(true)}

@@ -22,6 +22,8 @@ const Projects = () => {
     name: string;
   }
 
+  const isAdmin = sessionStorage.getItem("isAdmin");
+
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -98,7 +100,7 @@ const Projects = () => {
 
   return (
     <div className="tab__body">
-      {!showAddForm && (
+      {!showAddForm && isAdmin && (
         <button
           className="tab__btn tab__btn--add"
           onClick={() => setShowAddForm(true)}
@@ -114,11 +116,8 @@ const Projects = () => {
       )}
 
       <ProjectsList
-        projects={projectsList}
         projectEdit={editFormToggle}
         projectDelete={openDeleteModal}
-        // staffList={staff}
-        // setCurrentProjects={setCurrentProjects}
       />
       {showEditForm && (
         <EditProjectForm

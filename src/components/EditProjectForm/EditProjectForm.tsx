@@ -51,19 +51,30 @@ export default function EditProjectForm({
     pm: false,
   });
 
+  const [isStaffDeleted, setIsStaffDeleted] = useState<IsEmptyProps>({
+    lead: false,
+    ba: false,
+    pm: false,
+  });
+
   const setStaffFreeTime = (
     name: string,
     currentTime: number,
     role: string
   ) => {
     const employ = staffs.filter((s) => s.name === name)[0];
-
-    const freeTime =
-      employ.time - getStaffProjectsTime(employ.id, activeProjects);
-    if (freeTime < currentTime) {
-      setTimeout(() => setIsTimeEnough({ ...isTimeEnough, [role]: true }))
+    if (!employ) {
+      setTimeout(() => setIsTimeEnough({ ...isTimeEnough, [role]: true }));
+      setTimeout(() => setIsStaffDeleted({ ...isStaffDeleted, [role]: true }));
+      return 0;
+    } else {
+      const freeTime =
+        employ.time - getStaffProjectsTime(employ.id, activeProjects);
+      if (freeTime < currentTime) {
+        setTimeout(() => setIsTimeEnough({ ...isTimeEnough, [role]: true }));
+      }
+      return freeTime;
     }
-    return freeTime;
   };
 
   const [details, setDetails] = useState<StateProps>({
@@ -130,6 +141,8 @@ export default function EditProjectForm({
   };
 
   const setStaff = (e: string, role: string) => {
+    setTimeout(() => setIsStaffDeleted({ ...isStaffDeleted, [role]: false }));
+    setTimeout(() => setIsTimeEnough({ ...isTimeEnough, [role]: false }));
     const staff = staffs.filter((employ) => employ.name === e)[0];
     const freeTime =
       staff.time - getStaffProjectsTime(staff.id, activeProjects, "B");
@@ -236,7 +249,9 @@ export default function EditProjectForm({
       <div className="form__row">
         <div className="form__cell">
           <InputAutoStaff
-            classname="form__input"
+            classname={
+              isStaffDeleted["lead"] ? "form__input error" : "form__input"
+            }
             label="Leader:"
             pholder="Lead Name"
             data={staffs}
@@ -272,7 +287,9 @@ export default function EditProjectForm({
         </div>
         <div className="form__cell">
           <InputAutoStaff
-            classname="form__input"
+            classname={
+              isStaffDeleted["ba"] ? "form__input error" : "form__input"
+            }
             label="BA:"
             pholder="BA Name"
             data={bas}
@@ -306,7 +323,9 @@ export default function EditProjectForm({
         </div>
         <div className="form__cell">
           <InputAutoStaff
-            classname="form__input"
+            classname={
+              isStaffDeleted["pm"] ? "form__input error" : "form__input"
+            }
             label="PM:"
             pholder="PM Name"
             data={pms}
