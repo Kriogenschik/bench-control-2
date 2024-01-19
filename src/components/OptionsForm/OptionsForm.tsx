@@ -41,7 +41,6 @@ export default function OptionsForm({
       arr: [...newOptions],
     };
     request(
-      // `http://localhost:3001/options/${optionsId}`,
       process.env.REACT_APP_PORT + `options/${optionsId}`,
       "PATCH",
       JSON.stringify(newOptionsList)
@@ -73,7 +72,6 @@ export default function OptionsForm({
       };
 
       request(
-        // `http://localhost:3001/options/${optionsId}`,
         process.env.REACT_APP_PORT + `options/${optionsId}`,
         "PATCH",
         JSON.stringify(newOptionsList)
@@ -81,10 +79,10 @@ export default function OptionsForm({
         .then(() => dispatch(optionsEdited({ optionsId, newOptionsList })))
         .catch((err: any) => console.log(err));
 
-        setAddOption({
-          value: "",
-          name: "",
-        });
+      setAddOption({
+        value: "",
+        name: "",
+      });
     }
   }
 

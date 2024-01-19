@@ -60,7 +60,6 @@ export default function InputsColumn({
           arr: [...newOptions],
         };
         request(
-          // `http://localhost:3001/options/${optionsId}`,
           process.env.REACT_APP_PORT + `options/${optionsId}`,
           "PATCH",
           JSON.stringify(newOptionsList)

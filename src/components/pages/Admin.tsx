@@ -4,9 +4,9 @@ import { allOptionsSelector, fetchOptions } from "../OptionsForm/optionsFormSlic
 import Spinner from "../Spinner/Spinner";
 import { OptionFullProps } from "../OptionsForm/types";
 import { AppDispatch, RootState } from "../../store";
+import { useEffect } from "react";
 
 import "./Admin.scss";
-import { useEffect } from "react";
 
 const Admin = () => {
   const optionsLoadingStatus = useSelector(

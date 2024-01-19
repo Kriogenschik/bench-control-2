@@ -187,7 +187,8 @@ export default function EditProjectForm({
       ];
       setList(newStaffList);
       setDetails({ ...details, [role + "Name"]: "", [role + "Time"]: 0 });
-      setClearDev(() => true);
+      if (role === "dev") setClearDev(() => true);
+      if (role === "qa") setClearQA(() => true);
     }
   };
 

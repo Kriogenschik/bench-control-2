@@ -45,7 +45,7 @@ export default function InputAutoStaff({
 
   let newData: Array<EmployeesProps> = data;
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {    
     if (setClear) {
       setClear(false);
     }

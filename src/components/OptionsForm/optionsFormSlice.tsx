@@ -31,7 +31,7 @@ const optionsSlice = createSlice({
   reducers: {
     optionsEdited: (state, action) => {
       optionsAdapter.updateOne(state, {id: action.payload.optionsId, changes: {...action.payload.newOptionsList}} );
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
