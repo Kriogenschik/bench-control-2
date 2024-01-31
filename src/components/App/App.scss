@@ -7,12 +7,20 @@ html {
    color: black;
    font-family: "Roboto Condensed", sans-serif;
    height: auto;
+   height: 100%;
 }
 
 body {
    background: linear-gradient(180deg, #5bb4fd 10%, $blue  50%, #5bb4fd 90%);
    padding: 0px 15px;
    font-size: 16px;
+   
+}
+
+.main {
+   display: flex;
+   flex-direction: column;
+   min-height: 100vh;
 }
 
 .container {
@@ -35,6 +43,7 @@ body {
       margin-bottom: 31px;
       max-width: 1900px;
       margin: 0px auto 20px;
+      width: 100%;
 
       @media ( max-width:650px) {
          border-radius: 15px;

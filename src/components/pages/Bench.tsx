@@ -15,7 +15,7 @@ import Spinner from "../Spinner/Spinner";
 
 import "./Bench.scss";
 
-const Bench = () => {
+const Bench = ():JSX.Element => {
 
   const dispatch = useDispatch<AppDispatch>();
 

@@ -47,7 +47,7 @@ const AddStaffForm = ({
   const { request } = useHttp();
 
   const options = useSelector(allOptionsSelector) as Array<OptionFullProps>;
-  const allStaff = useSelector(allStaffSelector) as Array<EmployeesProps>;
+  // const allStaff = useSelector(allStaffSelector) as Array<EmployeesProps>;
 
   const saveEmployee = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const newIsEmpty = {
@@ -69,10 +69,7 @@ const AddStaffForm = ({
       details["time"]
     ) {
 
-      // const newId = generateNewId(allStaff);
-
       const newStaff = {
-        // id: newId,
         name: details["name"],
         pos: details["roles"],
         stack: details["stacks"],
@@ -82,12 +79,10 @@ const AddStaffForm = ({
       };
 
       request(
-        // "http://localhost:3001/employees",
         process.env.REACT_APP_PORT + "staffs",
         "POST", 
         JSON.stringify(newStaff)
       )
-        // .then(() => dispatch(staffCreated(newStaff)))
         .then((res) => dispatch(staffCreated(res)))
         .catch((err) => console.log(err));
       closeForm(e);

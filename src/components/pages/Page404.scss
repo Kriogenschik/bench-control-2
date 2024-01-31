@@ -1,0 +1,85 @@
+@import "../../styles/vars.scss";
+
+.page404 {
+  background: $background;
+  padding: 15px;
+  border: 1px solid $gray;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 100%;
+  justify-content: center;
+
+  &__title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  &__banner {
+    position: relative;
+    font-size: 150px;
+    font-weight: 800;
+    font-style: italic;
+    text-align: center;
+    color: $blue2;
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 250px;
+      height: 50px;
+      border-radius: 50%;
+      background: $blue;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 0px;
+      opacity: 0.75;
+      filter: blur(10px);
+    }
+  }
+
+  &__banner--front {
+    position: relative;
+    z-index: 10;
+    transition: 0.15s;
+    animation: colorChange 4s infinite;
+  }
+
+  &__banner--back {
+    position: absolute;
+    z-index: 5;
+    top: 0px;
+    left: 50%;
+    transform: translateX(calc(-50% + 7px));
+    transition: 0.15s;
+    color: #2083d5;
+    animation: colorChange 4s infinite;
+  }
+  
+  &__text {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 600;
+  }
+}
+
+@keyframes colorChange {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  // 33% {
+  //   filter: hue-rotate(100deg);
+  // }
+  50% {
+    filter: hue-rotate(180deg);
+  }
+  // 60% {
+  //   filter: hue-rotate(250deg);
+  // }
+  // 65% {
+  //   filter: hue-rotate(180deg);
+  // }
+  75% {
+    filter: hue-rotate(0deg);
+  }
+}

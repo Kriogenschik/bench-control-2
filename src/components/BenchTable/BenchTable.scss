@@ -12,6 +12,10 @@
   margin: 10px auto 0;
   font-size: 16px;
 
+  @media (max-width: 980px) {
+    font-size: 14px;
+  }
+
   table {
     width: 100%;
     border-collapse: collapse;
@@ -51,8 +55,19 @@
     }
   }
 
-  tbody td {
+  tbody td, th {
     position: relative;
+    // width: 13%;
+    &:first-child {
+      width: 22%;
+    }
+
+    @media (max-width: 980px) {
+      width: 9vw;
+      &:first-child {
+        width: 22%;
+      }
+    }
   }
 
   &__placeholder {

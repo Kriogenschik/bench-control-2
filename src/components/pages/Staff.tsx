@@ -9,7 +9,7 @@ import EditStaffForm from "../EditStaffForm/EditStaffForm";
 import { AppDispatch } from "../../store";
 import { fetchOptions } from "../OptionsForm/optionsFormSlice";
 
-const Staff = () => {
+const Staff = ():JSX.Element => {
   interface deleteStaffDataProps {
     id: number;
     name: string;

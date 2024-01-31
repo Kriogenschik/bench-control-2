@@ -8,7 +8,7 @@ import { useEffect } from "react";
 
 import "./Admin.scss";
 
-const Admin = () => {
+const Admin = ():JSX.Element => {
   const optionsLoadingStatus = useSelector(
     (state: RootState) => state.options.optionsLoadingStatus
   );

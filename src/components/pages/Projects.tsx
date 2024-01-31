@@ -16,7 +16,7 @@ import EditProjectForm from "../EditProjectForm/EditProjectForm";
 import { fetchStaff } from "../StaffList/staffListSlice";
 import { fetchOptions } from "../OptionsForm/optionsFormSlice";
 
-const Projects = () => {
+const Projects = ():JSX.Element => {
   interface deleteProjectDataProps {
     id: number;
     name: string;
