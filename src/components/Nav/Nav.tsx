@@ -1,4 +1,6 @@
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 import './Nav.scss';
 
@@ -6,7 +8,9 @@ const setActive = ({ isActive }: any) =>
   isActive ? "active header__tab" : "header__tab";
 
 export function Nav() {
-  const isAdmin = sessionStorage.getItem("isAdmin");
+  const isAdmin = useSelector(
+    (state: RootState) => state.user.entities[window.sessionStorage.getItem("id") || ""]?.isAdmin
+  );
 
   return (
     <div className="header__menu">

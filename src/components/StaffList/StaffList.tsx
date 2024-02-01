@@ -43,12 +43,6 @@ const StaffList = ({ onDelete, onEdit }: StaffListProps): JSX.Element => {
     }
   }, [allStaff]);
 
-  // useEffect(() => {
-  //   handleSort(sortTo);
-  //   console.log("autosort");
-    
-  // }, []);
-
   const staffLoadingStatus = useSelector(
     (state: RootState) => state.staff.staffLoadingStatus
   );

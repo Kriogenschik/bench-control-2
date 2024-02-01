@@ -55,8 +55,6 @@ const Staff = ():JSX.Element => {
 
   const onDelete = useCallback(
     (id: number) => {
-      // const url = `http://localhost:3001/employees/${id}`;
-      
       request(process.env.REACT_APP_PORT + `staffs/${id}`, "DELETE")
         .then(() => dispatch(staffDeleted(id)))
         .catch((err: any) => console.log(err));

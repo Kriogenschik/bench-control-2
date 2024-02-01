@@ -3,13 +3,23 @@ import { useNavigate } from "react-router-dom";
 import { signOut, getAuth } from "firebase/auth";
 
 import "./AuthMenu.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store";
+import { userSignOut } from "../UserAuth/userAuthSlice";
 
 export default function AuthMenu() {
   const [isNavOpen, setIsNavOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const userName = sessionStorage.getItem("userName");
+  const userName = useSelector(
+    (state: RootState) => state.user.entities[window.sessionStorage.getItem("id") || ""]?.name
+  );
+
+  const isAuth = useSelector(
+    (state: RootState) => state.user.entities[window.sessionStorage.getItem("id") || ""]?.isAuth
+  );
 
   const clickOut = (e: { target: any }) => {
     if (!e.target.closest(".auth-menu__nav")) {
@@ -33,6 +43,8 @@ export default function AuthMenu() {
         .then(() => {
           window.sessionStorage.setItem("isAuth", "false");
           window.sessionStorage.setItem("token", "");
+          window.sessionStorage.setItem("id", "");
+          dispatch(userSignOut({id: window.sessionStorage.getItem("id") || "", token: "", isAuth: false }));
         })
         .then(() => navigate("/login"))
         .catch((error) => console.log(error));
@@ -51,22 +63,22 @@ export default function AuthMenu() {
         ></button>
         <ul className={isNavOpen ? "auth-menu__nav" : "auth-menu__nav hidden"}>
           <p className="auth-menu__welcome--sm">Welcome, {userName}</p>
-          {sessionStorage.getItem("userName") !== "true" ? (
-            <li className="auth-menu__nav-item">
-              <button
-                className="auth-menu__nav-btn"
-                onClick={() => navigate("/login")}
-              >
-                Sign In
-              </button>
-            </li>
-          ) : (
+          {isAuth ? (
             <li className="auth-menu__nav-item">
               <button
                 className="auth-menu__nav-btn"
                 onClick={() => handleSingOut()}
               >
                 Sign Out
+              </button>
+            </li>
+          ) : (
+            <li className="auth-menu__nav-item">
+              <button
+                className="auth-menu__nav-btn"
+                onClick={() => navigate("/login")}
+              >
+                Sign In
               </button>
             </li>
           )}

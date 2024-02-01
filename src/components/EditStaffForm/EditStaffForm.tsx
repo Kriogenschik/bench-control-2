@@ -62,7 +62,6 @@ const EditStaffForm = ({ id, closeForm }: EditFormProps) => {
       };
 
       request(
-        // `http://localhost:3001/employees/${id}`,
         process.env.REACT_APP_PORT + `staffs/${id}`,
         "PATCH",
         JSON.stringify(editedStaff)

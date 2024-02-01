@@ -4,7 +4,7 @@ const Spinner = () => {
       xmlns="http://www.w3.org/2000/svg"
       style={{
         margin: "auto",
-        background: "rgb(255, 255, 255)",
+        background: "transparent",
         display: "block",
       }}
       width="197px"

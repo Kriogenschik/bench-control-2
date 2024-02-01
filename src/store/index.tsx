@@ -1,7 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import staff from "../components/StaffList/staffListSlice";
 import options from "../components/OptionsForm/optionsFormSlice";
-import projects from '../components/ProjectsList/projectsListSlice'
+import projects from '../components/ProjectsList/projectsListSlice';
+import user from '../components/UserAuth/userAuthSlice';
 
 
 const stringMiddleware = () => (next: (arg0: { type: string; }) => any) => (action: any) => {
@@ -14,7 +15,7 @@ const stringMiddleware = () => (next: (arg0: { type: string; }) => any) => (acti
 };
 
 const store = configureStore({
-  reducer: {staff, options, projects},
+  reducer: {staff, options, projects, user},
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(stringMiddleware),
   devTools: process.env.NODE_ENV !== "production",
 })

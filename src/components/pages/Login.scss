@@ -119,6 +119,12 @@
     }
   }
 
+  &__error-message {
+    font-size: 20px;
+    text-align: center;
+    margin: auto;
+  }
+
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
