@@ -2,8 +2,8 @@ import { useState } from "react";
 import InputCheckBox from "../InputCheckbox/InputCheckbox";
 import { ProjectProps } from "../ProjectsList/types";
 import { EmployeesProps } from "../StaffList/types";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store";
 import { useHttp } from "../../hooks/http.hook";
 
 import "./ProjectCard.scss";
@@ -27,7 +27,9 @@ export default function ProjectCard({
 }: ProjectCardProps) {
   const [isActiveError, setIsActiveError] = useState<boolean>(false);
 
-  const isAdmin = sessionStorage.getItem("isAdmin");
+  const isAdmin = useSelector(
+    (state: RootState) => state.user.entities[window.sessionStorage.getItem("id") || ""]?.isAdmin
+  );
 
   const dispatch = useDispatch<AppDispatch>();
   const { request } = useHttp();

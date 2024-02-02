@@ -2,11 +2,11 @@ import { useCallback, useEffect, useState } from "react";
 import DeleteModal from "../DeleteModal/DeleteModal";
 import StaffList from "../StaffList/StaffList";
 import { useHttp } from "../../hooks/http.hook";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchStaff, staffDeleted } from "../StaffList/staffListSlice";
 import AddStaffForm from "../AddStaffForm/AddStaffForm";
 import EditStaffForm from "../EditStaffForm/EditStaffForm";
-import { AppDispatch } from "../../store";
+import { AppDispatch, RootState } from "../../store";
 import { fetchOptions } from "../OptionsForm/optionsFormSlice";
 
 const Staff = ():JSX.Element => {
@@ -16,7 +16,9 @@ const Staff = ():JSX.Element => {
   }
 
   const dispatch = useDispatch<AppDispatch>();
-  const isAdmin = sessionStorage.getItem("isAdmin");
+  const isAdmin = useSelector(
+    (state: RootState) => state.user.entities[window.sessionStorage.getItem("id") || ""]?.isAdmin
+  );
 
   useEffect(() => {
     dispatch(fetchStaff());

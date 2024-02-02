@@ -151,7 +151,6 @@ export default function AddProjectForm({
       qaList.length
     ) {
       const newProject = {
-        // id: generateNewId(projectsList),
         name: details["projectName"],
         lead: {
           id: staffList.filter(
@@ -187,9 +186,8 @@ export default function AddProjectForm({
         qas: qaList,
         isActive: true,
       };
-
+      
       request(
-        // "http://localhost:3001/projects",
         process.env.REACT_APP_PORT + `projects`,
         "POST",
         JSON.stringify(newProject)

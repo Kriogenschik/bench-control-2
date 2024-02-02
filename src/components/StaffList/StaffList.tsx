@@ -16,7 +16,9 @@ interface StaffListProps {
 const StaffList = ({ onDelete, onEdit }: StaffListProps): JSX.Element => {
   const allStaff = useSelector(allStaffSelector) as Array<EmployeesProps>;
 
-  const isAdmin = sessionStorage.getItem("isAdmin");
+  const isAdmin = useSelector(
+    (state: RootState) => state.user.entities[window.sessionStorage.getItem("id") || ""]?.isAdmin
+  );
 
   const [sortedStaff, setSortedStaff] = useState<Array<EmployeesProps>>([]);
   const [sortTo, setSortTo] = useState<string>("");

@@ -3,7 +3,8 @@ export const useHttp = () => {
     url: string,
     method = "GET",
     body: string | null = null,
-    headers = { "Content-Type": "application/json" }
+    headers = { "Content-Type": "application/json",
+                "Authorization": `Bearer ${window.sessionStorage.getItem("token")}` }
 
   ) => {
     try {

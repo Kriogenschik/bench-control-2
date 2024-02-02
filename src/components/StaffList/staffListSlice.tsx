@@ -22,7 +22,13 @@ const initialState: StaffState = staffAdapter.getInitialState({
 
 export const fetchStaff = createAsyncThunk<Array<EmployeesProps>>("data/fetchEmployees", () => {
   const { request } = useHttp();
-  return request("http://localhost:5000/staffs");
+  return request("http://localhost:5000/staffs",
+    // "GET",
+    // '',
+    // {
+    //   "Authorization": "",
+    // }
+  );
 });
 
 const staffSlice = createSlice({

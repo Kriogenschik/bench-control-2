@@ -22,7 +22,9 @@ const Projects = ():JSX.Element => {
     name: string;
   }
 
-  const isAdmin = sessionStorage.getItem("isAdmin");
+  const isAdmin = useSelector(
+    (state: RootState) => state.user.entities[window.sessionStorage.getItem("id") || ""]?.isAdmin
+  );
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -60,7 +62,6 @@ const Projects = ():JSX.Element => {
   const onDelete = useCallback(
     (id: number) => {
       request(
-        // `http://localhost:3001/projects/${id}`,
         process.env.REACT_APP_PORT + `projects/${id}`,
         "DELETE"
       )

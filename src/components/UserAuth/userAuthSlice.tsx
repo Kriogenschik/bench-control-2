@@ -23,7 +23,8 @@ export const fetchUser = createAsyncThunk<UserProps>(
   "data/fetchUser",
   async () => {
     const id = window.sessionStorage.getItem("id") || "";
-    const { request } = useHttp();
+    if (id) {
+      const { request } = useHttp();
     const result = await request(`http://localhost:5000/auth/${id}`);
     return {
       id: id,
@@ -32,6 +33,16 @@ export const fetchUser = createAsyncThunk<UserProps>(
       isAdmin: result.isAdmin,
       name: result.name,
     };
+    } else {
+      return {
+        id: '',
+        token: "",
+        isAuth: false,
+        isAdmin: false,
+        name: '',
+      };
+    }
+    
   }
 );
 

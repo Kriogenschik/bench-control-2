@@ -18,6 +18,8 @@ function App() {
 	
 	useEffect(() => {
     onAuthStateChanged(getAuth(), (user) => {
+			console.log("auth changed");
+			
       if (user) {
         window.sessionStorage.setItem("isAuth", "true");
         user.getIdToken().then(token => {
