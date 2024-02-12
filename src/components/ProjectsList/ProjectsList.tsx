@@ -17,7 +17,6 @@ export default function ProjectsList({
   projectEdit,
   projectDelete,
 }: ProjectsListProps) {
-
   const staffList = useSelector(allStaffSelector) as Array<EmployeesProps>;
   const projectsList = useSelector(allProjectsSelector) as Array<ProjectProps>;
   return (
@@ -26,13 +25,17 @@ export default function ProjectsList({
         projectsList.map((project) => {
           return (
             <div key={project.id}>
-            <ProjectCard
-              projectEdit={projectEdit}
-              projectDelete={projectDelete}
-              staffList={staffList}
-              projects={projectsList}
-              project={project}
-            />
+              {project.id ? (
+                <ProjectCard
+                  projectEdit={projectEdit}
+                  projectDelete={projectDelete}
+                  staffList={staffList}
+                  projects={projectsList}
+                  project={project}
+                />
+              ) : (
+                <p>Wrong Data</p>
+              )}
             </div>
           );
         })

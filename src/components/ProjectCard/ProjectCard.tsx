@@ -28,7 +28,7 @@ export default function ProjectCard({
   const [isActiveError, setIsActiveError] = useState<boolean>(false);
 
   const isAdmin = useSelector(
-    (state: RootState) => state.user.entities[window.sessionStorage.getItem("id") || ""]?.isAdmin
+    (state: RootState) => state.user.entities[window.localStorage.getItem("id") || ""]?.isAdmin
   );
 
   const dispatch = useDispatch<AppDispatch>();

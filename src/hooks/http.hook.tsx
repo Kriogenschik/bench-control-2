@@ -4,7 +4,7 @@ export const useHttp = () => {
     method = "GET",
     body: string | null = null,
     headers = { "Content-Type": "application/json",
-                "Authorization": `Bearer ${window.sessionStorage.getItem("token")}` }
+                "Authorization": `Bearer ${window.localStorage.getItem("token")}` }
 
   ) => {
     try {

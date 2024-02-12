@@ -76,7 +76,7 @@ const Bench = ():JSX.Element => {
   useEffect(() => {
     const filteredStaffList: Array<StaffBenchListProps> = [];
     staffColorFiltered.forEach((employ) => {
-      if (employ.name.toLowerCase().indexOf(nameSearch.toLowerCase()) === -1) {
+      if (employ.name && employ.name.toLowerCase().indexOf(nameSearch.toLowerCase()) === -1) {
         return;
       } else {
         filteredStaffList.push(employ);

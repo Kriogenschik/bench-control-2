@@ -90,6 +90,44 @@ body {
       z-index: 20;
    }
 
+   &__hint {
+      display: inline-block;
+      position: sticky;
+      left: 93%;
+      top: 15px;
+      z-index: 5;
+
+      .tooltip {
+         top: 10px;
+         width: auto;
+         display: flex;
+         gap: 20px;
+
+         @media ( max-width:810px) {
+            flex-wrap: wrap;
+            width: 85vw;
+            gap: 10px;
+         }
+      }
+
+      .tab__hint-col {
+         min-width: 150px;
+      }
+
+      .tab__hint-title {
+         font-weight: 600;
+         padding-bottom: 5px;
+      }
+   }
+
+   &__hint ~ div {
+      margin-top: -32px;
+   }
+
+   &__btn--hint {
+      font-weight: 500;
+   }
+
    &__form {
       display: flex;
       gap: 20px;

@@ -14,11 +14,11 @@ export default function AuthMenu() {
   const dispatch = useDispatch<AppDispatch>();
 
   const userName = useSelector(
-    (state: RootState) => state.user.entities[window.sessionStorage.getItem("id") || ""]?.name
+    (state: RootState) => state.user.entities[window.localStorage.getItem("id") || ""]?.name
   );
 
   const isAuth = useSelector(
-    (state: RootState) => state.user.entities[window.sessionStorage.getItem("id") || ""]?.isAuth
+    (state: RootState) => state.user.entities[window.localStorage.getItem("id") || ""]?.isAuth
   );
 
   const clickOut = (e: { target: any }) => {
@@ -41,10 +41,10 @@ export default function AuthMenu() {
     try {
       signOut(getAuth())
         .then(() => {
-          window.sessionStorage.setItem("isAuth", "false");
-          window.sessionStorage.setItem("token", "");
-          window.sessionStorage.setItem("id", "");
-          dispatch(userSignOut({id: window.sessionStorage.getItem("id") || "", token: "", isAuth: false }));
+          window.localStorage.setItem("isAuth", "false");
+          window.localStorage.setItem("token", "");
+          window.localStorage.setItem("id", "");
+          dispatch(userSignOut({id: window.localStorage.getItem("id") || "", token: "", isAuth: false }));
         })
         .then(() => navigate("/login"))
         .catch((error) => console.log(error));

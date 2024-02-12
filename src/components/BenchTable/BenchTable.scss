@@ -57,7 +57,6 @@
 
   tbody td, th {
     position: relative;
-    // width: 13%;
     &:first-child {
       width: 22%;
     }
@@ -109,12 +108,8 @@
   &:not(:first-child) {
     thead th { 
       &:first-child {
-        border-radius: 0px;
+        // border-radius: 0px;
         text-align: left;
-      }
-  
-      &:last-child {
-        border-radius: 0px;
       }
     }
   }

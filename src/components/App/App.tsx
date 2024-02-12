@@ -11,6 +11,7 @@ import { AppDispatch, RootState } from "../../store";
 import { fetchUser } from "../UserAuth/userAuthSlice";
 
 import './App.scss';
+import Spinner from "../Spinner/Spinner";
 
 function App() {
 
@@ -18,12 +19,10 @@ function App() {
 	
 	useEffect(() => {
     onAuthStateChanged(getAuth(), (user) => {
-			console.log("auth changed");
-			
       if (user) {
-        window.sessionStorage.setItem("isAuth", "true");
+        window.localStorage.setItem("isAuth", "true");
         user.getIdToken().then(token => {
-					window.sessionStorage.setItem("token", token);
+					window.localStorage.setItem("token", token);
 				});
       }
     })
@@ -36,13 +35,25 @@ function App() {
     // eslint-disable-next-line
   }, []);
 
-	const isAuth = useSelector(
-    (state: RootState) => state.user.entities[window.sessionStorage.getItem("id") || ""]?.isAuth
-  );
+	// const isAuth = useSelector(
+  //   (state: RootState) => state.user.entities[window.localStorage.getItem("id") || ""]?.isAuth
+  // );
+
+	const isAuth = window.localStorage.getItem("isAuth") === "true";
 
 	const isAdmin = useSelector(
-    (state: RootState) => state.user.entities[window.sessionStorage.getItem("id") || ""]?.isAdmin
+    (state: RootState) => state.user.entities[window.localStorage.getItem("id") || ""]?.isAdmin
   );
+
+	const userLoadingStatus = useSelector(
+    (state: RootState) => state.user.userLoadingStatus
+  );
+
+  if (userLoadingStatus === "loading") {
+    return <Spinner />;
+  } else if (userLoadingStatus === "error") {
+    return <h5 className="login__error-message">Loading Error...</h5>;
+  }
 	
   return (
     <Router>

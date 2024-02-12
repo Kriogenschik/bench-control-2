@@ -22,14 +22,14 @@ const initialState: UserState = userAdapter.getInitialState({
 export const fetchUser = createAsyncThunk<UserProps>(
   "data/fetchUser",
   async () => {
-    const id = window.sessionStorage.getItem("id") || "";
+    const id = window.localStorage.getItem("id") || "";
     if (id) {
       const { request } = useHttp();
     const result = await request(`http://localhost:5000/auth/${id}`);
     return {
       id: id,
-      token: window.sessionStorage.getItem("token") || "",
-      isAuth: !!window.sessionStorage.getItem("isAuth"),
+      token: window.localStorage.getItem("token") || "",
+      isAuth: !!window.localStorage.getItem("isAuth"),
       isAdmin: result.isAdmin,
       name: result.name,
     };

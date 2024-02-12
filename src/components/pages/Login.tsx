@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { useHttp } from "../../hooks/http.hook";
 import { useNavigate } from "react-router-dom";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store";
 import Spinner from "../Spinner/Spinner";
@@ -60,17 +57,17 @@ const Login = (): JSX.Element => {
         signInWithEmailAndPassword(auth, userName, password)
           .then((userCred) => {
             if (userCred) {
-              window.sessionStorage.setItem("isAuth", "true");
-              window.sessionStorage.setItem("id", userCred.user.uid);
+              window.localStorage.setItem("isAuth", "true");
+              window.localStorage.setItem("id", userCred.user.uid);
             };
             return request(`http://localhost:5000/auth/${userCred.user.uid}`)
           })
           .then((res) =>
             dispatch(
               userSignIn({
-                id: window.sessionStorage.getItem("id") || "",
-                token: window.sessionStorage.getItem("token") || "",
-                isAuth: !!window.sessionStorage.getItem("isAuth") || false,
+                id: window.localStorage.getItem("id") || "",
+                token: window.localStorage.getItem("token") || "",
+                isAuth: !!window.localStorage.getItem("isAuth") || false,
                 isAdmin: res.isAdmin,
                 name: res.name,
               })
@@ -121,10 +118,10 @@ const Login = (): JSX.Element => {
           <label className="login__label" htmlFor="password">
             Password
           </label>
-          <button
+          <span
             className="login__input-btn fa-solid fa-eye-slash fa-lg"
             onClick={() => setShowPassword(!showPassword)}
-          ></button>
+          ></span>
           <p className="login__error-msg">{errorMessage}</p>
         </div>
         <button

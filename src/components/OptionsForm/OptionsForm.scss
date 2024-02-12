@@ -95,6 +95,10 @@
     row-gap: 15px;
     justify-content: space-around;
     padding: 0px 15px;
+
+    @media (max-width: 570px) {
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    }
   }
 
   &__option {
@@ -162,6 +166,10 @@
     gap: 5px;
     flex: 1 1 auto;
     width: 150px;
+
+    @media (max-width: 570px) {
+      flex: 0 1 auto;
+    }
   }
 
   &__input {

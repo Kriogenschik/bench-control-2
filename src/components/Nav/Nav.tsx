@@ -9,7 +9,7 @@ const setActive = ({ isActive }: any) =>
 
 export function Nav() {
   const isAdmin = useSelector(
-    (state: RootState) => state.user.entities[window.sessionStorage.getItem("id") || ""]?.isAdmin
+    (state: RootState) => state.user.entities[window.localStorage.getItem("id") || ""]?.isAdmin
   );
 
   return (

@@ -6,7 +6,8 @@
   min-height: 100%;
   top: 0px;
   left: 0px;
-  background: $background;
+  background: linear-gradient(45deg, $background , $blue2);
+  background-size: 250% 250%;
   padding: 15px;
   border: 1px solid $gray;
   display: flex;
@@ -15,6 +16,7 @@
   justify-content: center;
   align-items: center;
   z-index: 20;
+  animation: bgmove 12s ease infinite;
 
   &__form {
     max-width: 400px;
@@ -62,6 +64,10 @@
     transition: 0.3s;
     background: $textColor2;
 
+    &:hover {
+      border: 1px solid $blue2;
+    }
+
     &:focus {
       border: 1px solid $blue2;
       box-shadow: 0px 0px 5px $blue2;
@@ -81,6 +87,7 @@
 
   &__input-btn {
     position: absolute;
+    cursor: pointer;
     background: transparent;
     width: 40px;
     height: 40px;
@@ -88,7 +95,9 @@
     bottom: 2px;
     transition: 0.3s;
     color: $gray;
-    
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:hover {
       color: $textColor;
@@ -130,5 +139,17 @@
   input:-webkit-autofill:focus,
   input:-webkit-autofill:active {
     box-shadow: 0 0 0 30px $textColor2 inset !important;
+  }
+}
+
+@keyframes bgmove {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
   }
 }

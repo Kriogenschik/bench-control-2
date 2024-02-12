@@ -17,7 +17,7 @@ const StaffList = ({ onDelete, onEdit }: StaffListProps): JSX.Element => {
   const allStaff = useSelector(allStaffSelector) as Array<EmployeesProps>;
 
   const isAdmin = useSelector(
-    (state: RootState) => state.user.entities[window.sessionStorage.getItem("id") || ""]?.isAdmin
+    (state: RootState) => state.user.entities[window.localStorage.getItem("id") || ""]?.isAdmin
   );
 
   const [sortedStaff, setSortedStaff] = useState<Array<EmployeesProps>>([]);
@@ -64,20 +64,6 @@ const StaffList = ({ onDelete, onEdit }: StaffListProps): JSX.Element => {
     "Weekly Allowed Time",
     isAdmin ? "" : null,
   ];
-
-  // const handleSort = (sortBy: string) => {
-  //   if (sortTo === sortBy && !isSortRise) {
-  //     setIsSortRise(true);
-  //     staffSort(allStaff, sortBy, true);
-  //   } else if (sortTo === sortBy && isSortRise) {
-  //     setIsSortRise(false);
-  //     staffSort(allStaff, sortBy, false);
-  //   } else {
-  //     setIsSortRise(false);
-  //     setSortTo(sortBy);
-  //     staffSort(allStaff, sortBy, false);
-  //   }
-  // };
 
   const renderStaffTable = (arr: Array<EmployeesProps>) => {
     if (arr && arr.length === 0) {
