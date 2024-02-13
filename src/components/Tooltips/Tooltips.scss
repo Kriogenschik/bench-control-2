@@ -13,10 +13,18 @@
   background-color: $lightyellow;
 }
 
-.form__tip-btn {
+.form__tip-container {
   position: absolute;
+  width: 20px;
+  height: 20px;
   right: -8px;
   bottom: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form__tip-btn {
   width: 20px;
   height: 20px;
   border-radius: 50%;

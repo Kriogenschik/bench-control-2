@@ -17,16 +17,28 @@
 		width: 170px;
 		flex: 0 0 170px;
 		display: inline-block;
+
+		@media (max-width: 575px) {
+			flex: 0 0 100px;
+		}
 	}
 
 	&__list-time{
 		width: 60px;
 		display: inline-block;
+
+		@media (max-width: 575px) {
+			width: 40px;
+		}
 	}
 
 	&__list-type{
 		width: 70px;
 		display: inline-block;
+
+		@media (max-width: 575px) {
+			width: 40px;
+		}
 	}
 
 	&__list-btn {

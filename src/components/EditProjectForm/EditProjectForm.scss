@@ -55,6 +55,10 @@
       padding: 10px 25px;
       border: 1px solid $gray;
       border-radius: 10px;
+
+      @media (max-width: 510px) {
+        padding: 10px;
+      }
     }
 
 		&__cell--btn {
@@ -88,6 +92,11 @@
       gap: 10px;
       align-items: flex-end;
       position: relative;
+
+      @media (max-width: 510px) {
+        flex-wrap: wrap;
+        max-width: 210px;
+      }
 
       .form__input-auto {
         label {
@@ -197,6 +206,18 @@
       position: absolute;
       top: -2px;
       right: 2px;
+    }
+  }
+
+  .form__list-name {
+    @media (max-width: 510px) {
+      flex: 0 0 75px;
+    }
+  }
+
+  .form__list-time {
+    @media (max-width: 510px) {
+      width: 65px;
     }
   }
 }

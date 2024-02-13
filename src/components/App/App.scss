@@ -97,6 +97,11 @@ body {
       top: 15px;
       z-index: 5;
 
+      @media ( max-width:600px) {
+         display: block;
+         text-align: end;
+      }
+
       .tooltip {
          top: 10px;
          width: auto;
@@ -105,13 +110,21 @@ body {
 
          @media ( max-width:810px) {
             flex-wrap: wrap;
+            justify-content: center;
             width: 85vw;
             gap: 10px;
+         }
+
+         @media ( max-width:600px) {
+            width: calc(100vw - 60px);
+            top: 33px;
+            left: 0%;
          }
       }
 
       .tab__hint-col {
          min-width: 150px;
+         text-align-last: left;
       }
 
       .tab__hint-title {

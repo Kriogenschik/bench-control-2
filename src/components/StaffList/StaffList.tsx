@@ -71,7 +71,7 @@ const StaffList = ({ onDelete, onEdit }: StaffListProps): JSX.Element => {
     }
 
     return (
-      <>
+      <div className="staff-container">
         <table className="staff-table">
           <thead>
             <tr>
@@ -128,7 +128,7 @@ const StaffList = ({ onDelete, onEdit }: StaffListProps): JSX.Element => {
               })}
           </tbody>
         </table>
-      </>
+      </div>
     );
   };
 

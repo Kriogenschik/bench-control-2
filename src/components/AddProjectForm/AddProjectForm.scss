@@ -26,6 +26,7 @@
 
       @media (max-width: 900px) {
         flex: 1 0 100%;
+        padding: 15px 5px;
         flex-wrap: wrap;
         justify-content: center;
       }
@@ -50,6 +51,11 @@
       max-width: none;
       flex: 0 0 auto;
       min-width: 300px;
+
+      @media (max-width: 425px) {
+        min-width: 210px;
+        padding-left: 0px;
+      }
     }
 
     &__cell.form__cell--btn {

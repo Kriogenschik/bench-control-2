@@ -65,6 +65,7 @@
       width: 9vw;
       &:first-child {
         width: 22%;
+        min-width: 135px;
       }
     }
   }
@@ -83,6 +84,7 @@
 
   &__cell {
     text-align: center;
+    min-width: 75px;
   }
 
   &__cell.grey {
@@ -108,7 +110,6 @@
   &:not(:first-child) {
     thead th { 
       &:first-child {
-        // border-radius: 0px;
         text-align: left;
       }
     }

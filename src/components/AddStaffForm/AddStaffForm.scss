@@ -44,6 +44,10 @@
     flex-direction: row;
 		justify-content: flex-end;
     flex: 1 0 auto;
+
+		@media (max-width: 505px) {
+			justify-content: center;
+		}
   }
 
 	.tab__btn{
@@ -52,8 +56,6 @@
 	}
 
 	&__tip-btn {
-		position: absolute;
-		right: -8px;
 		z-index: 10;
 	}
 
@@ -109,6 +111,10 @@
   width: 95%;
   transform: translateX(-50%);
   border: none;
+
+	@media (max-width: 505px) {
+		justify-content: center;
+	}
 
   &::before {
     content: "";

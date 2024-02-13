@@ -120,6 +120,13 @@
   &__list-item {
     display: flex;
     gap: 10px;
+
+    @media ( max-width:420px) {
+      gap: 5px;
+      flex-wrap: wrap;
+      border-bottom: 1px solid $gray;
+    }
+    
   }
 
   &__list-name {

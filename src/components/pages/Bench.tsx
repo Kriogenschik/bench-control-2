@@ -4,7 +4,10 @@ import { StaffBenchListProps } from "../BenchTable/types";
 import { useEffect, useState } from "react";
 import useCreateBenchList from "../../hooks/useCreateBenchList";
 import { useDispatch, useSelector } from "react-redux";
-import { allProjectsSelector, fetchProjects } from "../ProjectsList/projectsListSlice";
+import {
+  allProjectsSelector,
+  fetchProjects,
+} from "../ProjectsList/projectsListSlice";
 import { ProjectProps } from "../ProjectsList/types";
 import { allStaffSelector, fetchStaff } from "../StaffList/staffListSlice";
 import { EmployeesProps } from "../StaffList/types";
@@ -15,8 +18,7 @@ import Spinner from "../Spinner/Spinner";
 
 import "./Bench.scss";
 
-const Bench = ():JSX.Element => {
-
+const Bench = (): JSX.Element => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -76,7 +78,10 @@ const Bench = ():JSX.Element => {
   useEffect(() => {
     const filteredStaffList: Array<StaffBenchListProps> = [];
     staffColorFiltered.forEach((employ) => {
-      if (employ.name && employ.name.toLowerCase().indexOf(nameSearch.toLowerCase()) === -1) {
+      if (
+        employ.name &&
+        employ.name.toLowerCase().indexOf(nameSearch.toLowerCase()) === -1
+      ) {
         return;
       } else {
         filteredStaffList.push(employ);
@@ -99,10 +104,12 @@ const Bench = ():JSX.Element => {
   } else if (staffColor.length && !staffList.length && !isListLoading) {
     setStaffList(staffColor);
     setStaffColorFiltered(staffColor);
-  } else if (!isListLoading){ 
-    return (<div className="tab__body">
-    <Spinner />
-  </div>)
+  } else if (!isListLoading) {
+    return (
+      <div className="tab__body">
+        <Spinner />
+      </div>
+    );
   }
 
   const openTooltip = (e: any) => {
@@ -161,9 +168,12 @@ const Bench = ():JSX.Element => {
           />
         </div>
         <div className="tab__actions-dropdown">
-          <button className="form__tip-btn" onClick={(e) => openTooltip(e)}>
-            ?
-          </button>
+          <div className="form__tip-container">
+            <button className="form__tip-btn" onClick={(e) => openTooltip(e)}>
+              ?
+            </button>
+            <ShowTooltip />
+          </div>
           <Dropdown
             options={zones}
             value={colorZone}
@@ -175,7 +185,6 @@ const Bench = ():JSX.Element => {
             placeholderClassName="dropdown__placeholder"
             onChange={(e) => setColorZone(e.value)}
           />
-          <ShowTooltip />
         </div>
       </div>
       <div className="tab__table">

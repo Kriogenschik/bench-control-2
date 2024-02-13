@@ -56,10 +56,12 @@ const DropdownInput = ({
   return (
     <>
       <label>{label}</label>
-      <button
-        className="form__tip-btn"
-        onClick={(e) => openTooltip(e)}
-      >?</button>
+      <div className="form__tip-container">
+        <button className="form__tip-btn" onClick={(e) => openTooltip(e)}>
+          ?
+        </button>
+        <ShowTooltip />
+      </div>
       <Dropdown
         options={optionsList}
         value={value}
@@ -72,10 +74,9 @@ const DropdownInput = ({
         placeholderClassName="dropdown__placeholder"
         onChange={handleChange}
       />
-      <ShowTooltip />
     </>
   );
-}
+};
 
 DropdownInput.defaultProps = { dropdownClass: "dropdown__button" };
 

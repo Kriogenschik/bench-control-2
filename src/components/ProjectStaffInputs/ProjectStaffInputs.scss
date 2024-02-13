@@ -23,6 +23,11 @@
 	&__list-row {
 		width: 100%;
 		gap: 20px;
+
+		@media (max-width: 575px) {
+			gap: 10px;
+			max-width: 230px;
+		}
 	}
 
 	&__list-btn-cell {
