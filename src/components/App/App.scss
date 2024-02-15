@@ -68,7 +68,7 @@ body {
    &__btn--add {
       position: absolute;
       font-weight: 500;
-      right: 35px;
+      right: 60px;
       top: 15px;
 
       &:hover {
@@ -93,8 +93,8 @@ body {
    &__hint {
       display: inline-block;
       position: sticky;
-      left: 93%;
-      top: 15px;
+      left: 100%;
+      top: 20px;
       z-index: 5;
 
       @media ( max-width:600px) {

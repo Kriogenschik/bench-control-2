@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputCheckBox from "../InputCheckbox/InputCheckbox";
 import { ProjectProps } from "../ProjectsList/types";
 import { EmployeesProps } from "../StaffList/types";
@@ -26,10 +26,18 @@ export default function ProjectCard({
   project,
 }: ProjectCardProps) {
   const [isActiveError, setIsActiveError] = useState<boolean>(false);
+  const [isStaffError, setIsStaffError] = useState<boolean>(false);
 
   const isAdmin = useSelector(
-    (state: RootState) => state.user.entities[window.localStorage.getItem("id") || ""]?.isAdmin
+    (state: RootState) =>
+      state.user.entities[window.localStorage.getItem("id") || ""]?.isAdmin
   );
+
+  useEffect(() => {
+    if (!project.lead.name || !project.ba.name || !project.pm.name) {
+      setIsStaffError(() => true);
+    } else setIsStaffError(() => false)
+  }, [project])
 
   const dispatch = useDispatch<AppDispatch>();
   const { request } = useHttp();
@@ -48,44 +56,60 @@ export default function ProjectCard({
       const activeProjects = projects.filter(
         (proj) => proj.id === project.id || proj.isActive === true
       );
-      const lead = staffList.filter((employ) => employ.id === project.lead.id)[0];
+
+      const lead = staffList.filter(
+        (employ) => employ.id === project.lead?.id
+      )[0];      
       let maxLeadTime = -1;
-      if(lead) {
-        maxLeadTime = lead.time - getStaffProjectsTime(project.lead.id, activeProjects);
+      if (lead) {
+        maxLeadTime =
+          lead.time - getStaffProjectsTime(project.lead.id || 40, activeProjects);
       }
 
-      const ba = staffList.filter((employ) => employ.id === project.ba.id)[0];
+      const ba = staffList.filter((employ) => employ.id === project.ba?.id)[0];      
       let maxBATime = -1;
-      if(ba) {
-        maxBATime = ba.time - getStaffProjectsTime(project.ba.id, activeProjects);
-      }
+      if (ba) {
+        maxBATime =
+          ba.time - getStaffProjectsTime(project.ba.id || 40, activeProjects);
+      } else maxBATime = 0;
 
-      const pm = staffList.filter((employ) => employ.id === project.pm.id)[0];
+      const pm = staffList.filter((employ) => employ.id === project.pm?.id)[0];
       let maxPMTime = -1;
-      if(pm) {
-        maxPMTime = pm.time - getStaffProjectsTime(project.pm.id, activeProjects);
-      }
+      if (pm) {
+        maxPMTime =
+          pm.time - getStaffProjectsTime(project.pm.id || 40, activeProjects);
+      } else maxPMTime = 0;
 
       let minDevTime = 0;
       project.devs.forEach((dev) => {
-        const maxDevTime =
-          staffList.filter((employ) => employ.id === dev.id)[0].time -
-          getStaffProjectsTime(dev.id, activeProjects);
-        if (minDevTime > maxDevTime) {
-          minDevTime = maxDevTime;
-        }
+        const currentDev = staffList.filter(
+          (employ) => employ.id === dev.id
+        )[0];
+        if (currentDev) {
+          const maxDevTime =
+            currentDev.time - getStaffProjectsTime(dev.id, activeProjects);
+          if (minDevTime > maxDevTime) {
+            minDevTime = maxDevTime;
+          }
+        } else minDevTime = -1;
+        return;
       });
 
       let minQATime = 0;
       project.qas.forEach((qa) => {
-        const maxQATime =
-          staffList.filter((employ) => employ.id === qa.id)[0].time -
-          getStaffProjectsTime(qa.id, activeProjects);
-        if (minQATime > maxQATime) {
-          minQATime = maxQATime;
-        }
+        const currentQA = staffList.filter(
+          (employ) => employ.id === qa.id
+        )[0];
+        if (currentQA) {
+          const maxQATime =
+          currentQA.time - getStaffProjectsTime(qa.id, activeProjects);
+          if (minQATime > maxQATime) {
+            minQATime = maxQATime;
+          }
+        } else minQATime = -1;
+        return;
       });
-
+      
       if (
         maxLeadTime >= 0 &&
         maxBATime >= 0 &&
@@ -106,7 +130,6 @@ export default function ProjectCard({
       isActive: !project.isActive,
     };
     request(
-      // `http://localhost:3001/projects/${id}`,
       process.env.REACT_APP_PORT + `projects/${id}`,
       "PATCH",
       JSON.stringify(editedProject)
@@ -129,28 +152,43 @@ export default function ProjectCard({
     return "none";
   };
 
+  const cardClass = (): string => {
+    let result = "tab__project project";
+    if (isStaffError && project.isActive) {
+      result += " error active"
+    } else if (project.isActive) {
+      result += " active"
+    }
+    return result;
+  }
+
   return (
     <div
       className={
-        project.isActive
-          ? "tab__project project active"
-          : "tab__project project"
+        cardClass()
       }
     >
       <div className="project__head">
         <p className="project__title">{project.name}</p>
         <p
+          className={(isStaffError && project.isActive) ? "project__error-staff" : "project__error-staff hidden"}
+        >
+          Not all roles in the project are filled!
+        </p>
+        <p
           className={isActiveError ? "project__error" : "project__error hidden"}
         >
-          Employees don't have enough free time or was deleted. Please Edit the project to make
-          it Active.
+          Employees don't have enough free time or was deleted. Please Edit the
+          project to make it Active.
         </p>
-        {isAdmin && <InputCheckBox
-          classname="project__switch"
-          checked={project.isActive}
-          handleChange={() => checkActive()}
-          label="Active:"
-        />}
+        {isAdmin && (
+          <InputCheckBox
+            classname="project__switch"
+            checked={project.isActive}
+            handleChange={() => checkActive()}
+            label="Active:"
+          />
+        )}
       </div>
       <div className="project__body">
         <p className="project__info">
@@ -163,18 +201,18 @@ export default function ProjectCard({
         </p>
         <p className="project__info">
           <span className="project__label">Lead: </span>
-          {project.lead.name} - {project.lead.time}h Billable:{" "}
-          {project.lead.billingType}
+          {project.lead?.name || "none"} - {project.lead?.time || "0"}h Billable:{" "}
+          {project.lead?.billingType || "B"}
         </p>
         <p className="project__info">
           <span className="project__label">BA: </span>
-          {project.ba.name} - {project.ba.time}h Billable:{" "}
-          {project.ba.billingType}
+          {project.ba?.name || "none"} - {project.ba?.time || "0"}h Billable:{" "}
+          {project.ba?.billingType || "B"}
         </p>
         <p className="project__info">
           <span className="project__label">PM: </span>
-          {project.pm.name} - {project.pm.time}h Billable:{" "}
-          {project.pm.billingType}
+          {project.pm?.name || "none"} - {project.pm?.time || "0"}h Billable:{" "}
+          {project.pm?.billingType || "B"}
         </p>
         <p className="project__info">
           <span className="project__label">StartAt: </span>
@@ -212,15 +250,20 @@ export default function ProjectCard({
             );
           })}
         </div>
-        {isAdmin && <div className="project__buttons">
-          <button className="tab__btn" onClick={() => projectEdit(project.id)}>
-            Edit
-          </button>
-          <button
-            className="tab__btn tab__btn--remove fa-solid fa-trash-can fa-lg"
-            onClick={() => projectDelete(project.id, project.name)}
-          ></button>
-        </div>}
+        {isAdmin && (
+          <div className="project__buttons">
+            <button
+              className="tab__btn"
+              onClick={() => projectEdit(project.id)}
+            >
+              Edit
+            </button>
+            <button
+              className="tab__btn tab__btn--remove fa-solid fa-trash-can fa-lg"
+              onClick={() => projectDelete(project.id, project.name)}
+            ></button>
+          </div>
+        )}
       </div>
     </div>
   );

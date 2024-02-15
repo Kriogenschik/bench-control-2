@@ -10,21 +10,28 @@ import { EmployeesProps } from "../StaffList/types";
 import { AppDispatch } from "../../store";
 
 import "./EditStaffForm.scss";
+import { EditProjectByStaffChange } from "../../utils/EditProjectByStaffChange";
+import { allProjectsSelector } from "../ProjectsList/projectsListSlice";
+import { ProjectProps } from "../ProjectsList/types";
 
 interface EditFormProps {
   id: number;
   closeForm: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  projectsList: Array<ProjectProps>;
 }
 
 interface StateProps {
   [key: string]: any;
 }
 
-const EditStaffForm = ({ id, closeForm }: EditFormProps) => {
+const EditStaffForm = ({ id, closeForm, projectsList }: EditFormProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { request } = useHttp();
 
   const allStaff = useSelector(allStaffSelector) as Array<EmployeesProps>;
+  // const projectsList = useSelector(allProjectsSelector) as Array<ProjectProps>;
+  console.log(projectsList);
+  
 
   const staff = allStaff.filter((item) => item.id === id)[0] as EmployeesProps;
 
@@ -67,6 +74,7 @@ const EditStaffForm = ({ id, closeForm }: EditFormProps) => {
         JSON.stringify(editedStaff)
       )
         .then(() => dispatch(staffEdited({ id, editedStaff })))
+        .then(() => {console.log("run"); EditProjectByStaffChange(projectsList, editedStaff)})
         .catch((err: any) => console.log(err));
       closeForm(e);
     }

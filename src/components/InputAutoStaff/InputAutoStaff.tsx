@@ -45,7 +45,7 @@ export default function InputAutoStaff({
 
   let newData: Array<EmployeesProps> = data;
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {    
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (setClear) {
       setClear(false);
     }
@@ -84,6 +84,12 @@ export default function InputAutoStaff({
     setIsHideSuggs(false);
   };
 
+  const handleBlur = () => {
+    if (selectedVal === "") {
+      onSelected("");
+    }
+  };
+
   return (
     <div className="form__input-auto">
       <div className="form__input-auto-body">
@@ -94,6 +100,7 @@ export default function InputAutoStaff({
           type="search"
           value={clear ? "" : selectedVal}
           onChange={(e) => handleChange(e)}
+          onBlur={() => handleBlur()}
         />
       </div>
 

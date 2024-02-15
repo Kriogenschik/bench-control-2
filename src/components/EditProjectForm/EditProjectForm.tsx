@@ -78,16 +78,16 @@ export default function EditProjectForm({
   };
 
   const [details, setDetails] = useState<StateProps>({
-    leadName: project.lead.name,
-    leadTime: project.lead.time,
+    leadName: project.lead.name || "",
+    leadTime: project.lead.time || "",
     leadMaxTime: 40,
     leadTypeB: project.lead.billingType === "B" ? true : false,
-    baName: project.ba.name,
-    baTime: project.ba.time,
+    baName: project.ba.name || "",
+    baTime: project.ba.time || "",
     baMaxTime: 40,
     baTypeB: project.ba.billingType === "B" ? true : false,
-    pmName: project.pm.name,
-    pmTime: project.pm.time,
+    pmName: project.pm.name || "",
+    pmTime: project.pm.time || "",
     pmMaxTime: 40,
     pmTypeB: project.pm.billingType === "B" ? true : false,
     start: project.start,
@@ -103,13 +103,15 @@ export default function EditProjectForm({
   useEffect(() => {
     setDetails({
       ...details,
-      leadMaxTime: setStaffFreeTime(
-        project.lead.name,
-        project.lead.time,
-        "lead"
-      ),
-      baMaxTime: setStaffFreeTime(project.ba.name, project.ba.time, "ba"),
-      pmMaxTime: setStaffFreeTime(project.pm.name, project.pm.time, "pm"),
+      leadMaxTime: project.lead.name
+        ? setStaffFreeTime(project.lead.name, project.lead.time || 40, "lead")
+        : 40,
+      baMaxTime: project.ba.name
+        ? setStaffFreeTime(project.ba.name, project.ba.time || 40, "ba")
+        : 40,
+      pmMaxTime: project.pm.name
+        ? setStaffFreeTime(project.pm.name, project.pm.time || 40, "pm")
+        : 40,
     });
     // eslint-disable-next-line
   }, []);
@@ -143,6 +145,19 @@ export default function EditProjectForm({
   const setStaff = (e: string, role: string) => {
     setTimeout(() => setIsStaffDeleted({ ...isStaffDeleted, [role]: false }));
     setTimeout(() => setIsTimeEnough({ ...isTimeEnough, [role]: false }));
+    
+    if (e === "") {
+      if (role === "lead" || role === "ba" || role === "pm") {
+        setDetails({
+          ...details,
+          [role + "Name"]: '',
+          [role + "Time"]: 0,
+          [role + "MaxTime"]: 40,
+        });
+        return;
+      } else return;
+    }
+
     const staff = staffs.filter((employ) => employ.name === e)[0];
     const freeTime =
       staff.time - getStaffProjectsTime(staff.id, activeProjects, "B");
@@ -199,38 +214,38 @@ export default function EditProjectForm({
       const editedProject: ProjectProps = {
         id: id,
         name: project.name,
-        lead: {
+        lead: details["leadName"] ? {
           id: staffs.filter((s) => s.name === details["leadName"])[0].id,
           name: details["leadName"],
           time: details["leadTime"],
           start: details["start"],
           end: details["end"],
           billingType: details["leadTypeB"] ? "B" : "UB",
-        },
-        ba: {
+        } : {},
+        ba: details["baName"] ? {
           id: staffs.filter((s) => s.name === details["baName"])[0].id,
           name: details["baName"],
           time: details["baTime"],
           start: details["start"],
           end: details["end"],
           billingType: details["baTypeB"] ? "B" : "UB",
-        },
-        pm: {
+        } : {},
+        pm: details["pmName"] ? {
           id: staffs.filter((s) => s.name === details["pmName"])[0].id,
           name: details["pmName"],
           time: details["pmTime"],
           start: details["start"],
           end: details["end"],
           billingType: details["pmTypeB"] ? "B" : "UB",
-        },
+        }: {},
         start: details["start"],
         end: details["end"],
         devs: devList,
         qas: qaList,
         isActive: project.isActive,
-      };
+      };     
+
       request(
-        // `http://localhost:3001/projects/${id}`,
         process.env.REACT_APP_PORT + `projects/${id}`,
         "PATCH",
         JSON.stringify(editedProject)

@@ -10,9 +10,9 @@ export interface ProjectStaffProps {
 export interface ProjectProps {
   id: number;
   name: string;
-  lead: ProjectStaffProps;
-  ba: ProjectStaffProps;
-  pm: ProjectStaffProps;
+  lead: Partial<ProjectStaffProps>;
+  ba: Partial<ProjectStaffProps>;
+  pm: Partial<ProjectStaffProps>;
   start: string;
   end: string;
   devs: Array<ProjectStaffProps>;

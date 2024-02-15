@@ -142,9 +142,9 @@ export default function AddProjectForm({
 
     if (
       details["projectName"] &&
-      details["leadName"] &&
-      details["baName"] &&
-      details["pmName"] &&
+      // details["leadName"] &&
+      // details["baName"] &&
+      // details["pmName"] &&
       details["start"] &&
       details["end"] &&
       devList.length &&
@@ -152,7 +152,7 @@ export default function AddProjectForm({
     ) {
       const newProject = {
         name: details["projectName"],
-        lead: {
+        lead: details["leadName"] ? {
           id: staffList.filter(
             (employ) => employ.name === details["leadName"]
           )[0].id,
@@ -161,8 +161,8 @@ export default function AddProjectForm({
           start: details["start"],
           end: details["end"],
           billingType: "B",
-        },
-        ba: {
+        } : {},
+        ba: details["baName"] ? {
           id: staffList.filter((employ) => employ.name === details["baName"])[0]
             .id,
           name: details["baName"],
@@ -170,8 +170,8 @@ export default function AddProjectForm({
           start: details["start"],
           end: details["end"],
           billingType: "B",
-        },
-        pm: {
+        } : {},
+        pm: details["pmName"] ? {
           id: staffList.filter((employ) => employ.name === details["pmName"])[0]
             .id,
           name: details["pmName"],
@@ -179,7 +179,7 @@ export default function AddProjectForm({
           start: details["start"],
           end: details["end"],
           billingType: "B",
-        },
+        } : {},
         start: details["start"],
         end: details["end"],
         devs: devList,
@@ -199,6 +199,18 @@ export default function AddProjectForm({
   };
 
   const setStaff = (e: string, role: string) => {
+    if (e === "") {
+      if (role === "lead" || role === "ba" || role === "pm") {
+        setDetails({
+          ...details,
+          [role + "Name"]: '',
+          [role + "Time"]: 0,
+          [role + "MaxTime"]: 40,
+        });
+        return;
+      } else return;
+    }
+
     const staff = staffList.filter((employ) => employ.name === e)[0];
     const freeTime =
       staff.time - getStaffProjectsTime(staff.id, activeProjects);
@@ -227,17 +239,18 @@ export default function AddProjectForm({
             type="text"
             value={details["projectName"]}
             onChange={(e) => {
-              setDetails({ ...details, projectName: e.target.value });
+              setDetails({ ...details, projectName: e.target.value });              
             }}
           />
         </div>
         <div className="form__cell">
           <InputAutoStaff
-            classname={isEmpty["lead"] ? "form__input error" : "form__input"}
+            // classname={isEmpty["lead"] ? "form__input error" : "form__input"}
+            classname="form__input"
             label="Leader:"
             pholder="Lead Name"
             data={staffList}
-            onSelected={(e: string) => setStaff(e, "lead")}
+            onSelected={(e: string) => {setStaff(e, "lead"); console.log(e)}}
             projects={activeProjects}
           />
           <label htmlFor="lead-time">Hour Per Week:</label>
@@ -258,7 +271,8 @@ export default function AddProjectForm({
         </div>
         <div className="form__cell">
           <InputAutoStaff
-            classname={isEmpty["ba"] ? "form__input error" : "form__input"}
+            // classname={isEmpty["ba"] ? "form__input error" : "form__input"}
+            classname="form__input"
             label="BA:"
             pholder="BA Name"
             data={bas}
@@ -283,7 +297,8 @@ export default function AddProjectForm({
         </div>
         <div className="form__cell">
           <InputAutoStaff
-            classname={isEmpty["pm"] ? "form__input error" : "form__input"}
+            // classname={isEmpty["pm"] ? "form__input error" : "form__input"}
+            classname="form__input"
             label="PM:"
             pholder="PM Name"
             data={pms}

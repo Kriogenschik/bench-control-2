@@ -126,6 +126,10 @@
     &:hover {
       background: $blue2;
     }
+
+    &:disabled {
+      background: $background;
+    }
   }
 
   &__error-message {

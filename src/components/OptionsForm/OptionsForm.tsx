@@ -104,17 +104,23 @@ export default function OptionsForm({
           {optionsArr.map((option) => {
             return (
               <div className="form__inputs" key={option.id}>
-                <OptionsInputs
-                  optionsId={optionsId}
-                  id={option.id}
-                  name={option.descr}
-                  value={option.value}
-                  optionsList={optionsArr}
-                />
-                <button
-                  className="tab__btn tab__btn--remove fa-solid fa-trash-can fa-lg"
-                  onClick={() => optionRemove(option.id)}
-                ></button>
+                {option.id ? (
+                  <>
+                    <OptionsInputs
+                      optionsId={optionsId}
+                      id={option.id}
+                      name={option.descr}
+                      value={option.value}
+                      optionsList={optionsArr}
+                    />
+                    <button
+                      className="tab__btn tab__btn--remove fa-solid fa-trash-can fa-lg"
+                      onClick={() => optionRemove(option.id)}
+                    ></button>
+                  </>
+                ) : (
+                  <p>Wrong Data</p>
+                )}
               </div>
             );
           })}

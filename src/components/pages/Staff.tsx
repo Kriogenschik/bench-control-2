@@ -13,6 +13,8 @@ import {
 } from "../OptionsForm/optionsFormSlice";
 import Tooltips from "../Tooltips/Tooltips";
 import { OptionFullProps } from "../OptionsForm/types";
+import { allProjectsSelector } from "../ProjectsList/projectsListSlice";
+import { ProjectProps } from "../ProjectsList/types";
 
 const Staff = (): JSX.Element => {
   interface deleteStaffDataProps {
@@ -43,6 +45,7 @@ const Staff = (): JSX.Element => {
   const [showUserTooltip, setShowUserTooltip] = useState<boolean>(false);
 
   const allOptions = useSelector(allOptionsSelector) as Array<OptionFullProps>;
+  const projectsList = useSelector(allProjectsSelector) as Array<ProjectProps>;
 
   const { request } = useHttp();
 
@@ -85,7 +88,7 @@ const Staff = (): JSX.Element => {
           Add
         </button>
       )}
-      {!isAdmin && (
+      { (
         <div className="tab__hint">
           <button
             className="tab__btn tab__btn--hint"
@@ -99,12 +102,12 @@ const Staff = (): JSX.Element => {
               btnPosition={document.documentElement.clientWidth}
               children={allOptions.map(item => {
                 return (
-                  <div className="tab__hint-col">
+                  <div key={item.id} className="tab__hint-col">
                     <p className="tab__hint-title">{item.name}:</p>
                     <ul>
                       {item.arr.map(option => {
                         return (
-                          <li>
+                          <li key={option.id}>
                             <span>{option.value} - {option.descr}</span>
                           </li>
                         )
@@ -124,6 +127,7 @@ const Staff = (): JSX.Element => {
         <EditStaffForm
           id={editStaffId}
           closeForm={() => setShowEditForm(false)}
+          projectsList={projectsList}
         />
       )}
       {showDeleteModal && (

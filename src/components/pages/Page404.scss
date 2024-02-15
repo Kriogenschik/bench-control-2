@@ -61,24 +61,25 @@
     font-size: 28px;
     font-weight: 600;
   }
+
+  &__link {
+    text-align: center;
+    font-size: 24px;
+    font-style: italic;
+    padding-top: 20px;
+    text-decoration: underline;
+    color: $textColor;
+    align-self: center;
+  }
 }
 
 @keyframes colorChange {
   0% {
     filter: hue-rotate(0deg);
   }
-  // 33% {
-  //   filter: hue-rotate(100deg);
-  // }
   50% {
     filter: hue-rotate(180deg);
   }
-  // 60% {
-  //   filter: hue-rotate(250deg);
-  // }
-  // 65% {
-  //   filter: hue-rotate(180deg);
-  // }
   75% {
     filter: hue-rotate(0deg);
   }

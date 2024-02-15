@@ -18,33 +18,13 @@ const Login = (): JSX.Element => {
   });
   const [errorMessage, setErrorMesage] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
   const auth = getAuth();
   const dispatch = useDispatch<AppDispatch>();
   const { request } = useHttp();
-
-  const onKeyDown = (e: KeyboardEvent) => {
-    if (e.code === "Enter") {
-      e.preventDefault();
-      // setTimeout(() => {
-      //   handleSubmit()
-      // });
-      // document.removeEventListener('keydown', onKeyDown);
-    } else {
-      console.log("not send");
-    }
-  };
-  document.addEventListener("keyup", (e) => {
-    if (e.code === "Enter") {
-      e.preventDefault();
-      // setTimeout(() => {
-      //   handleSubmit()
-      // });
-      // document.removeEventListener('keydown', onKeyDown);
-    }
-  });
 
   const handleSubmit = () => {
     setErrorMesage("");
@@ -53,14 +33,15 @@ const Login = (): JSX.Element => {
       password: !(password && password.length >= 6),
     });
     if (userName.length >= 3 && password.length >= 6) {
+      setIsLoading(true);
       try {
         signInWithEmailAndPassword(auth, userName, password)
           .then((userCred) => {
             if (userCred) {
               window.localStorage.setItem("isAuth", "true");
               window.localStorage.setItem("id", userCred.user.uid);
-            };
-            return request(`http://localhost:5000/auth/${userCred.user.uid}`)
+            }
+            return request(`http://localhost:5000/auth/${userCred.user.uid}`);
           })
           .then((res) =>
             dispatch(
@@ -73,12 +54,19 @@ const Login = (): JSX.Element => {
               })
             )
           )
-          .then(() => navigate("/"))
-          .catch((error) => setErrorMesage("Wrong name or password"));
+          .then(() => {
+            navigate("/");
+            document.location.reload();
+          })
+          .catch(() => {
+            setErrorMesage("Wrong name or password");
+            setIsLoading(false);
+          });
       } catch (error) {
         console.log(error);
       }
     }
+    // setIsLoading(false);
   };
 
   const userLoadingStatus = useSelector(
@@ -127,6 +115,7 @@ const Login = (): JSX.Element => {
         <button
           type="submit"
           className="login__btn"
+          disabled={isLoading}
           onClick={() => handleSubmit()}
         >
           Sign In

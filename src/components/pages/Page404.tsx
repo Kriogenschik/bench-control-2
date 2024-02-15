@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import "./Page404.scss";
 
 const Page404 = ():JSX.Element => {
@@ -11,6 +12,7 @@ const Page404 = ():JSX.Element => {
       <p className="page404__text">
         Page not found
       </p>
+      <NavLink to="/login" className="page404__link">to Login Page</NavLink>
     </div>
   );
 };

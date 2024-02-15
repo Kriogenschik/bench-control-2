@@ -10,13 +10,13 @@ export default function getStaffProjectsTime(
     projectsList.map((proj) => {
       if (+new Date(proj.end) - +new Date() >= 0) {
         if (proj.lead.id === staffID && proj.lead.billingType === billingType) {
-          totalTime += proj.lead.time;
+          totalTime += proj.lead.time || 40;
         }
         if (proj.ba.id === staffID && proj.ba.billingType === billingType) {
-          totalTime += proj.ba.time;
+          totalTime += proj.ba.time || 40;
         }
         if (proj.pm.id === staffID && proj.pm.billingType === billingType) {
-          totalTime += proj.pm.time;
+          totalTime += proj.pm.time || 40;
         }
         devs: for (let dev of proj.devs) {
           if (dev.id === staffID && dev.billingType === billingType) {
@@ -36,13 +36,13 @@ export default function getStaffProjectsTime(
     projectsList.map((proj) => {
       if (+new Date(proj.end) - +new Date() >= 0) {
         if (proj.lead.id === staffID) {
-          totalTime += proj.lead.time;
+          totalTime += proj.lead.time || 40;
         }
         if (proj.ba.id === staffID) {
-          totalTime += proj.ba.time;
+          totalTime += proj.ba.time || 40;
         }
         if (proj.pm.id === staffID) {
-          totalTime += proj.pm.time;
+          totalTime += proj.pm.time || 40;
         }
         devs: for (let dev of proj.devs) {
           if (dev.id === staffID) {
