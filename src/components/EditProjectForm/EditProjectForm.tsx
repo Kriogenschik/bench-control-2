@@ -15,7 +15,7 @@ import { projectEdited } from "../ProjectsList/projectsListSlice";
 import "./EditProjectForm.scss";
 
 interface EditProjectFormProps {
-  id: number;
+  id: string;
   closeForm: () => void;
   projectsList: Array<ProjectProps>;
 }

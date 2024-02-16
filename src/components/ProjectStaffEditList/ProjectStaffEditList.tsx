@@ -5,7 +5,7 @@ import { EmployeesProps } from "../StaffList/types";
 import "./ProjectStaffEditList.scss";
 
 interface ProjectStaffEditListProps {
-  projectID: number,
+  projectID: string,
   allStaffList: Array<EmployeesProps>,
   staffList: Array<ProjectStaffProps>,
 	setStaffList: (list: Array<ProjectStaffProps>) => void,
@@ -22,11 +22,11 @@ export default function ProjectStaffEditList({
 
   const otherProjectsList = projectsList.filter((project) => project.id !== projectID);
 
-	const remove = (id: number) => {
+	const remove = (id: string) => {
 		setStaffList(staffList.filter((employ) => employ.id !== id));
 	}
 
-  const changeStaffType = (id: number, staffTypeB: boolean) => {
+  const changeStaffType = (id: string, staffTypeB: boolean) => {
     setStaffList(staffList.map((employ) => {
       if (employ.id === id) {
         return {
@@ -37,7 +37,7 @@ export default function ProjectStaffEditList({
     }));
   }
 
-  const changeStaffTime = (id: number, newTime: number) => {
+  const changeStaffTime = (id: string, newTime: number) => {
     setStaffList(staffList.map((employ) => {
       if (employ.id === id) {
         return {

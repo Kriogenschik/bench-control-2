@@ -11,28 +11,25 @@ import { AppDispatch } from "../../store";
 
 import "./EditStaffForm.scss";
 import { EditProjectByStaffChange } from "../../utils/EditProjectByStaffChange";
-import { allProjectsSelector } from "../ProjectsList/projectsListSlice";
+import { allProjectsSelector, projectEdited } from "../ProjectsList/projectsListSlice";
 import { ProjectProps } from "../ProjectsList/types";
 
 interface EditFormProps {
-  id: number;
+  id: string;
   closeForm: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  projectsList: Array<ProjectProps>;
 }
 
 interface StateProps {
   [key: string]: any;
 }
 
-const EditStaffForm = ({ id, closeForm, projectsList }: EditFormProps) => {
+const EditStaffForm = ({ id, closeForm }: EditFormProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { request } = useHttp();
 
   const allStaff = useSelector(allStaffSelector) as Array<EmployeesProps>;
-  // const projectsList = useSelector(allProjectsSelector) as Array<ProjectProps>;
-  console.log(projectsList);
+  const projectsList = useSelector(allProjectsSelector) as Array<ProjectProps>;
   
-
   const staff = allStaff.filter((item) => item.id === id)[0] as EmployeesProps;
 
   const [staffState, setStaffState] = useState<StateProps>({
@@ -74,7 +71,18 @@ const EditStaffForm = ({ id, closeForm, projectsList }: EditFormProps) => {
         JSON.stringify(editedStaff)
       )
         .then(() => dispatch(staffEdited({ id, editedStaff })))
-        .then(() => {console.log("run"); EditProjectByStaffChange(projectsList, editedStaff)})
+        .then(() => {          
+          EditProjectByStaffChange(projectsList, editedStaff).forEach(project => {
+            const projectId = project.id;
+            request(
+              process.env.REACT_APP_PORT + `projects/${projectId}`,
+              "PATCH",
+              JSON.stringify(project)
+            )
+              .then(() => dispatch(projectEdited({ projectId, project })))
+              .catch((err: any) => console.log(err));
+          })
+        })
         .catch((err: any) => console.log(err));
       closeForm(e);
     }

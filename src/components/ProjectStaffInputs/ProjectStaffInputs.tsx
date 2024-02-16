@@ -10,7 +10,7 @@ import "./ProjectStaffInputs.scss";
 interface ProjectStaffInputsProps {
   staff: ProjectStaffProps;
   allStaffList: Array<EmployeesProps>,
-  remove: (id: number) => void;
+  remove: (id: string) => void;
   changeStaffType: any;
   changeStaffTime: any;
   projectsList: Array<ProjectProps>,
@@ -50,7 +50,7 @@ export default function ProjectStaffInputs({
     // eslint-disable-next-line
   }, [staffTime, isStaffDeleted]);
 
-  const changeType = (id: number, staffTypeB: boolean) => {
+  const changeType = (id: string, staffTypeB: boolean) => {
     changeStaffType(id, staffTypeB);
     setStaffTypeB(!staffTypeB);
   };

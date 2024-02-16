@@ -12,7 +12,7 @@ export default function ProjectStaffList({
 	setStaffList,
 }: ProjectStaffListProps): JSX.Element {
 
-	const remove = (id: number) => {
+	const remove = (id: string) => {
 		setStaffList(staffList.filter((employ) => employ.id !== id));
 	}
   return (

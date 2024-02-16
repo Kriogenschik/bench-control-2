@@ -13,12 +13,13 @@ import {
 } from "../OptionsForm/optionsFormSlice";
 import Tooltips from "../Tooltips/Tooltips";
 import { OptionFullProps } from "../OptionsForm/types";
-import { allProjectsSelector } from "../ProjectsList/projectsListSlice";
+import { EditProjectByStaffRemove } from "../../utils/EditProjectByStaffRemove";
+import { allProjectsSelector, projectEdited } from "../ProjectsList/projectsListSlice";
 import { ProjectProps } from "../ProjectsList/types";
 
 const Staff = (): JSX.Element => {
   interface deleteStaffDataProps {
-    id: number;
+    id: string;
     name: string;
   }
 
@@ -36,12 +37,12 @@ const Staff = (): JSX.Element => {
 
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [deleteStaffData, setDeleteStaffData] = useState<deleteStaffDataProps>({
-    id: 0,
+    id: "",
     name: "",
   });
   const [showAddForm, setShowAddForm] = useState<boolean>(false);
   const [showEditForm, setShowEditForm] = useState<boolean>(false);
-  const [editStaffId, setEditStaffId] = useState<number>(0);
+  const [editStaffId, setEditStaffId] = useState<string>("");
   const [showUserTooltip, setShowUserTooltip] = useState<boolean>(false);
 
   const allOptions = useSelector(allOptionsSelector) as Array<OptionFullProps>;
@@ -49,7 +50,7 @@ const Staff = (): JSX.Element => {
 
   const { request } = useHttp();
 
-  const openEditForm = (id: number) => {
+  const openEditForm = (id: string) => {
     if (showEditForm) {
       setShowEditForm((showEditForm) => !showEditForm);
     }
@@ -59,7 +60,7 @@ const Staff = (): JSX.Element => {
     }, 0);
   };
 
-  const openDeleteModal = (id: number, name: string) => {
+  const openDeleteModal = (id: string, name: string) => {
     setDeleteStaffData({
       id: id,
       name: name,
@@ -68,9 +69,20 @@ const Staff = (): JSX.Element => {
   };
 
   const onDelete = useCallback(
-    (id: number) => {
+    (id: string) => {
       request(process.env.REACT_APP_PORT + `staffs/${id}`, "DELETE")
         .then(() => dispatch(staffDeleted(id)))
+        .then(() => EditProjectByStaffRemove(projectsList, id).forEach(project => {
+          const projectId = project.id;
+            request(
+              process.env.REACT_APP_PORT + `projects/${projectId}`,
+              "PATCH",
+              JSON.stringify(project)
+            )
+              .then(() => dispatch(projectEdited({ projectId, project })))
+              .catch((err: any) => console.log(err));
+          
+        }))
         .catch((err: any) => console.log(err));
       setShowDeleteModal(() => false);
     },
@@ -127,7 +139,7 @@ const Staff = (): JSX.Element => {
         <EditStaffForm
           id={editStaffId}
           closeForm={() => setShowEditForm(false)}
-          projectsList={projectsList}
+          // projectsList={projectsList}
         />
       )}
       {showDeleteModal && (

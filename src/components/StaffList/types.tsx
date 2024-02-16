@@ -1,5 +1,5 @@
 export interface EmployeesProps {
-  id: number;
+  id: string;
   name: string;
   pos: string;
   stack: string;

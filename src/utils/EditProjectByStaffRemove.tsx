@@ -2,11 +2,10 @@ import {
   ProjectProps,
   ProjectStaffProps,
 } from "../components/ProjectsList/types";
-import { EmployeesProps } from "../components/StaffList/types";
 
-export const EditProjectByStaffChange = (
+export const EditProjectByStaffRemove = (
   projectsList: Array<ProjectProps>,
-  editedStaff: EmployeesProps
+  removedStaffId: string
 ) => {
   let changedProjectsList: Array<ProjectProps> = [];
 
@@ -14,35 +13,33 @@ export const EditProjectByStaffChange = (
     let isProjectChanged = false;
     let changedProject = { ...project };
 
-    if (changedProject.lead.id === editedStaff.id) {
-      changedProject.lead = { ...changedProject.lead, name: editedStaff.name };
+    if (changedProject.lead.id === removedStaffId) {
+      changedProject.lead = {};
       isProjectChanged = true;
     }
-    if (changedProject.ba.id === editedStaff.id) {
-      changedProject.ba = { ...changedProject.ba, name: editedStaff.name };
+    if (changedProject.ba.id === removedStaffId) {
+      changedProject.ba = {};
       isProjectChanged = true;
     }
-    if (changedProject.pm.id === editedStaff.id) {
-      changedProject.pm = { ...changedProject.pm, name: editedStaff.name };
+    if (changedProject.pm.id === removedStaffId) {
+      changedProject.pm = {};
       isProjectChanged = true;
     }
 
     let changedDevsList: Array<ProjectStaffProps> = [];
     changedProject.devs.filter((dev) => {
-      if (dev.id === editedStaff.id) {
-        const changedDev = { ...dev, name: editedStaff.name };
-        changedDevsList.push(changedDev);
+      if (dev.id === removedStaffId) {
         isProjectChanged = true;
+        return;
       } else changedDevsList.push(dev);
     });
     changedProject.devs = [...changedDevsList];
 
     let changedQAsList: Array<ProjectStaffProps> = [];
     changedProject.qas.filter((qa) => {
-      if (qa.id === editedStaff.id) {
-        const changedQA = { ...qa, name: editedStaff.name };
-        changedQAsList.push(changedQA);
+      if (qa.id === removedStaffId) {
         isProjectChanged = true;
+        return;
       } else changedQAsList.push(qa);
     });
     changedProject.qas = [...changedQAsList];

@@ -10,7 +10,7 @@ import { AppDispatch } from "../../store";
 import "./OptionsForm.scss";
 
 interface OptionsFormProps {
-  optionsId: number;
+  optionsId: string;
   optionName: string;
   optionsArr: Array<OptionProps>;
 }
@@ -35,7 +35,7 @@ export default function OptionsForm({
 
   const [isOptionShown, setIsOptionShown] = useState<boolean>(true);
 
-  function optionRemove(id: number) {
+  function optionRemove(id: string) {
     const newOptions = optionsArr.filter((option) => option.id !== id);
     const newOptionsList = {
       arr: [...newOptions],

@@ -11,8 +11,8 @@ import { projectEdited } from "../ProjectsList/projectsListSlice";
 import getStaffProjectsTime from "../../utils/GetStaffProjectsTime";
 
 interface ProjectCardProps {
-  projectEdit: (id: number) => void;
-  projectDelete: (id: number, name: string) => void;
+  projectEdit: (id: string) => void;
+  projectDelete: (id: string, name: string) => void;
   staffList: Array<EmployeesProps>;
   projects: Array<ProjectProps>;
   project: ProjectProps;
@@ -63,21 +63,21 @@ export default function ProjectCard({
       let maxLeadTime = -1;
       if (lead) {
         maxLeadTime =
-          lead.time - getStaffProjectsTime(project.lead.id || 40, activeProjects);
+          lead.time - getStaffProjectsTime(project.lead.id || "", activeProjects);
       }
 
       const ba = staffList.filter((employ) => employ.id === project.ba?.id)[0];      
       let maxBATime = -1;
       if (ba) {
         maxBATime =
-          ba.time - getStaffProjectsTime(project.ba.id || 40, activeProjects);
+          ba.time - getStaffProjectsTime(project.ba.id || "", activeProjects);
       } else maxBATime = 0;
 
       const pm = staffList.filter((employ) => employ.id === project.pm?.id)[0];
       let maxPMTime = -1;
       if (pm) {
         maxPMTime =
-          pm.time - getStaffProjectsTime(project.pm.id || 40, activeProjects);
+          pm.time - getStaffProjectsTime(project.pm.id || "", activeProjects);
       } else maxPMTime = 0;
 
       let minDevTime = 0;
@@ -239,7 +239,7 @@ export default function ProjectCard({
           })}
         </div>
         <div className="project__list">
-          {project.qas.map((qa) => {
+          {project.qas && project.qas.map((qa) => {
             return (
               <div className="project__list-item" key={qa.id}>
                 <span className="project__label">QA:</span>

@@ -23,11 +23,6 @@ const initialState: StaffState = staffAdapter.getInitialState({
 export const fetchStaff = createAsyncThunk<Array<EmployeesProps>>("data/fetchEmployees", () => {
   const { request } = useHttp();
   return request("http://localhost:5000/staffs",
-    // "GET",
-    // '',
-    // {
-    //   "Authorization": "",
-    // }
   );
 });
 
@@ -35,7 +30,7 @@ const staffSlice = createSlice({
   name: "staff",
   initialState,
   reducers: {
-    staffDeleted: (state , action: PayloadAction<number>) => {
+    staffDeleted: (state , action: PayloadAction<string>) => {
       staffAdapter.removeOne(state, action.payload);
     },
     staffCreated: (state, action) => {

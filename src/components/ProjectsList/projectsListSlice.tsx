@@ -32,7 +32,7 @@ const projectsSlice = createSlice({
     projectCreated: (state, action) => {
       projectsAdapter.addOne(state, action.payload);
     },
-    projectDeleted: (state , action: PayloadAction<number>) => {
+    projectDeleted: (state , action: PayloadAction<string>) => {
       projectsAdapter.removeOne(state, action.payload);
     },
     projectEdited: (state, action) => {

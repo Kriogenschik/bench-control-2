@@ -1,5 +1,5 @@
 export interface ProjectStaffProps {
-  id: number;
+  id: string;
   name: string;
   time: number;
   start: string;
@@ -8,7 +8,7 @@ export interface ProjectStaffProps {
 }
 
 export interface ProjectProps {
-  id: number;
+  id: string;
   name: string;
   lead: Partial<ProjectStaffProps>;
   ba: Partial<ProjectStaffProps>;

@@ -6,11 +6,11 @@ import { optionsEdited } from "../OptionsForm/optionsFormSlice";
 import { AppDispatch } from "../../store";
 
 interface InputsProps {
-  id: number;
+  id: string;
   name: string;
   value: string;
   optionsList: Array<OptionProps>;
-  optionsId: number;
+  optionsId: string;
 }
 
 export default function InputsColumn({
