@@ -59,5 +59,39 @@
       font-size: 16px;
       min-width: 120px;
     }
+
+    .header__tip {
+      @media (max-width: 700px) {
+        top: 50%;
+        transform: translateY(-50%);
+        right: 5px;
+      }
+    }
+  }
+
+  &__tip {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    top: 3px;
+    right: 3px;
+    font-size: 16px;
+    font-weight: 800;
+    text-shadow: 1px 1px 2px $textColor;
+    color: $textColor2;
+    background: $reddark;
+    width: 22px;
+    height: 22px;
+    box-shadow: 0px 0px 0px 1px rgb(242 124 124), inset 0px 0px 2px 2px $red;
+
+    @media (max-width: 700px) {
+      width: 20px;
+      height: 20px;
+      font-size: 14px;
+      top: -5px;
+      right: -5px;
+    }
   }
 }

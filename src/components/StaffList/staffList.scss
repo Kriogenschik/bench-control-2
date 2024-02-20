@@ -64,26 +64,27 @@
       position: absolute;
       bottom: 5px;
       right: 50%;
-      transform: translateX(10px);
+      transform: translateX(50%);
       width: 0;
       height: 0;
-      transition: 0.3s;
     }
   }
 
   &__head-btn.down {
     &::after {
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-top: 7px solid $textColor;
+      border-left: 40px solid transparent;
+      border-right: 40px solid transparent;
+      border-top: 10px solid $blue;
+      bottom: -10px;
     }
   }
 
   &__head-btn.up {
     &::after {
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-bottom: 7px solid $textColor;
+      border-left: 40px solid transparent;
+      border-right: 40px solid transparent;
+      border-bottom: 10px solid $textColor2;
+      bottom: 0px;
     }
   }
 

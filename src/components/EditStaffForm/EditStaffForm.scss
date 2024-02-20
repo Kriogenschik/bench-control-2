@@ -24,7 +24,7 @@
 
     &::placeholder {
       color: $textColor;
-      opacity: 0.6;
+      opacity: 0.4;
     }
 
     &:hover,
@@ -108,4 +108,13 @@
     border-radius: 10px;
     border: 1px solid $gray;
   }
+}
+
+.tab__form.tab__form-edit.error {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tab__form.tab__form-edit.loading {
+  align-items: flex-start;
 }

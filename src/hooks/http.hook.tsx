@@ -1,10 +1,13 @@
+
 export const useHttp = () => {
+  
   const request = async (
     url: string,
     method = "GET",
     body: string | null = null,
     headers = { "Content-Type": "application/json",
-                "Authorization": `Bearer ${window.localStorage.getItem("token")}` }
+                "Authorization": `Bearer ${window.localStorage.getItem("token")}` 
+              }
 
   ) => {
     try {

@@ -19,6 +19,8 @@ const initialState: UserState = userAdapter.getInitialState({
   userLoadingStatus: "idle",
 });
 
+
+
 export const fetchUser = createAsyncThunk<UserProps>(
   "data/fetchUser",
   async () => {
@@ -28,7 +30,7 @@ export const fetchUser = createAsyncThunk<UserProps>(
     const result = await request(`http://localhost:5000/auth/${id}`);
     return {
       id: id,
-      token: window.localStorage.getItem("token") || "",
+      token: "",
       isAuth: !!window.localStorage.getItem("isAuth"),
       isAdmin: result.isAdmin,
       name: result.name,
@@ -52,6 +54,9 @@ const userSlice = createSlice({
   reducers: {
     userSignIn: (state, action) => {
       userAdapter.addOne(state, action.payload);
+    },
+    userUpdate: (state, action) => {
+      userAdapter.updateOne(state, {id: action.payload.id, changes: {...action.payload.editedUser}});
     },
     userSignOut: (state, action) => {
       userAdapter.removeAll(state);
@@ -84,5 +89,5 @@ export const { selectAll } = userAdapter.getSelectors(
   (state: RootState) => state.user
 );
 
-export const { userSignIn, userSignOut } = userSlice.actions;
+export const { userSignIn, userSignOut, userUpdate } = userSlice.actions;
 export default userSlice.reducer;

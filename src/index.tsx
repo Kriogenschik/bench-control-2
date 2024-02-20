@@ -1,20 +1,22 @@
-import React  from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './components/App/App';
-import { Provider } from 'react-redux';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
+import App from "./components/App/App";
+import {NavTipsProvider} from "./context/NavTipsProvider";
 
-import store from './store';
+import store from "./store";
 
-import "./styles/reset.scss"
+import "./styles/reset.scss";
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <NavTipsProvider>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </NavTipsProvider>
   </React.StrictMode>
 );
-

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useHttp } from "../../hooks/http.hook";
 import { useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -8,8 +8,11 @@ import Spinner from "../Spinner/Spinner";
 import { userSignIn } from "../UserAuth/userAuthSlice";
 
 import "./Login.scss";
+import AuthContext, { AuthContextType, AuthProps } from "../../context/AuthProvider";
+import useAuth from "../../hooks/useAuth";
 
 const Login = (): JSX.Element => {
+  // const {userAuth, setUserAuth} = useAuth() as AuthContextType;
   const [userName, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isError, setIsError] = useState({
@@ -36,14 +39,14 @@ const Login = (): JSX.Element => {
       setIsLoading(true);
       try {
         signInWithEmailAndPassword(auth, userName, password)
-          .then((userCred) => {
+          .then((userCred) => {            
             if (userCred) {
               window.localStorage.setItem("isAuth", "true");
               window.localStorage.setItem("id", userCred.user.uid);
             }
             return request(`http://localhost:5000/auth/${userCred.user.uid}`);
           })
-          .then((res) =>
+          .then((res) =>{
             dispatch(
               userSignIn({
                 id: window.localStorage.getItem("id") || "",
@@ -52,7 +55,7 @@ const Login = (): JSX.Element => {
                 isAdmin: res.isAdmin,
                 name: res.name,
               })
-            )
+            )}
           )
           .then(() => {
             navigate("/");
@@ -63,10 +66,9 @@ const Login = (): JSX.Element => {
             setIsLoading(false);
           });
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
-    // setIsLoading(false);
   };
 
   const userLoadingStatus = useSelector(

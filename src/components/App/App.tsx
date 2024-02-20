@@ -8,10 +8,10 @@ import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../../config/firebase-config";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store";
-import { fetchUser } from "../UserAuth/userAuthSlice";
+import { fetchUser, userUpdate } from "../UserAuth/userAuthSlice";
+import Spinner from "../Spinner/Spinner";
 
 import './App.scss';
-import Spinner from "../Spinner/Spinner";
 
 function App() {
 
@@ -21,8 +21,11 @@ function App() {
     onAuthStateChanged(getAuth(), (user) => {
       if (user) {
         window.localStorage.setItem("isAuth", "true");
-        user.getIdToken().then(token => {
+        user.getIdToken(true).then(token => {
 					window.localStorage.setItem("token", token);
+          const id = user.uid;
+          const editedUser = {token: token} 
+          dispatch(userUpdate({id: id, editedUser}))
 				});
       }
     })

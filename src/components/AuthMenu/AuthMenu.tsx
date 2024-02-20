@@ -56,13 +56,13 @@ export default function AuthMenu() {
   return (
     <div className="auth-menu">
       <div className="auth-menu__wrapper">
-        <p className="auth-menu__welcome">Welcome, {userName}</p>
+        {userName && <p className="auth-menu__welcome">Welcome, {userName}</p>}
         <button
           className="auth-menu__btn fa-regular fa-user fa-lg"
           onClick={() => handleNavClick()}
         ></button>
         <ul className={isNavOpen ? "auth-menu__nav" : "auth-menu__nav hidden"}>
-          <p className="auth-menu__welcome--sm">Welcome, {userName}</p>
+          {userName && <p className="auth-menu__welcome--sm">Welcome, {userName}</p>}
           {isAuth ? (
             <li className="auth-menu__nav-item">
               <button

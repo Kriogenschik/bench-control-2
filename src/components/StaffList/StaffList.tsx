@@ -49,9 +49,13 @@ const StaffList = ({ onDelete, onEdit }: StaffListProps): JSX.Element => {
     (state: RootState) => state.staff.staffLoadingStatus
   );
 
-  if (staffLoadingStatus === "loading") {
+  const projectsLoadingStatus = useSelector(
+    (state: RootState) => state.projects.projectsLoadingStatus
+  );
+
+  if (staffLoadingStatus === "loading" || projectsLoadingStatus === "loading") {
     return <Spinner />;
-  } else if (staffLoadingStatus === "error") {
+  } else if (staffLoadingStatus === "error" || projectsLoadingStatus === "error") {
     return <h5 className="message">Loading Error...</h5>;
   }
 

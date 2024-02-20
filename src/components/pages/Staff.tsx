@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import DeleteModal from "../DeleteModal/DeleteModal";
 import StaffList from "../StaffList/StaffList";
 import { useHttp } from "../../hooks/http.hook";
@@ -14,8 +14,10 @@ import {
 import Tooltips from "../Tooltips/Tooltips";
 import { OptionFullProps } from "../OptionsForm/types";
 import { EditProjectByStaffRemove } from "../../utils/EditProjectByStaffRemove";
-import { allProjectsSelector, projectEdited } from "../ProjectsList/projectsListSlice";
+import { allProjectsSelector, fetchProjects, projectEdited } from "../ProjectsList/projectsListSlice";
 import { ProjectProps } from "../ProjectsList/types";
+import AuthContext, { AuthContextType } from "../../context/AuthProvider";
+import useAuth from "../../hooks/useAuth";
 
 const Staff = (): JSX.Element => {
   interface deleteStaffDataProps {
@@ -32,6 +34,7 @@ const Staff = (): JSX.Element => {
   useEffect(() => {
     dispatch(fetchStaff());
     dispatch(fetchOptions());
+    dispatch(fetchProjects());
     // eslint-disable-next-line
   }, []);
 
@@ -89,7 +92,7 @@ const Staff = (): JSX.Element => {
     // eslint-disable-next-line
     [request]
   );
-
+    
   return (
     <div className="tab__body">
       {!showAddForm && isAdmin && (
@@ -126,7 +129,6 @@ const Staff = (): JSX.Element => {
                       })}
                     </ul>
                   </div>
-                  
                 )
               })}
             />
@@ -139,7 +141,7 @@ const Staff = (): JSX.Element => {
         <EditStaffForm
           id={editStaffId}
           closeForm={() => setShowEditForm(false)}
-          // projectsList={projectsList}
+          projectsList={projectsList}
         />
       )}
       {showDeleteModal && (

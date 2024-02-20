@@ -7,15 +7,17 @@ import { OptionFullProps } from "../OptionsForm/types";
 import DropdownInput from "../DropdownInput/DropdownInput";
 import { useHttp } from "../../hooks/http.hook";
 import { EmployeesProps } from "../StaffList/types";
-import { AppDispatch } from "../../store";
+import { AppDispatch, RootState } from "../../store";
+import { EditProjectByStaffChange } from "../../utils/EditProjectByStaffChange";
+import { projectEdited } from "../ProjectsList/projectsListSlice";
+import { ProjectProps } from "../ProjectsList/types";
+import Spinner from "../Spinner/Spinner";
 
 import "./EditStaffForm.scss";
-import { EditProjectByStaffChange } from "../../utils/EditProjectByStaffChange";
-import { allProjectsSelector, projectEdited } from "../ProjectsList/projectsListSlice";
-import { ProjectProps } from "../ProjectsList/types";
 
 interface EditFormProps {
   id: string;
+  projectsList: Array<ProjectProps>;
   closeForm: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
@@ -23,13 +25,12 @@ interface StateProps {
   [key: string]: any;
 }
 
-const EditStaffForm = ({ id, closeForm }: EditFormProps) => {
+const EditStaffForm = ({ id, projectsList, closeForm }: EditFormProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { request } = useHttp();
 
   const allStaff = useSelector(allStaffSelector) as Array<EmployeesProps>;
-  const projectsList = useSelector(allProjectsSelector) as Array<ProjectProps>;
-  
+
   const staff = allStaff.filter((item) => item.id === id)[0] as EmployeesProps;
 
   const [staffState, setStaffState] = useState<StateProps>({
@@ -71,22 +72,61 @@ const EditStaffForm = ({ id, closeForm }: EditFormProps) => {
         JSON.stringify(editedStaff)
       )
         .then(() => dispatch(staffEdited({ id, editedStaff })))
-        .then(() => {          
-          EditProjectByStaffChange(projectsList, editedStaff).forEach(project => {
-            const projectId = project.id;
-            request(
-              process.env.REACT_APP_PORT + `projects/${projectId}`,
-              "PATCH",
-              JSON.stringify(project)
-            )
-              .then(() => dispatch(projectEdited({ projectId, project })))
-              .catch((err: any) => console.log(err));
-          })
+        .then(() => {
+          EditProjectByStaffChange(projectsList, editedStaff).forEach(
+            (project) => {
+              const projectId = project.id;
+              request(
+                process.env.REACT_APP_PORT + `projects/${projectId}`,
+                "PATCH",
+                JSON.stringify(project)
+              )
+                .then(() => dispatch(projectEdited({ projectId, project })))
+                .catch((err: any) => console.log(err));
+            }
+          );
         })
         .catch((err: any) => console.log(err));
       closeForm(e);
     }
   };
+
+  const staffLoadingStatus = useSelector(
+    (state: RootState) => state.staff.staffLoadingStatus
+  );
+
+  const projectsLoadingStatus = useSelector(
+    (state: RootState) => state.projects.projectsLoadingStatus
+  );
+
+  if (staffLoadingStatus === "loading" || projectsLoadingStatus === "loading") {
+    return (
+      <div className="tab__form tab__form-edit loading">
+        <Spinner />
+        <button
+          className="tab__btn tab__btn--red"
+          onClick={(e) => closeForm(e)}
+        >
+          X
+        </button>
+      </div>
+    );
+  } else if (
+    staffLoadingStatus === "error" ||
+    projectsLoadingStatus === "error"
+  ) {
+    return (
+      <div className="tab__form tab__form-edit error">
+        <h5 className="message">Loading Error...</h5>
+        <button
+          className="tab__btn tab__btn--red"
+          onClick={(e) => closeForm(e)}
+        >
+          X
+        </button>
+      </div>
+    );
+  }
 
   return (
     <form
