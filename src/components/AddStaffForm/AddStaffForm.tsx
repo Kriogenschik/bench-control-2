@@ -30,7 +30,7 @@ const AddStaffForm = ({
     roles: "",
     stacks: "",
     exps: "",
-    speaklvl: "",
+    speak_lvl: "",
     time: 0,
   });
 
@@ -55,7 +55,7 @@ const AddStaffForm = ({
       roles: !details["roles"],
       stacks: !details["stacks"],
       exps: !details["exps"],
-      speaklvl: !details["speaklvl"],
+      speaklvl: !details["speak_lvl"],
       time: !details["time"],
     };
     setIsEmpty(newIsEmpty);
@@ -65,7 +65,7 @@ const AddStaffForm = ({
       details["roles"] &&
       details["stacks"] &&
       details["exps"] &&
-      details["speaklvl"] &&
+      details["speak_lvl"] &&
       details["time"]
     ) {
 
@@ -74,12 +74,13 @@ const AddStaffForm = ({
         pos: details["roles"],
         stack: details["stacks"],
         exp: details["exps"],
-        speak: details["speaklvl"],
+        speak: details["speak_lvl"],
         time: details["time"],
       };
-
+      
+      
       request(
-        process.env.REACT_APP_PORT + "staffs",
+        process.env.REACT_APP_PORT + "staff",
         "POST", 
         JSON.stringify(newStaff)
       )

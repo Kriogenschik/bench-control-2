@@ -16,8 +16,6 @@ import { OptionFullProps } from "../OptionsForm/types";
 import { EditProjectByStaffRemove } from "../../utils/EditProjectByStaffRemove";
 import { allProjectsSelector, fetchProjects, projectEdited } from "../ProjectsList/projectsListSlice";
 import { ProjectProps } from "../ProjectsList/types";
-import AuthContext, { AuthContextType } from "../../context/AuthProvider";
-import useAuth from "../../hooks/useAuth";
 
 const Staff = (): JSX.Element => {
   interface deleteStaffDataProps {
@@ -73,8 +71,8 @@ const Staff = (): JSX.Element => {
 
   const onDelete = useCallback(
     (id: string) => {
-      request(process.env.REACT_APP_PORT + `staffs/${id}`, "DELETE")
-        .then(() => dispatch(staffDeleted(id)))
+      request(process.env.REACT_APP_PORT + `staff/${id}`, "DELETE")
+        .then((res) =>  dispatch(staffDeleted(res.id)))
         .then(() => EditProjectByStaffRemove(projectsList, id).forEach(project => {
           const projectId = project.id;
             request(
@@ -82,9 +80,8 @@ const Staff = (): JSX.Element => {
               "PATCH",
               JSON.stringify(project)
             )
-              .then(() => dispatch(projectEdited({ projectId, project })))
+              .then((res) => dispatch(projectEdited({ projectId, project })))
               .catch((err: any) => console.log(err));
-          
         }))
         .catch((err: any) => console.log(err));
       setShowDeleteModal(() => false);

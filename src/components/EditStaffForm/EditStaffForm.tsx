@@ -38,7 +38,7 @@ const EditStaffForm = ({ id, projectsList, closeForm }: EditFormProps) => {
     roles: staff.pos,
     stacks: staff.stack,
     exps: staff.exp,
-    speaklvl: staff.speak,
+    speak_lvl: staff.speak,
     time: staff.time,
   });
 
@@ -62,16 +62,16 @@ const EditStaffForm = ({ id, projectsList, closeForm }: EditFormProps) => {
         pos: staffState["roles"],
         stack: staffState["stacks"],
         exp: staffState["exps"],
-        speak: staffState["speaklvl"],
+        speak: staffState["speak_lvl"],
         time: staffState["time"],
       };
 
       request(
-        process.env.REACT_APP_PORT + `staffs/${id}`,
-        "PATCH",
+        process.env.REACT_APP_PORT + `staff/${id}`,
+        "PUT",
         JSON.stringify(editedStaff)
       )
-        .then(() => dispatch(staffEdited({ id, editedStaff })))
+        .then((res) => dispatch(staffEdited({ id, res })))
         .then(() => {
           EditProjectByStaffChange(projectsList, editedStaff).forEach(
             (project) => {
