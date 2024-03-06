@@ -113,7 +113,7 @@ const AddStaffForm = ({
           <div className="form__cell" key={option.id}>
             <DropdownInput
               optionsList={option.arr}
-              label={option.name}
+              label={option.title}
               value={details[item]}
               placeholder={"select " + option.name}
               dropdownClass={

@@ -4,19 +4,20 @@ import { useHttp } from "../../hooks/http.hook";
 import { OptionProps } from "./types";
 import OptionsInputs from "../OptionsInputs/OptionsInputs";
 import { optionsEdited } from "./optionsFormSlice";
-import { generateNewId } from "../../utils/GenerateNewId";
 import { AppDispatch } from "../../store";
 
 import "./OptionsForm.scss";
 
 interface OptionsFormProps {
   optionsId: string;
+  optionTitle: string;
   optionName: string;
   optionsArr: Array<OptionProps>;
 }
 
 export default function OptionsForm({
   optionsId,
+  optionTitle,
   optionName,
   optionsArr,
 }: OptionsFormProps) {
@@ -36,16 +37,12 @@ export default function OptionsForm({
   const [isOptionShown, setIsOptionShown] = useState<boolean>(true);
 
   function optionRemove(id: string) {
-    const newOptions = optionsArr.filter((option) => option.id !== id);
-    const newOptionsList = {
-      arr: [...newOptions],
-    };
     request(
       process.env.REACT_APP_PORT + `options/${optionsId}`,
-      "PATCH",
-      JSON.stringify(newOptionsList)
+      "DELETE",
+      JSON.stringify({optionName: optionName, id: id})
     )
-      .then(() => dispatch(optionsEdited({ optionsId, newOptionsList })))
+      .then((res) => dispatch(optionsEdited({ optionsId, res })))
       .catch((err: any) => console.log(err));
   }
 
@@ -57,26 +54,19 @@ export default function OptionsForm({
     setIsAddOptionEmpty(newIsEmpty);
 
     if (addOption["name"] && addOption["value"]) {
-      const newId = generateNewId(optionsArr);
-      const newOptions = [
-        ...optionsArr,
-        {
-          id: newId,
+      const newOptions = {
+          optionName: optionName,
           descr: addOption["name"],
           label: addOption["value"],
           value: addOption["value"],
-        },
-      ];
-      const newOptionsList = {
-        arr: [...newOptions],
-      };
+        };
 
       request(
         process.env.REACT_APP_PORT + `options/${optionsId}`,
-        "PATCH",
-        JSON.stringify(newOptionsList)
+        "POST",
+        JSON.stringify(newOptions)
       )
-        .then(() => dispatch(optionsEdited({ optionsId, newOptionsList })))
+        .then((res) => dispatch(optionsEdited({ optionsId, res })))
         .catch((err: any) => console.log(err));
 
       setAddOption({
@@ -96,7 +86,7 @@ export default function OptionsForm({
           className={isOptionShown ? "form__btn--hide" : "form__btn--show"}
           onClick={() => setIsOptionShown(!isOptionShown)}
         >
-          {optionName}
+          {optionTitle}
         </button>
       </div>
       <div className={isOptionShown ? "form__body" : "form__body hide"}>

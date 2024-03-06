@@ -46,6 +46,7 @@ const Admin = ():JSX.Element => {
               key={item.id}
               optionsId={item.id}
               optionName={item.name}
+              optionTitle={item.title}
               optionsArr={item.arr}
             />
           );

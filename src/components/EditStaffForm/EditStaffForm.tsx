@@ -154,7 +154,7 @@ const EditStaffForm = ({ id, projectsList, closeForm }: EditFormProps) => {
           <div className="form__cell" key={option.id}>
             <DropdownInput
               optionsList={option.arr}
-              label={option.name}
+              label={option.title}
               value={staffState[item]}
               placeholder={"select " + option.name}
               dropdownClass="dropdown__button"
