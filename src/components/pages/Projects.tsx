@@ -65,7 +65,7 @@ const Projects = ():JSX.Element => {
         process.env.REACT_APP_PORT + `projects/${id}`,
         "DELETE"
       )
-        .then(() => dispatch(projectDeleted(id)))
+        .then((res) => dispatch(projectDeleted(res.id)))
         .catch((err: any) => console.log(err));
       setShowDeleteModal(() => false);
     },

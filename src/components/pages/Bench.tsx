@@ -62,6 +62,7 @@ const Bench = (): JSX.Element => {
   ];
 
   const staffs = useSelector(allStaffSelector) as Array<EmployeesProps>;
+  
   const projectsList = useSelector(allProjectsSelector) as Array<ProjectProps>;
 
   const [isListLoading, setIsListLoading] = useState(false);
@@ -99,7 +100,7 @@ const Bench = (): JSX.Element => {
     } // eslint-disable-next-line
   }, [colorZone]);
 
-  if (!isListLoading && staffList.length) {
+  if (!isListLoading && staffList.length > 0) {
     setIsListLoading(true);
   } else if (staffColor.length && !staffList.length && !isListLoading) {
     setStaffList(staffColor);

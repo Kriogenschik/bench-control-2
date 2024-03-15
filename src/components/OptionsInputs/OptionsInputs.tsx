@@ -11,6 +11,7 @@ interface InputsProps {
   value: string;
   optionsList: Array<OptionProps>;
   optionsId: string;
+  optionsName: string;
 }
 
 export default function InputsColumn({
@@ -19,6 +20,7 @@ export default function InputsColumn({
   value,
   optionsList,
   optionsId,
+  optionsName,
 }: InputsProps) {
   const dispatch = useDispatch<AppDispatch>();
   const { request } = useHttp();
@@ -61,10 +63,15 @@ export default function InputsColumn({
         };
         request(
           process.env.REACT_APP_PORT + `options/${optionsId}`,
-          "PATCH",
-          JSON.stringify(newOptionsList)
+          "PUT",
+          JSON.stringify({optionsName: optionsName, id: id, name: details["name"], value: details["value"]})
         )
-          .then(() => dispatch(optionsEdited({ optionsId, newOptionsList })))
+          .then((res) => {
+            // dispatch(optionsEdited({ optionsId, newOptionsList }));
+            dispatch(optionsEdited({ optionsId, res }))
+            
+          }
+            )
           .catch((err: any) => console.log(err));
       }
     } else {

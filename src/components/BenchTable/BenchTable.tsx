@@ -27,7 +27,7 @@ export default function BenchTable({ staffList }: BenchTableProps) {
   const allOptions = useSelector(allOptionsSelector) as Array<OptionFullProps>;
   let positions: Array<OptionProps> = [];
   if (allOptions) {
-    positions = allOptions.filter((opt) => opt.name === "Roles")[0]?.["arr"];
+    positions = allOptions.filter((opt) => opt.name === "roles")[0]?.["arr"];
   }
   let sortedStaffList = [];
   if (positions && positions.length && staffList) {

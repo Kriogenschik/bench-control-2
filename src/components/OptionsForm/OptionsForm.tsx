@@ -97,6 +97,7 @@ export default function OptionsForm({
                 {option.id ? (
                   <>
                     <OptionsInputs
+                      optionsName={optionName}
                       optionsId={optionsId}
                       id={option.id}
                       name={option.descr}
