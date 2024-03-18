@@ -192,7 +192,7 @@ export default function AddProjectForm({
         "POST",
         JSON.stringify(newProject)
       )
-        // .then((res) => dispatch(projectCreated(res)))
+        .then((res) => dispatch(projectCreated(res)))
         .catch((err) => console.log(err));
       closeForm();
     }

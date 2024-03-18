@@ -23,6 +23,7 @@
 	&__list-row {
 		width: 100%;
 		gap: 20px;
+		min-height: 22px;
 
 		@media (max-width: 575px) {
 			gap: 10px;

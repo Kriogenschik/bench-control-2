@@ -36,7 +36,7 @@ const projectsSlice = createSlice({
       projectsAdapter.removeOne(state, action.payload);
     },
     projectEdited: (state, action) => {
-      projectsAdapter.updateOne(state, {id: action.payload.id, changes: {...action.payload.editedProject}});
+      projectsAdapter.updateOne(state, {id: action.payload.id, changes: {...action.payload.res}});
     }
   },
   extraReducers: (builder) => {

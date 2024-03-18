@@ -243,14 +243,14 @@ export default function EditProjectForm({
         devs: devList,
         qas: qaList,
         isActive: project.isActive,
-      };     
+      };
 
       request(
         process.env.REACT_APP_PORT + `projects/${id}`,
-        "PATCH",
+        "PUT",
         JSON.stringify(editedProject)
       )
-        .then(() => dispatch(projectEdited({ id, editedProject })))
+        .then((res) => dispatch(projectEdited({ id, res })))
         .catch((err: any) => console.log(err));
       closeForm();
     }
