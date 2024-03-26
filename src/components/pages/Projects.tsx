@@ -4,8 +4,8 @@ import { ProjectProps } from "../ProjectsList/types";
 import Spinner from "../Spinner/Spinner";
 import {
   allProjectsSelector,
+  fetchDeleteProject,
   fetchProjects,
-  projectDeleted,
 } from "../ProjectsList/projectsListSlice";
 import AddProjectForm from "../AddProjectForm/AddProjectForm";
 import { useCallback, useEffect, useState } from "react";
@@ -61,13 +61,7 @@ const Projects = ():JSX.Element => {
 
   const onDelete = useCallback(
     (id: number) => {
-      request(
-        process.env.REACT_APP_PORT + `projects/${id}`,
-        "DELETE"
-      )
-        .then((res) => dispatch(projectDeleted(res.id)))
-        .catch((err: any) => console.log(err));
-      setShowDeleteModal(() => false);
+      dispatch(fetchDeleteProject(id));
     },
     // eslint-disable-next-line
     [request]

@@ -39,6 +39,20 @@ export const fetchAddProject = createAsyncThunk(
   }
 );
 
+export const fetchDeleteProject = createAsyncThunk(
+  "data/fetchDeleteProject",
+  (id: number, { dispatch }) => {
+    const { request } = useHttp();
+    request(
+      process.env.REACT_APP_PORT + `projects/${id}`,
+      "DELETE"
+    )
+      .then((res) => dispatch(projectDeleted(res.id)))
+      .catch((err: any) => console.log(err));
+  }
+);
+
+
 const projectsSlice = createSlice({
   name: "projects",
   initialState,
