@@ -3,7 +3,7 @@ import DeleteModal from "../DeleteModal/DeleteModal";
 import StaffList from "../StaffList/StaffList";
 import { useHttp } from "../../hooks/http.hook";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchStaff, staffDeleted } from "../StaffList/staffListSlice";
+import { fetchDeleteStaff, fetchStaff, staffDeleted } from "../StaffList/staffListSlice";
 import AddStaffForm from "../AddStaffForm/AddStaffForm";
 import EditStaffForm from "../EditStaffForm/EditStaffForm";
 import { AppDispatch, RootState } from "../../store";
@@ -73,28 +73,31 @@ const Staff = (): JSX.Element => {
     setShowDeleteModal(() => true);
   };
 
-  const onDelete = useCallback(
+  const onDelete = 
+  // useCallback(
     (id: number) => {
-      request(process.env.REACT_APP_PORT + `staff/${id}`, "DELETE")
-        .then((res) => dispatch(staffDeleted(res.id)))
-        .then(() =>
-          editProjectByStaffRemove(projectsList, id).forEach((project) => {
-            const projectId = project.id;
-            request(
-              process.env.REACT_APP_PORT + `projects/${projectId}`,
-              "PATCH",
-              JSON.stringify(project)
-            )
-              .then((res) => dispatch(projectEdited({ projectId, project })))
-              .catch((err: any) => console.log(err));
-          })
-        )
-        .catch((err: any) => console.log(err));
+      
+      dispatch(fetchDeleteStaff({id: id, projList: projectsList}));
+    //   request(process.env.REACT_APP_PORT + `staff/${id}`, "DELETE")
+    //     .then((res) => dispatch(staffDeleted(res.id)))
+    //     .then(() =>
+    //       editProjectByStaffRemove(projectsList, id).forEach((project) => {
+    //         const projectId = project.id;
+    //         request(
+    //           process.env.REACT_APP_PORT + `projects/${projectId}`,
+    //           "PATCH",
+    //           JSON.stringify(project)
+    //         )
+    //           .then((res) => dispatch(projectEdited({ projectId, project })))
+    //           .catch((err: any) => console.log(err));
+    //       })
+    //     )
+    //     .catch((err: any) => console.log(err));
       setShowDeleteModal(() => false);
-    },
+    }
     // eslint-disable-next-line
-    [request]
-  );
+  //   [request]
+  // );
 
   return (
     <div className="tab__body">

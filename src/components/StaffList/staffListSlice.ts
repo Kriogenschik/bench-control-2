@@ -21,6 +21,11 @@ import { ProjectProps } from "../ProjectsList/types";
 interface StaffState extends EntityState<EmployeesProps> {
   staffLoadingStatus: string;
 }
+
+interface DeleteStaff {
+  id: number;
+  projList: Array<ProjectProps>;
+}
 const staffAdapter = createEntityAdapter<EmployeesProps>();
 
 const initialState: StaffState = staffAdapter.getInitialState({
@@ -37,45 +42,26 @@ export const fetchStaff = createAsyncThunk<Array<EmployeesProps>>(
 
 export const fetchDeleteStaff = createAsyncThunk(
   "data/fetchDeleteEmployees",
-  (staffId: number) => {
-    const dispatch = useDispatch<AppDispatch>();
-    const projectsList = useSelector(
-      allProjectsSelector
-    ) as Array<ProjectProps>;
+  (params: DeleteStaff, { dispatch }) => {
     const { request } = useHttp();
-    request(process.env.REACT_APP_PORT + `staff/${staffId}`, "DELETE")
+    return request(process.env.REACT_APP_PORT + `staff/${params.id}`, "DELETE")
       .then((res) => dispatch(staffDeleted(res.id)))
       .then(() =>
-        editProjectByStaffRemove(projectsList, staffId).forEach((project) => {
-          const projectId = project.id;
-          request(
-            process.env.REACT_APP_PORT + `projects/${projectId}`,
-            "PATCH",
-            JSON.stringify(project)
-          )
-            .then((res) => dispatch(projectEdited({ projectId, project })))
-            .catch((err: any) => console.log(err));
-        })
+        editProjectByStaffRemove(params.projList, params.id).forEach(
+          (project) => {
+            const projectId = project.id;
+            request(
+              process.env.REACT_APP_PORT + `projects/${projectId}`,
+              "PUT",
+              JSON.stringify(project)
+            )
+              .then((res) => dispatch(projectEdited({ projectId, project })))
+              .catch((err: any) => console.log(err));
+          }
+        )
       )
       .catch((err: any) => console.log(err));
   }
-  // async ({staffId, projectsList}, thunkAPI) => {
-  //   const dispatch = useDispatch<AppDispatch>();
-  //   const { request } = useHttp();
-  //   request(process.env.REACT_APP_PORT + `staff/${staffId}`, "DELETE")
-  //       .then((res) =>  dispatch(staffDeleted(res.id)))
-  //       .then(() => EditProjectByStaffRemove(projectsList, staffId).forEach(project => {
-  //         const projectId = project.id;
-  //           request(
-  //             process.env.REACT_APP_PORT + `projects/${projectId}`,
-  //             "PATCH",
-  //             JSON.stringify(project)
-  //           )
-  //             .then((res) => dispatch(projectEdited({ projectId, project })))
-  //             .catch((err: any) => console.log(err));
-  //       }))
-  //       .catch((err: any) => console.log(err));
-  // }
 );
 
 const staffSlice = createSlice({
@@ -115,6 +101,9 @@ const staffSlice = createSlice({
         state.staffLoadingStatus = "error";
       }
     );
+
+    builder.addCase(fetchDeleteStaff.fulfilled, (state: StaffState, action) => {
+    });
   },
 });
 
