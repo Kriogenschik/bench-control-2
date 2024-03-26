@@ -8,9 +8,8 @@ import { EmployeesProps } from "../StaffList/types";
 import { allStaffSelector } from "../StaffList/staffListSlice";
 import { setTime, validateTime } from "../../utils/setTime";
 import getStaffProjectsTime from "../../utils/getStaffProjectsTime";
-import { useHttp } from "../../hooks/http.hook";
 import { AppDispatch } from "../../store";
-import { projectCreated } from "../ProjectsList/projectsListSlice";
+import { fetchAddProject } from "../ProjectsList/projectsListSlice";
 
 import "./AddProjectForm.scss";
 
@@ -80,7 +79,6 @@ export default function AddProjectForm({
   );
 
   const dispatch = useDispatch<AppDispatch>();
-  const { request } = useHttp();
 
   const setStaffTime = (
     e: ChangeEvent<HTMLInputElement>,
@@ -186,14 +184,8 @@ export default function AddProjectForm({
         qas: qaList,
         isActive: true,
       };
-      
-      request(
-        process.env.REACT_APP_PORT + `projects`,
-        "POST",
-        JSON.stringify(newProject)
-      )
-        .then((res) => dispatch(projectCreated(res)))
-        .catch((err) => console.log(err));
+
+      dispatch(fetchAddProject(newProject));
       closeForm();
     }
   };

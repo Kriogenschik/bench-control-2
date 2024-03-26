@@ -9,7 +9,7 @@ import {
 
 import { useHttp } from "../../hooks/http.hook";
 import { CreatedEmployeesProps, EmployeesProps } from "./types";
-import { AppDispatch, RootState } from "../../store";
+import { RootState } from "../../store";
 import { projectEdited } from "../ProjectsList/projectsListSlice";
 import { editProjectByStaffRemove } from "../../utils/editProjectByStaffRemove";
 import { ProjectProps } from "../ProjectsList/types";

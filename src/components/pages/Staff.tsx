@@ -1,9 +1,9 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import DeleteModal from "../DeleteModal/DeleteModal";
 import StaffList from "../StaffList/StaffList";
 import { useHttp } from "../../hooks/http.hook";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchDeleteStaff, fetchStaff, staffDeleted } from "../StaffList/staffListSlice";
+import { fetchDeleteStaff, fetchStaff } from "../StaffList/staffListSlice";
 import AddStaffForm from "../AddStaffForm/AddStaffForm";
 import EditStaffForm from "../EditStaffForm/EditStaffForm";
 import { AppDispatch, RootState } from "../../store";
@@ -13,11 +13,9 @@ import {
 } from "../OptionsForm/optionsFormSlice";
 import Tooltips from "../Tooltips/Tooltips";
 import { OptionFullProps } from "../OptionsForm/types";
-import { editProjectByStaffRemove } from "../../utils/editProjectByStaffRemove";
 import {
   allProjectsSelector,
   fetchProjects,
-  projectEdited,
 } from "../ProjectsList/projectsListSlice";
 import { ProjectProps } from "../ProjectsList/types";
 

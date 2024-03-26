@@ -7,8 +7,11 @@ export interface ProjectStaffProps {
   billingType: string;
 }
 
-export interface ProjectProps {
+export interface ProjectProps extends CreateProjectProps {
   id: number;
+}
+
+export interface CreateProjectProps {
   name: string;
   lead: Partial<ProjectStaffProps>;
   ba: Partial<ProjectStaffProps>;
