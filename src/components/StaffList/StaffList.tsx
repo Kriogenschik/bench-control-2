@@ -9,8 +9,8 @@ import { useEffect, useState } from "react";
 import { staffSort } from "../../utils/StaffSort";
 
 interface StaffListProps {
-  onDelete: (id: string, name: string) => void;
-  onEdit: (id: string) => void;
+  onDelete: (id: number, name: string) => void;
+  onEdit: (id: number) => void;
 }
 
 const StaffList = ({ onDelete, onEdit }: StaffListProps): JSX.Element => {

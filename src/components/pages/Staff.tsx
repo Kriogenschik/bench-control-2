@@ -19,7 +19,7 @@ import { ProjectProps } from "../ProjectsList/types";
 
 const Staff = (): JSX.Element => {
   interface deleteStaffDataProps {
-    id: string;
+    id: number;
     name: string;
   }
 
@@ -38,12 +38,12 @@ const Staff = (): JSX.Element => {
 
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [deleteStaffData, setDeleteStaffData] = useState<deleteStaffDataProps>({
-    id: "",
+    id: 0,
     name: "",
   });
   const [showAddForm, setShowAddForm] = useState<boolean>(false);
   const [showEditForm, setShowEditForm] = useState<boolean>(false);
-  const [editStaffId, setEditStaffId] = useState<string>("");
+  const [editStaffId, setEditStaffId] = useState<number>(0);
   const [showUserTooltip, setShowUserTooltip] = useState<boolean>(false);
 
   const allOptions = useSelector(allOptionsSelector) as Array<OptionFullProps>;
@@ -51,7 +51,7 @@ const Staff = (): JSX.Element => {
 
   const { request } = useHttp();
 
-  const openEditForm = (id: string) => {
+  const openEditForm = (id: number) => {
     if (showEditForm) {
       setShowEditForm((showEditForm) => !showEditForm);
     }
@@ -61,7 +61,7 @@ const Staff = (): JSX.Element => {
     }, 0);
   };
 
-  const openDeleteModal = (id: string, name: string) => {
+  const openDeleteModal = (id: number, name: string) => {
     setDeleteStaffData({
       id: id,
       name: name,
@@ -70,7 +70,7 @@ const Staff = (): JSX.Element => {
   };
 
   const onDelete = useCallback(
-    (id: string) => {
+    (id: number) => {
       request(process.env.REACT_APP_PORT + `staff/${id}`, "DELETE")
         .then((res) =>  dispatch(staffDeleted(res.id)))
         .then(() => EditProjectByStaffRemove(projectsList, id).forEach(project => {

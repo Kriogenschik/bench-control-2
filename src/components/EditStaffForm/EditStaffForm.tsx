@@ -16,7 +16,7 @@ import Spinner from "../Spinner/Spinner";
 import "./EditStaffForm.scss";
 
 interface EditFormProps {
-  id: string;
+  id: number;
   projectsList: Array<ProjectProps>;
   closeForm: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }

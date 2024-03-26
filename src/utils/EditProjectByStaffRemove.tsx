@@ -5,7 +5,7 @@ import {
 
 export const EditProjectByStaffRemove = (
   projectsList: Array<ProjectProps>,
-  removedStaffId: string
+  removedStaffId: number
 ) => {
   let changedProjectsList: Array<ProjectProps> = [];
 

@@ -9,8 +9,8 @@ import "./ProjectsList.scss";
 import { allProjectsSelector } from "./projectsListSlice";
 
 interface ProjectsListProps {
-  projectEdit: (id: string) => void;
-  projectDelete: (id: string, name: string) => void;
+  projectEdit: (id: number) => void;
+  projectDelete: (id: number, name: string) => void;
 }
 
 export default function ProjectsList({
