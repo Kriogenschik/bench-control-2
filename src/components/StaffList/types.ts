@@ -1,5 +1,8 @@
-export interface EmployeesProps {
+export interface EmployeesProps extends CreatedEmployeesProps {
   id: number;
+}
+
+export interface CreatedEmployeesProps {
   name: string;
   pos: string;
   stack: string;

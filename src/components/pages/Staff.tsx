@@ -74,30 +74,14 @@ const Staff = (): JSX.Element => {
   };
 
   const onDelete = 
-  // useCallback(
+  useCallback(
     (id: number) => {
-      
       dispatch(fetchDeleteStaff({id: id, projList: projectsList}));
-    //   request(process.env.REACT_APP_PORT + `staff/${id}`, "DELETE")
-    //     .then((res) => dispatch(staffDeleted(res.id)))
-    //     .then(() =>
-    //       editProjectByStaffRemove(projectsList, id).forEach((project) => {
-    //         const projectId = project.id;
-    //         request(
-    //           process.env.REACT_APP_PORT + `projects/${projectId}`,
-    //           "PATCH",
-    //           JSON.stringify(project)
-    //         )
-    //           .then((res) => dispatch(projectEdited({ projectId, project })))
-    //           .catch((err: any) => console.log(err));
-    //       })
-    //     )
-    //     .catch((err: any) => console.log(err));
       setShowDeleteModal(() => false);
-    }
+    },
     // eslint-disable-next-line
-  //   [request]
-  // );
+    [request]
+  );
 
   return (
     <div className="tab__body">

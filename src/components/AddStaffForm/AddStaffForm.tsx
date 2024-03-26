@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import DropdownInput from "../DropdownInput/DropdownInput";
 import { allOptionsSelector } from "../OptionsForm/optionsFormSlice";
 import { OptionFullProps } from "../OptionsForm/types";
-import { EmployeesProps } from "../StaffList/types";
-import { staffCreated, allStaffSelector } from "../StaffList/staffListSlice";
+import { fetchAddStaff } from "../StaffList/staffListSlice";
 import { setTime, validateTime } from "../../utils/setTime";
 import { useDispatch, useSelector } from "react-redux";
-import { useHttp } from "../../hooks/http.hook";
 
 import "./AddStaffForm.scss";
 import { AppDispatch } from "../../store";
@@ -44,10 +42,8 @@ const AddStaffForm = ({
   });
 
   const dispatch = useDispatch<AppDispatch>();
-  const { request } = useHttp();
 
   const options = useSelector(allOptionsSelector) as Array<OptionFullProps>;
-  // const allStaff = useSelector(allStaffSelector) as Array<EmployeesProps>;
 
   const saveEmployee = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const newIsEmpty = {
@@ -78,14 +74,7 @@ const AddStaffForm = ({
         time: details["time"],
       };
       
-      
-      request(
-        process.env.REACT_APP_PORT + "staff",
-        "POST", 
-        JSON.stringify(newStaff)
-      )
-        .then((res) => dispatch(staffCreated(res)))
-        .catch((err) => console.log(err));
+      dispatch(fetchAddStaff(newStaff));
       closeForm(e);
     }
   };

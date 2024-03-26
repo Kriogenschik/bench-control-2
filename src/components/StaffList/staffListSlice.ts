@@ -8,13 +8,9 @@ import {
 } from "@reduxjs/toolkit";
 
 import { useHttp } from "../../hooks/http.hook";
-import { EmployeesProps } from "./types";
+import { CreatedEmployeesProps, EmployeesProps } from "./types";
 import { AppDispatch, RootState } from "../../store";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  allProjectsSelector,
-  projectEdited,
-} from "../ProjectsList/projectsListSlice";
+import { projectEdited } from "../ProjectsList/projectsListSlice";
 import { editProjectByStaffRemove } from "../../utils/editProjectByStaffRemove";
 import { ProjectProps } from "../ProjectsList/types";
 
@@ -44,7 +40,7 @@ export const fetchDeleteStaff = createAsyncThunk(
   "data/fetchDeleteEmployees",
   (params: DeleteStaff, { dispatch }) => {
     const { request } = useHttp();
-    return request(process.env.REACT_APP_PORT + `staff/${params.id}`, "DELETE")
+    request(process.env.REACT_APP_PORT + `staff/${params.id}`, "DELETE")
       .then((res) => dispatch(staffDeleted(res.id)))
       .then(() =>
         editProjectByStaffRemove(params.projList, params.id).forEach(
@@ -55,7 +51,7 @@ export const fetchDeleteStaff = createAsyncThunk(
               "PUT",
               JSON.stringify(project)
             )
-              .then((res) => dispatch(projectEdited({ projectId, project })))
+              .then((res) => dispatch(projectEdited({ projectId, res })))
               .catch((err: any) => console.log(err));
           }
         )
@@ -63,6 +59,20 @@ export const fetchDeleteStaff = createAsyncThunk(
       .catch((err: any) => console.log(err));
   }
 );
+
+export const fetchAddStaff = createAsyncThunk(
+  "data/fetchAddEmployees",
+  (newStaff: CreatedEmployeesProps, { dispatch }) => {
+    const { request } = useHttp();
+    request(
+      process.env.REACT_APP_PORT + "staff",
+      "POST", 
+      JSON.stringify(newStaff)
+    )
+      .then((res) => dispatch(staffCreated(res)))
+      .catch((err) => console.log(err));
+  }
+)
 
 const staffSlice = createSlice({
   name: "staff",
@@ -101,9 +111,6 @@ const staffSlice = createSlice({
         state.staffLoadingStatus = "error";
       }
     );
-
-    builder.addCase(fetchDeleteStaff.fulfilled, (state: StaffState, action) => {
-    });
   },
 });
 
