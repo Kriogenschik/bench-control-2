@@ -13,6 +13,7 @@ import { AppDispatch, RootState } from "../../store";
 import { projectEdited } from "../ProjectsList/projectsListSlice";
 import { editProjectByStaffRemove } from "../../utils/editProjectByStaffRemove";
 import { ProjectProps } from "../ProjectsList/types";
+import { editProjectByStaffChange } from "../../utils/editProjectByStaffChange";
 
 interface StaffState extends EntityState<EmployeesProps> {
   staffLoadingStatus: string;
@@ -22,6 +23,11 @@ interface DeleteStaff {
   id: number;
   projList: Array<ProjectProps>;
 }
+
+interface EditStaff extends DeleteStaff{
+  editedStaff: EmployeesProps;
+}
+
 const staffAdapter = createEntityAdapter<EmployeesProps>();
 
 const initialState: StaffState = staffAdapter.getInitialState({
@@ -72,7 +78,36 @@ export const fetchAddStaff = createAsyncThunk(
       .then((res) => dispatch(staffCreated(res)))
       .catch((err) => console.log(err));
   }
-)
+);
+
+export const fetchEditStaff = createAsyncThunk(
+  "data/fetchEditEmployees",
+  (params: EditStaff, { dispatch }) => {
+    const { request } = useHttp();
+    const id = params.id;
+    request(
+      process.env.REACT_APP_PORT + `staff/${id}`,
+      "PUT",
+      JSON.stringify(params.editedStaff)
+    )
+      .then((res) => dispatch(staffEdited({ id, res })))
+      .then(() => {
+        editProjectByStaffChange(params.projList, params.editedStaff).forEach(
+          (project) => {
+            const projectId = project.id;
+            request(
+              process.env.REACT_APP_PORT + `projects/${projectId}`,
+              "PUT",
+              JSON.stringify(project)
+            )
+              .then(() => dispatch(projectEdited({ projectId, project })))
+              .catch((err: any) => console.log(err));
+          }
+        );
+      })
+      .catch((err: any) => console.log(err));
+  }
+);
 
 const staffSlice = createSlice({
   name: "staff",

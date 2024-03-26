@@ -1,15 +1,12 @@
 import { useState } from "react";
-import { allStaffSelector, staffEdited } from "../StaffList/staffListSlice";
+import { allStaffSelector, fetchEditStaff } from "../StaffList/staffListSlice";
 import { allOptionsSelector } from "../OptionsForm/optionsFormSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setTime, validateTime } from "../../utils/setTime";
 import { OptionFullProps } from "../OptionsForm/types";
 import DropdownInput from "../DropdownInput/DropdownInput";
-import { useHttp } from "../../hooks/http.hook";
 import { EmployeesProps } from "../StaffList/types";
 import { AppDispatch, RootState } from "../../store";
-import { editProjectByStaffChange } from "../../utils/editProjectByStaffChange";
-import { projectEdited } from "../ProjectsList/projectsListSlice";
 import { ProjectProps } from "../ProjectsList/types";
 import Spinner from "../Spinner/Spinner";
 
@@ -27,7 +24,6 @@ interface StateProps {
 
 const EditStaffForm = ({ id, projectsList, closeForm }: EditFormProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { request } = useHttp();
 
   const allStaff = useSelector(allStaffSelector) as Array<EmployeesProps>;
 
@@ -66,27 +62,7 @@ const EditStaffForm = ({ id, projectsList, closeForm }: EditFormProps) => {
         time: staffState["time"],
       };
 
-      request(
-        process.env.REACT_APP_PORT + `staff/${id}`,
-        "PUT",
-        JSON.stringify(editedStaff)
-      )
-        .then((res) => dispatch(staffEdited({ id, res })))
-        .then(() => {
-          editProjectByStaffChange(projectsList, editedStaff).forEach(
-            (project) => {
-              const projectId = project.id;
-              request(
-                process.env.REACT_APP_PORT + `projects/${projectId}`,
-                "PATCH",
-                JSON.stringify(project)
-              )
-                .then(() => dispatch(projectEdited({ projectId, project })))
-                .catch((err: any) => console.log(err));
-            }
-          );
-        })
-        .catch((err: any) => console.log(err));
+      dispatch(fetchEditStaff({id: id, projList: projectsList, editedStaff: editedStaff}));
       closeForm(e);
     }
   };
