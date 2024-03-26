@@ -18,7 +18,7 @@ import { fetchOptions } from "../OptionsForm/optionsFormSlice";
 
 const Projects = ():JSX.Element => {
   interface deleteProjectDataProps {
-    id: string;
+    id: number;
     name: string;
   }
 
@@ -39,17 +39,17 @@ const Projects = ():JSX.Element => {
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [deleteProjectData, setDeleteProjectData] =
     useState<deleteProjectDataProps>({
-      id: "",
+      id: 0,
       name: "",
     });
   const [showEditForm, setShowEditForm] = useState<boolean>(false);
-  const [editProjectId, setEditProjectId] = useState<string>('');
+  const [editProjectId, setEditProjectId] = useState<number>(0);
 
   const { request } = useHttp();
 
   const projectsList = useSelector(allProjectsSelector) as Array<ProjectProps>;
 
-  const editFormToggle = (id: string) => {
+  const editFormToggle = (id: number) => {
     if (showEditForm) {
       setShowEditForm((showEditForm) => !showEditForm);
     }
@@ -60,7 +60,7 @@ const Projects = ():JSX.Element => {
   };
 
   const onDelete = useCallback(
-    (id: string) => {
+    (id: number) => {
       request(
         process.env.REACT_APP_PORT + `projects/${id}`,
         "DELETE"
@@ -73,7 +73,7 @@ const Projects = ():JSX.Element => {
     [request]
   );
 
-  const openDeleteModal = (id: string, name: string) => {
+  const openDeleteModal = (id: number, name: string) => {
     setDeleteProjectData({
       id: id,
       name: name,

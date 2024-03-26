@@ -1,7 +1,7 @@
 import { ProjectProps } from "../components/ProjectsList/types";
 
 export default function getStaffProjectsTime(
-  staffID: string,
+  staffID: number,
   projectsList: Array<ProjectProps>,
   billingType?: string
 ): number {

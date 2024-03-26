@@ -8,11 +8,12 @@ import { useHttp } from "../../hooks/http.hook";
 
 import "./ProjectCard.scss";
 import { projectEdited } from "../ProjectsList/projectsListSlice";
-import getStaffProjectsTime from "../../utils/GetStaffProjectsTime";
+import getStaffProjectsTime from "../../utils/getStaffProjectsTime";
+import dateFormat from "../../utils/dateFormat";
 
 interface ProjectCardProps {
-  projectEdit: (id: string) => void;
-  projectDelete: (id: string, name: string) => void;
+  projectEdit: (id: number) => void;
+  projectDelete: (id: number, name: string) => void;
   staffList: Array<EmployeesProps>;
   projects: Array<ProjectProps>;
   project: ProjectProps;
@@ -63,21 +64,21 @@ export default function ProjectCard({
       let maxLeadTime = -1;
       if (lead) {
         maxLeadTime =
-          lead.time - getStaffProjectsTime(project.lead.id || "", activeProjects);
+          lead.time - getStaffProjectsTime(project.lead.id || 0, activeProjects);
       }
 
       const ba = staffList.filter((employ) => employ.id === project.ba?.id)[0];      
       let maxBATime = -1;
       if (ba) {
         maxBATime =
-          ba.time - getStaffProjectsTime(project.ba.id || "", activeProjects);
+          ba.time - getStaffProjectsTime(project.ba.id || 0, activeProjects);
       } else maxBATime = 0;
 
       const pm = staffList.filter((employ) => employ.id === project.pm?.id)[0];
       let maxPMTime = -1;
       if (pm) {
         maxPMTime =
-          pm.time - getStaffProjectsTime(project.pm.id || "", activeProjects);
+          pm.time - getStaffProjectsTime(project.pm.id || 0, activeProjects);
       } else maxPMTime = 0;
 
       let minDevTime = 0;
@@ -136,20 +137,6 @@ export default function ProjectCard({
     )
       .then((res) => dispatch(projectEdited({ id, res })))
       .catch((err: any) => console.log(err));
-  };
-
-  const timeFormat = (time: string): string => {
-    if (time !== "none") {
-      const endTime = new Date(time);
-      return `${
-        endTime.getDate() > 9 ? endTime.getDate() : "0" + endTime.getDate()
-      }.${
-        +endTime.getMonth() + 1 > 9
-          ? +endTime.getMonth() + 1
-          : "0" + (+endTime.getMonth() + 1)
-      }.${endTime.getFullYear()}`;
-    }
-    return "none";
   };
 
   const cardClass = (): string => {
@@ -216,11 +203,11 @@ export default function ProjectCard({
         </p>
         <p className="project__info">
           <span className="project__label">StartAt: </span>
-          {timeFormat(project.start)}
+          {dateFormat(project.start)}
         </p>
         <p className="project__info">
           <span className="project__label">EndAt: </span>
-          {timeFormat(project.end)}
+          {dateFormat(project.end)}
         </p>
       </div>
       <div className="project__lists">

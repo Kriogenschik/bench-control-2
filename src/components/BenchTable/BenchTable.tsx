@@ -2,7 +2,7 @@ import { StaffBenchListProps } from "./types";
 import { useSelector } from "react-redux";
 import { allOptionsSelector } from "../OptionsForm/optionsFormSlice";
 import { OptionFullProps, OptionProps } from "../OptionsForm/types";
-import timeFormat from "../../utils/DateFormat";
+import dateFormat from "../../utils/dateFormat";
 
 import "./BenchTable.scss";
 
@@ -69,7 +69,7 @@ export default function BenchTable({ staffList }: BenchTableProps) {
                         <td>{staff.freeTime}</td>
                         <td>{staff.ubTime}</td>
                         <td className={`bench-table__cell ${staff.color}`}>
-                          {timeFormat(staff.freeAt)}
+                          {dateFormat(staff.freeAt)}
                         </td>
                       </tr>
                     );

@@ -3,9 +3,9 @@ import InputCheckBox from "../InputCheckbox/InputCheckbox";
 import ProjectStaffEditList from "../ProjectStaffEditList/ProjectStaffEditList";
 import { EmployeesProps } from "../StaffList/types";
 import { ProjectProps, ProjectStaffProps } from "../ProjectsList/types";
-import getStaffProjectsTime from "../../utils/GetStaffProjectsTime";
+import getStaffProjectsTime from "../../utils/getStaffProjectsTime";
 import InputAutoStaff from "../InputAutoStaff/InputAutoStaff";
-import { setTime, validateTime } from "../../utils/SetTime";
+import { setTime, validateTime } from "../../utils/setTime";
 import { useDispatch, useSelector } from "react-redux";
 import { allStaffSelector } from "../StaffList/staffListSlice";
 import { useHttp } from "../../hooks/http.hook";
@@ -15,7 +15,7 @@ import { projectEdited } from "../ProjectsList/projectsListSlice";
 import "./EditProjectForm.scss";
 
 interface EditProjectFormProps {
-  id: string;
+  id: number;
   closeForm: () => void;
   projectsList: Array<ProjectProps>;
 }

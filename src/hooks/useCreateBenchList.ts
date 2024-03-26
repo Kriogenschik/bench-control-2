@@ -1,7 +1,7 @@
 import { StaffBenchListProps } from "../components/BenchTable/types";
 import { ProjectProps } from "../components/ProjectsList/types";
 import { EmployeesProps } from "../components/StaffList/types";
-import getStaffProjectsTime from "../utils/GetStaffProjectsTime";
+import getStaffProjectsTime from "../utils/getStaffProjectsTime";
 
 const useCreateBenchList = (
   staffs: Array<EmployeesProps>,

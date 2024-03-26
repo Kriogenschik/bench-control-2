@@ -6,11 +6,11 @@ import { RootState } from "../../store";
 
 import "./staffList.scss";
 import { useEffect, useState } from "react";
-import { staffSort } from "../../utils/StaffSort";
+import { staffSort } from "../../utils/staffSort";
 
 interface StaffListProps {
-  onDelete: (id: string, name: string) => void;
-  onEdit: (id: string) => void;
+  onDelete: (id: number, name: string) => void;
+  onEdit: (id: number) => void;
 }
 
 const StaffList = ({ onDelete, onEdit }: StaffListProps): JSX.Element => {

@@ -13,13 +13,17 @@ import {
 } from "../OptionsForm/optionsFormSlice";
 import Tooltips from "../Tooltips/Tooltips";
 import { OptionFullProps } from "../OptionsForm/types";
-import { EditProjectByStaffRemove } from "../../utils/EditProjectByStaffRemove";
-import { allProjectsSelector, fetchProjects, projectEdited } from "../ProjectsList/projectsListSlice";
+import { editProjectByStaffRemove } from "../../utils/editProjectByStaffRemove";
+import {
+  allProjectsSelector,
+  fetchProjects,
+  projectEdited,
+} from "../ProjectsList/projectsListSlice";
 import { ProjectProps } from "../ProjectsList/types";
 
 const Staff = (): JSX.Element => {
   interface deleteStaffDataProps {
-    id: string;
+    id: number;
     name: string;
   }
 
@@ -38,12 +42,12 @@ const Staff = (): JSX.Element => {
 
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [deleteStaffData, setDeleteStaffData] = useState<deleteStaffDataProps>({
-    id: "",
+    id: 0,
     name: "",
   });
   const [showAddForm, setShowAddForm] = useState<boolean>(false);
   const [showEditForm, setShowEditForm] = useState<boolean>(false);
-  const [editStaffId, setEditStaffId] = useState<string>("");
+  const [editStaffId, setEditStaffId] = useState<number>(0);
   const [showUserTooltip, setShowUserTooltip] = useState<boolean>(false);
 
   const allOptions = useSelector(allOptionsSelector) as Array<OptionFullProps>;
@@ -51,7 +55,7 @@ const Staff = (): JSX.Element => {
 
   const { request } = useHttp();
 
-  const openEditForm = (id: string) => {
+  const openEditForm = (id: number) => {
     if (showEditForm) {
       setShowEditForm((showEditForm) => !showEditForm);
     }
@@ -61,7 +65,7 @@ const Staff = (): JSX.Element => {
     }, 0);
   };
 
-  const openDeleteModal = (id: string, name: string) => {
+  const openDeleteModal = (id: number, name: string) => {
     setDeleteStaffData({
       id: id,
       name: name,
@@ -70,11 +74,12 @@ const Staff = (): JSX.Element => {
   };
 
   const onDelete = useCallback(
-    (id: string) => {
+    (id: number) => {
       request(process.env.REACT_APP_PORT + `staff/${id}`, "DELETE")
-        .then((res) =>  dispatch(staffDeleted(res.id)))
-        .then(() => EditProjectByStaffRemove(projectsList, id).forEach(project => {
-          const projectId = project.id;
+        .then((res) => dispatch(staffDeleted(res.id)))
+        .then(() =>
+          editProjectByStaffRemove(projectsList, id).forEach((project) => {
+            const projectId = project.id;
             request(
               process.env.REACT_APP_PORT + `projects/${projectId}`,
               "PATCH",
@@ -82,14 +87,15 @@ const Staff = (): JSX.Element => {
             )
               .then((res) => dispatch(projectEdited({ projectId, project })))
               .catch((err: any) => console.log(err));
-        }))
+          })
+        )
         .catch((err: any) => console.log(err));
       setShowDeleteModal(() => false);
     },
     // eslint-disable-next-line
     [request]
   );
-    
+
   return (
     <div className="tab__body">
       {!showAddForm && isAdmin && (
@@ -100,7 +106,7 @@ const Staff = (): JSX.Element => {
           Add
         </button>
       )}
-      { (
+      {
         <div className="tab__hint">
           <button
             className="tab__btn tab__btn--hint"
@@ -112,26 +118,28 @@ const Staff = (): JSX.Element => {
             <Tooltips
               closeTip={() => setShowUserTooltip(false)}
               btnPosition={document.documentElement.clientWidth}
-              children={allOptions.map(item => {
+              children={allOptions.map((item) => {
                 return (
                   <div key={item.id} className="tab__hint-col">
                     <p className="tab__hint-title">{item.name}:</p>
                     <ul>
-                      {item.arr.map(option => {
+                      {item.arr.map((option) => {
                         return (
                           <li key={option.id}>
-                            <span>{option.value} - {option.descr}</span>
+                            <span>
+                              {option.value} - {option.descr}
+                            </span>
                           </li>
-                        )
+                        );
                       })}
                     </ul>
                   </div>
-                )
+                );
               })}
             />
           )}
         </div>
-      )}
+      }
       {showAddForm && <AddStaffForm closeForm={() => setShowAddForm(false)} />}
       <StaffList onEdit={openEditForm} onDelete={openDeleteModal} />
       {showEditForm && (

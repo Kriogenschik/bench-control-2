@@ -2,13 +2,13 @@ import { useState } from "react";
 import { allStaffSelector, staffEdited } from "../StaffList/staffListSlice";
 import { allOptionsSelector } from "../OptionsForm/optionsFormSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { setTime, validateTime } from "../../utils/SetTime";
+import { setTime, validateTime } from "../../utils/setTime";
 import { OptionFullProps } from "../OptionsForm/types";
 import DropdownInput from "../DropdownInput/DropdownInput";
 import { useHttp } from "../../hooks/http.hook";
 import { EmployeesProps } from "../StaffList/types";
 import { AppDispatch, RootState } from "../../store";
-import { EditProjectByStaffChange } from "../../utils/EditProjectByStaffChange";
+import { editProjectByStaffChange } from "../../utils/editProjectByStaffChange";
 import { projectEdited } from "../ProjectsList/projectsListSlice";
 import { ProjectProps } from "../ProjectsList/types";
 import Spinner from "../Spinner/Spinner";
@@ -16,7 +16,7 @@ import Spinner from "../Spinner/Spinner";
 import "./EditStaffForm.scss";
 
 interface EditFormProps {
-  id: string;
+  id: number;
   projectsList: Array<ProjectProps>;
   closeForm: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
@@ -73,7 +73,7 @@ const EditStaffForm = ({ id, projectsList, closeForm }: EditFormProps) => {
       )
         .then((res) => dispatch(staffEdited({ id, res })))
         .then(() => {
-          EditProjectByStaffChange(projectsList, editedStaff).forEach(
+          editProjectByStaffChange(projectsList, editedStaff).forEach(
             (project) => {
               const projectId = project.id;
               request(

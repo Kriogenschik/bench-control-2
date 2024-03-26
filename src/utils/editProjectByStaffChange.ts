@@ -4,7 +4,7 @@ import {
 } from "../components/ProjectsList/types";
 import { EmployeesProps } from "../components/StaffList/types";
 
-export const EditProjectByStaffChange = (
+export const editProjectByStaffChange = (
   projectsList: Array<ProjectProps>,
   editedStaff: EmployeesProps
 ) => {

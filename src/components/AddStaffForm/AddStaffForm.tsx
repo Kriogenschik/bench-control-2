@@ -4,7 +4,7 @@ import { allOptionsSelector } from "../OptionsForm/optionsFormSlice";
 import { OptionFullProps } from "../OptionsForm/types";
 import { EmployeesProps } from "../StaffList/types";
 import { staffCreated, allStaffSelector } from "../StaffList/staffListSlice";
-import { setTime, validateTime } from "../../utils/SetTime";
+import { setTime, validateTime } from "../../utils/setTime";
 import { useDispatch, useSelector } from "react-redux";
 import { useHttp } from "../../hooks/http.hook";
 
