@@ -13,6 +13,12 @@ interface OptionsState extends EntityState<OptionFullProps> {
   optionsLoadingStatus: string;
 }
 
+interface DeleteOptions {
+  optionName: string,
+  optionsId: number,
+  id: number;
+}
+
 const optionsAdapter = createEntityAdapter<OptionFullProps>();
 
 const initialState: OptionsState = optionsAdapter.getInitialState({
@@ -23,6 +29,36 @@ export const fetchOptions = createAsyncThunk<Array<OptionFullProps>>("data/fetch
   const { request } = useHttp();
   return request("http://localhost:5000/options");
 });
+
+export const fetchDeleteOptions = createAsyncThunk(
+  "data/fetchDeleteOptions",
+  (params: DeleteOptions, { dispatch }) => {
+    const { request } = useHttp();
+    const {optionName, optionsId, id} = params;
+    request(
+      process.env.REACT_APP_PORT + `options/${optionsId}`,
+      "DELETE",
+      JSON.stringify({optionName: optionName, id: id})
+    )
+      .then((res) => dispatch(optionsEdited({ optionsId, res })))
+      .catch((err: any) => console.log(err));
+  }
+);
+
+// export const fetchAddOptions = createAsyncThunk(
+//   "data/fetchAddOptions",
+//   (params: DeleteOptions, { dispatch }) => {
+//     const { request } = useHttp();
+//     const {optionName, optionsId, id} = params;
+//     request(
+//       process.env.REACT_APP_PORT + `options/${optionsId}`,
+//       "DELETE",
+//       JSON.stringify({optionName: optionName, id: id})
+//     )
+//       .then((res) => dispatch(optionsEdited({ optionsId, res })))
+//       .catch((err: any) => console.log(err));
+//   }
+// );
 
 const optionsSlice = createSlice({
   name: "options",
