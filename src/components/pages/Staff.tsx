@@ -1,9 +1,9 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import DeleteModal from "../DeleteModal/DeleteModal";
 import StaffList from "../StaffList/StaffList";
 import { useHttp } from "../../hooks/http.hook";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchStaff, staffDeleted } from "../StaffList/staffListSlice";
+import { fetchDeleteStaff, fetchStaff } from "../StaffList/staffListSlice";
 import AddStaffForm from "../AddStaffForm/AddStaffForm";
 import EditStaffForm from "../EditStaffForm/EditStaffForm";
 import { AppDispatch, RootState } from "../../store";
@@ -13,8 +13,10 @@ import {
 } from "../OptionsForm/optionsFormSlice";
 import Tooltips from "../Tooltips/Tooltips";
 import { OptionFullProps } from "../OptionsForm/types";
-import { EditProjectByStaffRemove } from "../../utils/EditProjectByStaffRemove";
-import { allProjectsSelector, fetchProjects, projectEdited } from "../ProjectsList/projectsListSlice";
+import {
+  allProjectsSelector,
+  fetchProjects,
+} from "../ProjectsList/projectsListSlice";
 import { ProjectProps } from "../ProjectsList/types";
 
 const Staff = (): JSX.Element => {
@@ -69,27 +71,16 @@ const Staff = (): JSX.Element => {
     setShowDeleteModal(() => true);
   };
 
-  const onDelete = useCallback(
+  const onDelete = 
+  useCallback(
     (id: number) => {
-      request(process.env.REACT_APP_PORT + `staff/${id}`, "DELETE")
-        .then((res) =>  dispatch(staffDeleted(res.id)))
-        .then(() => EditProjectByStaffRemove(projectsList, id).forEach(project => {
-          const projectId = project.id;
-            request(
-              process.env.REACT_APP_PORT + `projects/${projectId}`,
-              "PATCH",
-              JSON.stringify(project)
-            )
-              .then((res) => dispatch(projectEdited({ projectId, project })))
-              .catch((err: any) => console.log(err));
-        }))
-        .catch((err: any) => console.log(err));
+      dispatch(fetchDeleteStaff({id: id, projList: projectsList}));
       setShowDeleteModal(() => false);
     },
     // eslint-disable-next-line
     [request]
   );
-    
+
   return (
     <div className="tab__body">
       {!showAddForm && isAdmin && (
@@ -100,7 +91,7 @@ const Staff = (): JSX.Element => {
           Add
         </button>
       )}
-      { (
+      {
         <div className="tab__hint">
           <button
             className="tab__btn tab__btn--hint"
@@ -112,26 +103,28 @@ const Staff = (): JSX.Element => {
             <Tooltips
               closeTip={() => setShowUserTooltip(false)}
               btnPosition={document.documentElement.clientWidth}
-              children={allOptions.map(item => {
+              children={allOptions.map((item) => {
                 return (
                   <div key={item.id} className="tab__hint-col">
                     <p className="tab__hint-title">{item.name}:</p>
                     <ul>
-                      {item.arr.map(option => {
+                      {item.arr.map((option) => {
                         return (
                           <li key={option.id}>
-                            <span>{option.value} - {option.descr}</span>
+                            <span>
+                              {option.value} - {option.descr}
+                            </span>
                           </li>
-                        )
+                        );
                       })}
                     </ul>
                   </div>
-                )
+                );
               })}
             />
           )}
         </div>
-      )}
+      }
       {showAddForm && <AddStaffForm closeForm={() => setShowAddForm(false)} />}
       <StaffList onEdit={openEditForm} onDelete={openDeleteModal} />
       {showEditForm && (

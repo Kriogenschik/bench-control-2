@@ -1,5 +1,5 @@
 import { ChangeEvent, SetStateAction, useState } from "react";
-import getStaffProjectsTime from "../../utils/GetStaffProjectsTime";
+import getStaffProjectsTime from "../../utils/getStaffProjectsTime";
 import { EmployeesProps } from "../StaffList/types";
 import { ProjectProps, ProjectStaffProps } from "../ProjectsList/types";
 

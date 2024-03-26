@@ -8,7 +8,8 @@ import { useHttp } from "../../hooks/http.hook";
 
 import "./ProjectCard.scss";
 import { projectEdited } from "../ProjectsList/projectsListSlice";
-import getStaffProjectsTime from "../../utils/GetStaffProjectsTime";
+import getStaffProjectsTime from "../../utils/getStaffProjectsTime";
+import dateFormat from "../../utils/dateFormat";
 
 interface ProjectCardProps {
   projectEdit: (id: number) => void;
@@ -138,20 +139,6 @@ export default function ProjectCard({
       .catch((err: any) => console.log(err));
   };
 
-  const timeFormat = (time: string): string => {
-    if (time !== "none") {
-      const endTime = new Date(time);
-      return `${
-        endTime.getDate() > 9 ? endTime.getDate() : "0" + endTime.getDate()
-      }.${
-        +endTime.getMonth() + 1 > 9
-          ? +endTime.getMonth() + 1
-          : "0" + (+endTime.getMonth() + 1)
-      }.${endTime.getFullYear()}`;
-    }
-    return "none";
-  };
-
   const cardClass = (): string => {
     let result = "tab__project project";
     if (isStaffError && project.isActive) {
@@ -216,11 +203,11 @@ export default function ProjectCard({
         </p>
         <p className="project__info">
           <span className="project__label">StartAt: </span>
-          {timeFormat(project.start)}
+          {dateFormat(project.start)}
         </p>
         <p className="project__info">
           <span className="project__label">EndAt: </span>
-          {timeFormat(project.end)}
+          {dateFormat(project.end)}
         </p>
       </div>
       <div className="project__lists">

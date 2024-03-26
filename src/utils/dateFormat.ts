@@ -1,4 +1,4 @@
-const timeFormat = (time: string): string => {
+const dateFormat = (time: string): string => {
   if (time !== "none") {
     const endTime = new Date(time);
     return `${
@@ -12,4 +12,4 @@ const timeFormat = (time: string): string => {
   return "none";
 };
 
-export default timeFormat;
+export default dateFormat;

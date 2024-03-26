@@ -3,7 +3,7 @@ import {
   ProjectStaffProps,
 } from "../components/ProjectsList/types";
 
-export const EditProjectByStaffRemove = (
+export const editProjectByStaffRemove = (
   projectsList: Array<ProjectProps>,
   removedStaffId: number
 ) => {

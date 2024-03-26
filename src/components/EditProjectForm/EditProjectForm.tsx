@@ -3,14 +3,13 @@ import InputCheckBox from "../InputCheckbox/InputCheckbox";
 import ProjectStaffEditList from "../ProjectStaffEditList/ProjectStaffEditList";
 import { EmployeesProps } from "../StaffList/types";
 import { ProjectProps, ProjectStaffProps } from "../ProjectsList/types";
-import getStaffProjectsTime from "../../utils/GetStaffProjectsTime";
+import getStaffProjectsTime from "../../utils/getStaffProjectsTime";
 import InputAutoStaff from "../InputAutoStaff/InputAutoStaff";
-import { setTime, validateTime } from "../../utils/SetTime";
+import { setTime, validateTime } from "../../utils/setTime";
 import { useDispatch, useSelector } from "react-redux";
 import { allStaffSelector } from "../StaffList/staffListSlice";
-import { useHttp } from "../../hooks/http.hook";
 import { AppDispatch } from "../../store";
-import { projectEdited } from "../ProjectsList/projectsListSlice";
+import { fetchEditProject } from "../ProjectsList/projectsListSlice";
 
 import "./EditProjectForm.scss";
 
@@ -34,7 +33,6 @@ export default function EditProjectForm({
   projectsList,
 }: EditProjectFormProps): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
-  const { request } = useHttp();
 
   const activeProjects = projectsList.filter(
     (project) => project.id !== id && project.isActive === true
@@ -245,13 +243,7 @@ export default function EditProjectForm({
         isActive: project.isActive,
       };
 
-      request(
-        process.env.REACT_APP_PORT + `projects/${id}`,
-        "PUT",
-        JSON.stringify(editedProject)
-      )
-        .then((res) => dispatch(projectEdited({ id, res })))
-        .catch((err: any) => console.log(err));
+      dispatch(fetchEditProject({id: id, editedProject: editedProject}));
       closeForm();
     }
   };

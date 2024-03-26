@@ -1,9 +1,9 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import InputCheckBox from "../InputCheckbox/InputCheckbox";
-import getStaffProjectsTime from "../../utils/GetStaffProjectsTime";
+import getStaffProjectsTime from "../../utils/getStaffProjectsTime";
 import { ProjectProps, ProjectStaffProps } from "../ProjectsList/types";
 import { EmployeesProps } from "../StaffList/types";
-import { setTime, validateTime } from "../../utils/SetTime";
+import { setTime, validateTime } from "../../utils/setTime";
 
 import "./ProjectStaffInputs.scss";
 

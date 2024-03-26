@@ -5,7 +5,7 @@ import { RootState } from "../../store";
 import "./Nav.scss";
 import { allProjectsSelector } from "../ProjectsList/projectsListSlice";
 import { ProjectProps } from "../ProjectsList/types";
-import getBlankProjects from "../../utils/GetBlankProjects";
+import getBlankProjects from "../../utils/getBlankProjects";
 import { useContext, useEffect, useState } from "react";
 import NavTipsContext, {
   NavTipsContextType,

@@ -7,11 +7,16 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { useHttp } from "../../hooks/http.hook";
-import { ProjectProps } from "./types";
+import { CreateProjectProps, ProjectProps } from "./types";
 import { RootState } from "../../store";
 
 interface ProjectsState extends EntityState<ProjectProps> {
   projectsLoadingStatus: string;
+}
+
+interface EditProject {
+  id: number;
+  editedProject: ProjectProps;
 }
 
 const projectsAdapter = createEntityAdapter<ProjectProps>();
@@ -24,6 +29,49 @@ export const fetchProjects = createAsyncThunk<Array<ProjectProps>>("data/fetchPr
   const { request } = useHttp();
   return request("http://localhost:5000/projects");
 });
+
+export const fetchAddProject = createAsyncThunk(
+  "data/fetchAddProject",
+  (newProj: CreateProjectProps, { dispatch }) => {
+    const { request } = useHttp();
+    request(
+      process.env.REACT_APP_PORT + `projects`,
+      "POST",
+      JSON.stringify(newProj)
+    )
+      .then((res) => dispatch(projectCreated(res)))
+      .catch((err) => console.log(err));
+  }
+);
+
+export const fetchDeleteProject = createAsyncThunk(
+  "data/fetchDeleteProject",
+  (id: number, { dispatch }) => {
+    const { request } = useHttp();
+    request(
+      process.env.REACT_APP_PORT + `projects/${id}`,
+      "DELETE"
+    )
+      .then((res) => dispatch(projectDeleted(res.id)))
+      .catch((err: any) => console.log(err));
+  }
+);
+
+export const fetchEditProject = createAsyncThunk(
+  "data/fetchEditProject",
+  (params: EditProject, { dispatch }) => {
+    const { request } = useHttp();
+    const id = params.id;
+    request(
+      process.env.REACT_APP_PORT + `projects/${id}`,
+      "PUT",
+      JSON.stringify(params.editedProject)
+    )
+      .then((res) => dispatch(projectEdited({ id, res })))
+      .catch((err: any) => console.log(err));
+  }
+);
+
 
 const projectsSlice = createSlice({
   name: "projects",
@@ -55,7 +103,7 @@ const projectsSlice = createSlice({
   },
 });
 
-const { actions, reducer } = projectsSlice;
+const { reducer } = projectsSlice;
 
 export default reducer;
 
