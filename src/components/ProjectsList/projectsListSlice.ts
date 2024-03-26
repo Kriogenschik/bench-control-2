@@ -14,6 +14,11 @@ interface ProjectsState extends EntityState<ProjectProps> {
   projectsLoadingStatus: string;
 }
 
+interface EditProject {
+  id: number;
+  editedProject: ProjectProps;
+}
+
 const projectsAdapter = createEntityAdapter<ProjectProps>();
 
 const initialState: ProjectsState = projectsAdapter.getInitialState({
@@ -48,6 +53,21 @@ export const fetchDeleteProject = createAsyncThunk(
       "DELETE"
     )
       .then((res) => dispatch(projectDeleted(res.id)))
+      .catch((err: any) => console.log(err));
+  }
+);
+
+export const fetchEditProject = createAsyncThunk(
+  "data/fetchEditProject",
+  (params: EditProject, { dispatch }) => {
+    const { request } = useHttp();
+    const id = params.id;
+    request(
+      process.env.REACT_APP_PORT + `projects/${id}`,
+      "PUT",
+      JSON.stringify(params.editedProject)
+    )
+      .then((res) => dispatch(projectEdited({ id, res })))
       .catch((err: any) => console.log(err));
   }
 );
