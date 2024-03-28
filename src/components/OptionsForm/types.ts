@@ -1,12 +1,12 @@
 export interface OptionFullProps {
-  id: string,
+  id: number,
   name: string,
   title: string,
   arr: Array<OptionProps>
 }
 
 export interface OptionProps {
-  id: string,
+  id: number,
   value: string,
   label: string,
   descr: string,

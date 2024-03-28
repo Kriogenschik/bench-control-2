@@ -1,16 +1,15 @@
 import { useState } from "react";
-import { OptionProps } from "../OptionsForm/types";
 import { useDispatch } from "react-redux";
-import { useHttp } from "../../hooks/http.hook";
-import { optionsEdited } from "../OptionsForm/optionsFormSlice";
+import {
+  fetchEditOptions,
+} from "../OptionsForm/optionsFormSlice";
 import { AppDispatch } from "../../store";
 
 interface InputsProps {
-  id: string;
+  id: number;
   name: string;
   value: string;
-  optionsList: Array<OptionProps>;
-  optionsId: string;
+  optionsId: number;
   optionsName: string;
 }
 
@@ -18,12 +17,10 @@ export default function InputsColumn({
   id,
   name,
   value,
-  optionsList,
   optionsId,
   optionsName,
 }: InputsProps) {
   const dispatch = useDispatch<AppDispatch>();
-  const { request } = useHttp();
 
   const [details, setDeatails] = useState({
     name: name,
@@ -47,32 +44,15 @@ export default function InputsColumn({
       if (details["name"] && details["value"]) {
         setIsEdit(!isEdit);
 
-        const newOptions = optionsList.map((option) => {
-          if (option.id === id) {
-            return {
-              ...option,
-              id: id,
-              value: details["value"],
-              descr: details["name"],
-              label: details["value"],
-            };
-          } else return option;
-        });
-        const newOptionsList = {
-          arr: [...newOptions],
-        };
-        request(
-          process.env.REACT_APP_PORT + `options/${optionsId}`,
-          "PUT",
-          JSON.stringify({optionsName: optionsName, id: id, name: details["name"], value: details["value"]})
-        )
-          .then((res) => {
-            // dispatch(optionsEdited({ optionsId, newOptionsList }));
-            dispatch(optionsEdited({ optionsId, res }))
-            
-          }
-            )
-          .catch((err: any) => console.log(err));
+        dispatch(
+          fetchEditOptions({
+            id,
+            optionsId,
+            optionsName,
+            name: details["name"],
+            value: details["value"],
+          })
+        );
       }
     } else {
       setIsEdit(!isEdit);

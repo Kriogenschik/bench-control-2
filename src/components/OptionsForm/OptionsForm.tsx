@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHttp } from "../../hooks/http.hook";
 import { OptionProps } from "./types";
 import OptionsInputs from "../OptionsInputs/OptionsInputs";
-import { optionsEdited } from "./optionsFormSlice";
+import { fetchAddOptions, fetchRemoveOptions } from "./optionsFormSlice";
 import { AppDispatch } from "../../store";
 
 import "./OptionsForm.scss";
 
 interface OptionsFormProps {
-  optionsId: string;
+  optionsId: number;
   optionTitle: string;
   optionName: string;
   optionsArr: Array<OptionProps>;
@@ -22,7 +21,6 @@ export default function OptionsForm({
   optionsArr,
 }: OptionsFormProps) {
   const dispatch = useDispatch<AppDispatch>();
-  const { request } = useHttp();
 
   const [addOption, setAddOption] = useState({
     value: "",
@@ -36,14 +34,8 @@ export default function OptionsForm({
 
   const [isOptionShown, setIsOptionShown] = useState<boolean>(true);
 
-  function optionRemove(id: string) {
-    request(
-      process.env.REACT_APP_PORT + `options/${optionsId}`,
-      "DELETE",
-      JSON.stringify({optionName: optionName, id: id})
-    )
-      .then((res) => dispatch(optionsEdited({ optionsId, res })))
-      .catch((err: any) => console.log(err));
+  function optionRemove(id: number) {
+      dispatch(fetchRemoveOptions({id, optionsId, optionName}));
   }
 
   function optionAdd() {
@@ -61,13 +53,7 @@ export default function OptionsForm({
           value: addOption["value"],
         };
 
-      request(
-        process.env.REACT_APP_PORT + `options/${optionsId}`,
-        "POST",
-        JSON.stringify(newOptions)
-      )
-        .then((res) => dispatch(optionsEdited({ optionsId, res })))
-        .catch((err: any) => console.log(err));
+        dispatch(fetchAddOptions({optionsId, newOptions}));
 
       setAddOption({
         value: "",
@@ -102,7 +88,6 @@ export default function OptionsForm({
                       id={option.id}
                       name={option.descr}
                       value={option.value}
-                      optionsList={optionsArr}
                     />
                     <button
                       className="tab__btn tab__btn--remove fa-solid fa-trash-can fa-lg"

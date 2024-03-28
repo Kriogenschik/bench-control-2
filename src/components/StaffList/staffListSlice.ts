@@ -47,21 +47,22 @@ export const fetchDeleteStaff = createAsyncThunk(
   (params: DeleteStaff, { dispatch }) => {
     const { request } = useHttp();
     request(process.env.REACT_APP_PORT + `staff/${params.id}`, "DELETE")
-      .then((res) => dispatch(staffDeleted(res.id)))
-      .then(() =>
-        editProjectByStaffRemove(params.projList, params.id).forEach(
-          (project) => {
-            const projectId = project.id;
-            request(
-              process.env.REACT_APP_PORT + `projects/${projectId}`,
-              "PUT",
-              JSON.stringify(project)
-            )
-              .then((res) => dispatch(projectEdited({ projectId, res })))
-              .catch((err: any) => console.log(err));
-          }
-        )
-      )
+      .then((res) => {console.log(res)
+       dispatch(staffDeleted(res.id))})
+      // .then(() =>
+      //   editProjectByStaffRemove(params.projList, params.id).forEach(
+      //     (project) => {
+      //       const projectId = project.id;
+      //       request(
+      //         process.env.REACT_APP_PORT + `projects/${projectId}`,
+      //         "PUT",
+      //         JSON.stringify(project)
+      //       )
+      //         .then((res) => dispatch(projectEdited({ projectId, res })))
+      //         .catch((err: any) => console.log(err));
+      //     }
+      //   )
+      // )
       .catch((err: any) => console.log(err));
   }
 );
