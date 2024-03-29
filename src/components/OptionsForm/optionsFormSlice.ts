@@ -103,36 +103,6 @@ export const fetchEditOptions = createAsyncThunk(
   }
 );
 
-export const fetchDeleteOptions = createAsyncThunk(
-  "data/fetchDeleteOptions",
-  (params: DeleteOptions, { dispatch }) => {
-    const { request } = useHttp();
-    const {optionName, optionsId, id} = params;
-    request(
-      process.env.REACT_APP_PORT + `options/${optionsId}`,
-      "DELETE",
-      JSON.stringify({optionName: optionName, id: id})
-    )
-      .then((res) => dispatch(optionsEdited({ optionsId, res })))
-      .catch((err: any) => console.log(err));
-  }
-);
-
-// export const fetchAddOptions = createAsyncThunk(
-//   "data/fetchAddOptions",
-//   (params: DeleteOptions, { dispatch }) => {
-//     const { request } = useHttp();
-//     const {optionName, optionsId, id} = params;
-//     request(
-//       process.env.REACT_APP_PORT + `options/${optionsId}`,
-//       "DELETE",
-//       JSON.stringify({optionName: optionName, id: id})
-//     )
-//       .then((res) => dispatch(optionsEdited({ optionsId, res })))
-//       .catch((err: any) => console.log(err));
-//   }
-// );
-
 const optionsSlice = createSlice({
   name: "options",
   initialState,

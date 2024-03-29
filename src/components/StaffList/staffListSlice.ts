@@ -11,7 +11,6 @@ import { useHttp } from "../../hooks/http.hook";
 import { CreatedEmployeesProps, EmployeesProps } from "./types";
 import { RootState } from "../../store";
 import { projectEdited } from "../ProjectsList/projectsListSlice";
-import { editProjectByStaffRemove } from "../../utils/editProjectByStaffRemove";
 import { ProjectProps } from "../ProjectsList/types";
 import { editProjectByStaffChange } from "../../utils/editProjectByStaffChange";
 
@@ -24,7 +23,7 @@ interface DeleteStaff {
   projList: Array<ProjectProps>;
 }
 
-interface EditStaff extends DeleteStaff{
+interface EditStaff extends DeleteStaff {
   editedStaff: EmployeesProps;
 }
 
@@ -47,22 +46,7 @@ export const fetchDeleteStaff = createAsyncThunk(
   (params: DeleteStaff, { dispatch }) => {
     const { request } = useHttp();
     request(process.env.REACT_APP_PORT + `staff/${params.id}`, "DELETE")
-      .then((res) => {console.log(res)
-       dispatch(staffDeleted(res.id))})
-      // .then(() =>
-      //   editProjectByStaffRemove(params.projList, params.id).forEach(
-      //     (project) => {
-      //       const projectId = project.id;
-      //       request(
-      //         process.env.REACT_APP_PORT + `projects/${projectId}`,
-      //         "PUT",
-      //         JSON.stringify(project)
-      //       )
-      //         .then((res) => dispatch(projectEdited({ projectId, res })))
-      //         .catch((err: any) => console.log(err));
-      //     }
-      //   )
-      // )
+      .then((res) => dispatch(staffDeleted(res.id)))
       .catch((err: any) => console.log(err));
   }
 );
@@ -73,7 +57,7 @@ export const fetchAddStaff = createAsyncThunk(
     const { request } = useHttp();
     request(
       process.env.REACT_APP_PORT + "staff",
-      "POST", 
+      "POST",
       JSON.stringify(newStaff)
     )
       .then((res) => dispatch(staffCreated(res)))
